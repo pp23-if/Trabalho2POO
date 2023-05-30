@@ -3,6 +3,7 @@ package Controller;
 import Model.Admnistrador;
 import Model.AdmnistradorDAO;
 import Model.CalendarioSistema;
+import Model.ConexaoBancoDeDados;
 import Model.ConsultaDAO;
 import Model.FinanceiroAdmDAO;
 import Model.FinanceiroMedicoDAO;
@@ -24,12 +25,17 @@ public class GerenciaControladoras {
     Scanner scanner = new Scanner(System.in);
 
     MenuTitulos Tela = new MenuTitulos();
+    
+    /*Conectando No Banco De Dados.*/
+    ConexaoBancoDeDados conexaoBancoDeDados = new ConexaoBancoDeDados();
+    
 
     /*Instanciando a Classe de Validacao de dados.*/
     ValidacaoEntradaDados vd = new ValidacaoEntradaDados();
     
     /*Instanciando o Calendario Do Sistema*/
     CalendarioSistema calendarioSistema = new CalendarioSistema();
+   
 
     /*Instanciando os DAO.*/
     PessoaDAO pessoaDAO = new PessoaDAO(calendarioSistema);
@@ -46,6 +52,8 @@ public class GerenciaControladoras {
 
     public GerenciaControladoras() {
 
+        
+        
         int opcao;
 
         do {
@@ -66,14 +74,14 @@ public class GerenciaControladoras {
                 case 3: {
                     System.out.println("\nMostrando Todas as PESSOAS Cadastradas: " + "\n");
                     pessoaDAO.mostraTodasPessoas();
-                    System.out.println("\nMostrando TodOS os MEDICOS Cadastrados: " + "\n");
+                    /*System.out.println("\nMostrando TodOS os MEDICOS Cadastrados: " + "\n");
                     medicoDAO.mostraTodosMedicosHabilitados();
                     System.out.println("\nMostrando Todas as FRANQUIAS Cadastradas: " + "\n");
                     franquiaDAO.mostraTodasFranquias();
                     System.out.println("\nMostrando Todas as UNIDADES DE FRANQUIAS Cadastradas: " + "\n");
                     unidadeFranquiaDAO.MostraTodasUnidadesDeFranquia();
                     System.out.println("\nMostrando Todos os ADMNISTRADORES Cadastradas: " + "\n");
-                    admnistradorDAO.buscaTodosAdmnistradores();
+                    admnistradorDAO.buscaTodosAdmnistradores();*/
                   
                     break;
                 }
