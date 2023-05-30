@@ -1,13 +1,16 @@
 package Model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class PessoaDAO {
 
-    private Pessoa vetorPessoa[] = new Pessoa[50];
+    private List <Pessoa> listaPessoa = new LinkedList();
 
     public PessoaDAO(CalendarioSistema calendarioSistema) {
         
 
-        Pessoa pessoa = new Pessoa("Pedro Augusto Rodrigues", "123",  "Rua 13", "225544",
+        /*Pessoa pessoa = new Pessoa("Pedro Augusto Rodrigues", "123",  "Rua 13", "225544",
                 "1", "1", "Paciente", calendarioSistema.getDataHoraSistema());
         adicionaPessoa(pessoa);
 
@@ -62,33 +65,24 @@ public class PessoaDAO {
         
         Pessoa pessoa14 = new Pessoa("Pedro Augusto Rodrigues", "123", "Rua 13", "225544",
                 "pp23", "69", "DonoDeUnidadeDeFranquia", calendarioSistema.getDataHoraSistema());
-        adicionaPessoa(pessoa14);
+        adicionaPessoa(pessoa14);*/
 
     }
 
-    private int proximaPosilivrePessoa() {
-        for (int i = 0; i < vetorPessoa.length; i++) {
-            if (vetorPessoa[i] == null) {
-                return i;
-            }
-
-        }
-        return -1;
-    }
 
     public boolean adicionaPessoa(Pessoa pessoa) {
-        int proxima = proximaPosilivrePessoa();
-        if (proxima != -1) {
-            vetorPessoa[proxima] = pessoa;
+      
+        if(listaPessoa.add(pessoa) == true)
+        {
             return true;
-        } else {
-            return false;
         }
+        
+        return false;
 
     }
 
     public void mostraTodasPessoas() {
-        for (Pessoa pessoa : vetorPessoa) {
+        for (Pessoa pessoa : listaPessoa) {
 
             if (pessoa != null) {
                 System.out.println(pessoa + "\n");
@@ -97,7 +91,7 @@ public class PessoaDAO {
     }
 
     public Pessoa buscaPessoaCadastrada(String login, String senha) {
-        for (Pessoa pessoa : vetorPessoa) {
+        for (Pessoa pessoa : listaPessoa) {
 
             if (pessoa != null && pessoa.getLoginPessoa().equals(login)
                     && pessoa.getSenhaPessoa().equals(senha)) {
@@ -108,7 +102,7 @@ public class PessoaDAO {
     }
 
     public boolean verificaSePessoaExiste(String login, String cpf) {
-        for (Pessoa pessoa : vetorPessoa) {
+        for (Pessoa pessoa : listaPessoa) {
             if (pessoa != null && pessoa.getLoginPessoa().equals(login)
                 || pessoa != null && pessoa.getCpf().equals(cpf)) {
                 return true;
@@ -119,7 +113,7 @@ public class PessoaDAO {
     }
 
     public Pessoa buscaPessoaQuerendoLogar(String login, String senha) {
-        for (Pessoa pessoa : vetorPessoa) {
+        for (Pessoa pessoa : listaPessoa) {
             if (pessoa != null && pessoa.getLoginPessoa().equals(login)
                     && pessoa.getSenhaPessoa().equals(senha)) {
                 return pessoa;
@@ -135,7 +129,7 @@ public class PessoaDAO {
 
         if (!verificaSeNomeEstaSendoUsado(novoNomePessoa) == true) {
 
-            for (Pessoa pessoa : vetorPessoa) {
+            for (Pessoa pessoa : listaPessoa) {
 
                 if (pessoa != null && pessoa.getNomePessoa().equals(nomePessoa)
                         && pessoa.getCpf().equals(cpf)) {
@@ -157,7 +151,7 @@ public class PessoaDAO {
         boolean atualizado = false;
 
         if (!verificaSeCpfEstaSendoUsado(novoCpf) == true) {
-            for (Pessoa pessoa : vetorPessoa) {
+            for (Pessoa pessoa : listaPessoa) {
                 if (pessoa != null && pessoa.getCpf().equals(cpf)) {
                     pessoa.setCpf(novoCpf);
                     pessoa.setDataModificacao(calendarioSistema.getDataHoraSistema());
@@ -175,7 +169,7 @@ public class PessoaDAO {
 
         boolean atualizado = false;
 
-        for (Pessoa pessoa : vetorPessoa) {
+        for (Pessoa pessoa : listaPessoa) {
 
             if (pessoa != null && pessoa.getEnderecoPessoa().equals(endereco)) {
                 pessoa.setEnderecoPessoa(novoEndereco);
@@ -191,7 +185,7 @@ public class PessoaDAO {
             CalendarioSistema calendarioSistema) {
 
         if (!verificaSeTelefoneEstaSendoUsado(novoTelefone) == true) {
-            for (Pessoa pessoa : vetorPessoa) {
+            for (Pessoa pessoa : listaPessoa) {
 
                 if (pessoa != null && pessoa.getTelefonePessoa().equals(telefone)
                         && pessoa.getTipoUsuario().equals(tipoUsuario)) {
@@ -208,7 +202,7 @@ public class PessoaDAO {
     public boolean atualizaLoginPessoa(String login, String novoLogin, String tipoUsuario, 
             CalendarioSistema calendarioSistema) {
         if (!verificaSeloginEstaSendoUsado(novoLogin) == true) {
-            for (Pessoa pessoa : vetorPessoa) {
+            for (Pessoa pessoa : listaPessoa) {
 
                 if (pessoa != null && pessoa.getLoginPessoa().equals(login) && pessoa.getTipoUsuario().equals(tipoUsuario)) {
                     pessoa.setLoginPessoa(novoLogin);
@@ -224,7 +218,7 @@ public class PessoaDAO {
 
     public boolean atualizaSenhaPessoa(String senha, String login, String novaSenha, String tipoUsuario, 
             CalendarioSistema calendarioSistema) {
-        for (Pessoa pessoa : vetorPessoa) {
+        for (Pessoa pessoa : listaPessoa) {
 
             if (pessoa != null && pessoa.getLoginPessoa().equals(login) && pessoa.getSenhaPessoa().equals(senha)
                     && pessoa.getTipoUsuario().equals(tipoUsuario)) {
@@ -238,7 +232,7 @@ public class PessoaDAO {
     }
 
     private boolean verificaSeNomeEstaSendoUsado(String nome) {
-        for (Pessoa pessoa : vetorPessoa) {
+        for (Pessoa pessoa : listaPessoa) {
             if (pessoa != null && pessoa.getNomePessoa().equals(nome)) {
                 return true;
             }
@@ -247,7 +241,7 @@ public class PessoaDAO {
     }
 
     private boolean verificaSeCpfEstaSendoUsado(String cpf) {
-        for (Pessoa pessoa : vetorPessoa) {
+        for (Pessoa pessoa : listaPessoa) {
             if (pessoa != null && pessoa.getCpf().equals(cpf)) {
                 return true;
             }
@@ -256,7 +250,7 @@ public class PessoaDAO {
     }
 
     private boolean verificaSeTelefoneEstaSendoUsado(String telefone) {
-        for (Pessoa pessoa : vetorPessoa) {
+        for (Pessoa pessoa : listaPessoa) {
             if (pessoa != null && pessoa.getTelefonePessoa().equals(telefone)) {
                 return true;
             }
@@ -265,7 +259,7 @@ public class PessoaDAO {
     }
 
     private boolean verificaSeloginEstaSendoUsado(String login) {
-        for (Pessoa pessoa : vetorPessoa) {
+        for (Pessoa pessoa : listaPessoa) {
             if (pessoa != null && pessoa.getLoginPessoa().equals(login)) {
                 return true;
             }
@@ -277,7 +271,7 @@ public class PessoaDAO {
 
         String cpfDono = null;
 
-        for (Pessoa pessoa : vetorPessoa) {
+        for (Pessoa pessoa : listaPessoa) {
             if (pessoa != null && pessoa.getTipoUsuario().equals("DonodeFranquia")) {
                 cpfDono = pessoa.getCpf();
             }
@@ -296,7 +290,7 @@ public class PessoaDAO {
     }
 
     public Pessoa buscaPessoaPorId(int idPessoa) {
-        for (Pessoa pessoa : vetorPessoa) {
+        for (Pessoa pessoa : listaPessoa) {
 
             if (pessoa != null && pessoa.getId() == idPessoa) {
                 return pessoa;
@@ -308,7 +302,7 @@ public class PessoaDAO {
     
       public Pessoa filtraPessoasCandidatasAMedico() {
 
-        for (Pessoa pessoa : vetorPessoa) {
+        for (Pessoa pessoa : listaPessoa) {
             
             if(pessoa != null && !pessoa.getTipoUsuario().equals("Medico") 
                     && !pessoa.getTipoUsuario().equals("DonodeFranquia") 
@@ -325,7 +319,7 @@ public class PessoaDAO {
       
     public Pessoa filtraPessoaCandidatasADonoUnidadeFranquia()
     {
-        for (Pessoa pessoa : vetorPessoa) {
+        for (Pessoa pessoa : listaPessoa) {
             
             if(pessoa != null && !pessoa.getTipoUsuario().equals("Medico") &&
                !pessoa.getTipoUsuario().equals("DonodeFranquia")  && 
@@ -340,7 +334,7 @@ public class PessoaDAO {
     }
     
     public Pessoa filtraPacientes(){
-        for (Pessoa pessoa : vetorPessoa) {
+        for (Pessoa pessoa : listaPessoa) {
             if(pessoa != null && pessoa.getTipoUsuario().equals("Paciente")
                && pessoa.isHabilitado() == true){
                 System.out.println(pessoa + "\n");
@@ -350,7 +344,7 @@ public class PessoaDAO {
     }
     
      public Pessoa filtraMedicos(){
-        for (Pessoa pessoa : vetorPessoa) {
+        for (Pessoa pessoa : listaPessoa) {
             if(pessoa != null && pessoa.getTipoUsuario().equals("Medico")
                && pessoa.isHabilitado() == true){
                 System.out.println(pessoa + "\n");
@@ -374,7 +368,7 @@ public class PessoaDAO {
    
    public void filtraPacientesExcluidos()
    {
-       for (Pessoa pessoa : vetorPessoa) {
+       for (Pessoa pessoa : listaPessoa) {
            
            if(pessoa != null
                && pessoa.getTipoUsuario().equals("Paciente")
@@ -386,7 +380,7 @@ public class PessoaDAO {
    }
    
     public Pessoa buscaPessoaExcluidaPorId(int idPessoaExcluida) {
-        for (Pessoa pessoa : vetorPessoa) {
+        for (Pessoa pessoa : listaPessoa) {
 
             if (pessoa != null && pessoa.getId() == idPessoaExcluida
                     && pessoa.isHabilitado() == false) {

@@ -6,7 +6,6 @@ import java.util.Objects;
 
 public class Pessoa {
 
-    private static int sequence = 1;
     private int idPessoa;
     private String nomePessoa;
     private String cpf;
@@ -102,7 +101,7 @@ public class Pessoa {
     public Pessoa(String nomePessoa, String cpf, String enderecoPessoa, String telefonePessoa,
             String loginPessoa, String senhaPessoa, String tipoUsuario, LocalDateTime dataCriacao) {
         
-        this.idPessoa = sequence++;
+        //this.idPessoa = sequence++;
         this.nomePessoa = nomePessoa;
         this.cpf = cpf;
         this.enderecoPessoa = enderecoPessoa;
