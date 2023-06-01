@@ -132,7 +132,7 @@ public class GerenciaControladoras {
             Pessoa pessoa = new Pessoa(nomePessoa, cpf, enderecoPessoa, telefonePessoa,
                     loginPessoa, senhaPessoa, tipoUsuario, calendarioSistema.getDataHoraSistema());
 
-            adicionado = pessoaDAO.adicionaPessoa(pessoa);
+            adicionado = pessoaDAO.inserePessoaNoBancoDeDados(conexaoBancoDeDados, pessoa);
 
             if (adicionado == true) {
                 System.out.println("\nPessoa Cadastrada Com Sucesso!!!");

@@ -1,14 +1,21 @@
 package Model;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
+import javax.swing.text.DateFormatter;
 
 public class PessoaDAO {
 
-    private List <Pessoa> listaPessoa = new LinkedList();
+    private List<Pessoa> listaPessoa = new LinkedList();
 
     public PessoaDAO(CalendarioSistema calendarioSistema) {
-        
 
 //        Pessoa pessoa = new Pessoa("Pedro Augusto Rodrigues", "123",  "Rua 13", "225544",
 //                "1", "1", "Paciente", calendarioSistema.getDataHoraSistema());
@@ -66,17 +73,14 @@ public class PessoaDAO {
 //        Pessoa pessoa14 = new Pessoa("Pedro Augusto Rodrigues", "123", "Rua 13", "225544",
 //                "pp23", "69", "DonoDeUnidadeDeFranquia", calendarioSistema.getDataHoraSistema());
 //        adicionaPessoa(pessoa14);
-
     }
 
-
     public boolean adicionaPessoa(Pessoa pessoa) {
-      
-        if(listaPessoa.add(pessoa) == true)
-        {
+
+        if (listaPessoa.add(pessoa) == true) {
             return true;
         }
-        
+
         return false;
 
     }
@@ -104,7 +108,7 @@ public class PessoaDAO {
     public boolean verificaSePessoaExiste(String login, String cpf) {
         for (Pessoa pessoa : listaPessoa) {
             if (pessoa != null && pessoa.getLoginPessoa().equals(login)
-                || pessoa != null && pessoa.getCpf().equals(cpf)) {
+                    || pessoa != null && pessoa.getCpf().equals(cpf)) {
                 return true;
             }
 
@@ -122,9 +126,9 @@ public class PessoaDAO {
         return null;
     }
 
-    public boolean atualizaNomePessoa(String nomePessoa, String novoNomePessoa, 
+    public boolean atualizaNomePessoa(String nomePessoa, String novoNomePessoa,
             String cpf, CalendarioSistema calendarioSistema) {
-        
+
         boolean atualizado = false;
 
         if (!verificaSeNomeEstaSendoUsado(novoNomePessoa) == true) {
@@ -145,7 +149,7 @@ public class PessoaDAO {
 
     }
 
-    public boolean atualizaCpfPessoa(String cpf, String novoCpf, 
+    public boolean atualizaCpfPessoa(String cpf, String novoCpf,
             CalendarioSistema calendarioSistema) {
 
         boolean atualizado = false;
@@ -164,7 +168,7 @@ public class PessoaDAO {
         return atualizado;
     }
 
-    public boolean atualizaEnderecoPessoa(String endereco, String novoEndereco, 
+    public boolean atualizaEnderecoPessoa(String endereco, String novoEndereco,
             CalendarioSistema calendarioSistema) {
 
         boolean atualizado = false;
@@ -181,7 +185,7 @@ public class PessoaDAO {
         return atualizado;
     }
 
-    public boolean atualizaTelefonePessoa(String telefone, String novoTelefone, String tipoUsuario, 
+    public boolean atualizaTelefonePessoa(String telefone, String novoTelefone, String tipoUsuario,
             CalendarioSistema calendarioSistema) {
 
         if (!verificaSeTelefoneEstaSendoUsado(novoTelefone) == true) {
@@ -199,7 +203,7 @@ public class PessoaDAO {
         return false;
     }
 
-    public boolean atualizaLoginPessoa(String login, String novoLogin, String tipoUsuario, 
+    public boolean atualizaLoginPessoa(String login, String novoLogin, String tipoUsuario,
             CalendarioSistema calendarioSistema) {
         if (!verificaSeloginEstaSendoUsado(novoLogin) == true) {
             for (Pessoa pessoa : listaPessoa) {
@@ -216,7 +220,7 @@ public class PessoaDAO {
         return false;
     }
 
-    public boolean atualizaSenhaPessoa(String senha, String login, String novaSenha, String tipoUsuario, 
+    public boolean atualizaSenhaPessoa(String senha, String login, String novaSenha, String tipoUsuario,
             CalendarioSistema calendarioSistema) {
         for (Pessoa pessoa : listaPessoa) {
 
@@ -275,12 +279,12 @@ public class PessoaDAO {
             if (pessoa != null && pessoa.getTipoUsuario().equals("DonodeFranquia")) {
                 cpfDono = pessoa.getCpf();
             }
-            if (pessoa != null && !pessoa.getTipoUsuario().equals("DonoDeUnidadeDeFranquia") 
+            if (pessoa != null && !pessoa.getTipoUsuario().equals("DonoDeUnidadeDeFranquia")
                     && !pessoa.getTipoUsuario().equals("Medico")
                     && !pessoa.getCpf().equals(cpfDono)
                     && !pessoa.getTipoUsuario().equals("Admnistrador")
                     && pessoa.isHabilitado() == true) {
-                
+
                 System.out.println(pessoa + "\n");
             }
 
@@ -299,86 +303,79 @@ public class PessoaDAO {
         return null;
 
     }
-    
-      public Pessoa filtraPessoasCandidatasAMedico() {
+
+    public Pessoa filtraPessoasCandidatasAMedico() {
 
         for (Pessoa pessoa : listaPessoa) {
-            
-            if(pessoa != null && !pessoa.getTipoUsuario().equals("Medico") 
-                    && !pessoa.getTipoUsuario().equals("DonodeFranquia") 
+
+            if (pessoa != null && !pessoa.getTipoUsuario().equals("Medico")
+                    && !pessoa.getTipoUsuario().equals("DonodeFranquia")
                     && !pessoa.getTipoUsuario().equals("DonoDeUnidadeDeFranquia")
                     && !pessoa.getTipoUsuario().equals("Admnistrador")
-                    && pessoa.isHabilitado() == true)
-            {
+                    && pessoa.isHabilitado() == true) {
                 System.out.println(pessoa + "\n");
             }
         }
 
         return null;
     }
-      
-    public Pessoa filtraPessoaCandidatasADonoUnidadeFranquia()
-    {
+
+    public Pessoa filtraPessoaCandidatasADonoUnidadeFranquia() {
         for (Pessoa pessoa : listaPessoa) {
-            
-            if(pessoa != null && !pessoa.getTipoUsuario().equals("Medico") &&
-               !pessoa.getTipoUsuario().equals("DonodeFranquia")  && 
-               !pessoa.getTipoUsuario().equals("DonoDeUnidadeDeFranquia") &&
-               !pessoa.getTipoUsuario().equals("Admnistrador")
-               && pessoa.isHabilitado() == true)
-            {
+
+            if (pessoa != null && !pessoa.getTipoUsuario().equals("Medico")
+                    && !pessoa.getTipoUsuario().equals("DonodeFranquia")
+                    && !pessoa.getTipoUsuario().equals("DonoDeUnidadeDeFranquia")
+                    && !pessoa.getTipoUsuario().equals("Admnistrador")
+                    && pessoa.isHabilitado() == true) {
                 System.out.println(pessoa + "\n");
             }
         }
         return null;
     }
-    
-    public Pessoa filtraPacientes(){
+
+    public Pessoa filtraPacientes() {
         for (Pessoa pessoa : listaPessoa) {
-            if(pessoa != null && pessoa.getTipoUsuario().equals("Paciente")
-               && pessoa.isHabilitado() == true){
+            if (pessoa != null && pessoa.getTipoUsuario().equals("Paciente")
+                    && pessoa.isHabilitado() == true) {
                 System.out.println(pessoa + "\n");
             }
         }
         return null;
     }
-    
-     public Pessoa filtraMedicos(){
+
+    public Pessoa filtraMedicos() {
         for (Pessoa pessoa : listaPessoa) {
-            if(pessoa != null && pessoa.getTipoUsuario().equals("Medico")
-               && pessoa.isHabilitado() == true){
+            if (pessoa != null && pessoa.getTipoUsuario().equals("Medico")
+                    && pessoa.isHabilitado() == true) {
                 System.out.println(pessoa + "\n");
             }
         }
         return null;
     }
-    
-   public boolean excluirPaciente(Pessoa pessoa, CalendarioSistema calendarioSistema)
-   {
-       if(pessoa != null
-          && pessoa.getTipoUsuario().equals("Paciente")
-          && pessoa.isHabilitado() == true)
-       {
-          pessoa.setHabilitado(false);
-          pessoa.setDataModificacao(calendarioSistema.getDataHoraSistema());
-          return true;
-       }
+
+    public boolean excluirPaciente(Pessoa pessoa, CalendarioSistema calendarioSistema) {
+        if (pessoa != null
+                && pessoa.getTipoUsuario().equals("Paciente")
+                && pessoa.isHabilitado() == true) {
+            pessoa.setHabilitado(false);
+            pessoa.setDataModificacao(calendarioSistema.getDataHoraSistema());
+            return true;
+        }
         return false;
-   }
-   
-   public void filtraPacientesExcluidos()
-   {
-       for (Pessoa pessoa : listaPessoa) {
-           
-           if(pessoa != null
-               && pessoa.getTipoUsuario().equals("Paciente")
-               && pessoa.isHabilitado() == false)
-           {
-               System.out.println(pessoa + "\n");  
-           }
-       }
-   }
-   
+    }
+
+    public void filtraPacientesExcluidos() {
+        for (Pessoa pessoa : listaPessoa) {
+
+            if (pessoa != null
+                    && pessoa.getTipoUsuario().equals("Paciente")
+                    && pessoa.isHabilitado() == false) {
+                System.out.println(pessoa + "\n");
+            }
+        }
+    }
+
     public Pessoa buscaPessoaExcluidaPorId(int idPessoaExcluida) {
         for (Pessoa pessoa : listaPessoa) {
 
@@ -390,18 +387,70 @@ public class PessoaDAO {
         return null;
 
     }
-    
-   public boolean ReverterExclusaoPaciente(Pessoa pessoa, CalendarioSistema calendarioSistema)
-   {
-       if(pessoa != null
-          && pessoa.getTipoUsuario().equals("Paciente")
-          && pessoa.isHabilitado() == false)
-       {
-          pessoa.setHabilitado(true);
-          pessoa.setDataModificacao(calendarioSistema.getDataHoraSistema());
-          return true;
-       }
+
+    public boolean ReverterExclusaoPaciente(Pessoa pessoa, CalendarioSistema calendarioSistema) {
+        if (pessoa != null
+                && pessoa.getTipoUsuario().equals("Paciente")
+                && pessoa.isHabilitado() == false) {
+            pessoa.setHabilitado(true);
+            pessoa.setDataModificacao(calendarioSistema.getDataHoraSistema());
+            return true;
+        }
         return false;
-   }
-  
+    }
+
+    public boolean inserePessoaNoBancoDeDados(ConexaoBancoDeDados conexaoBancoDeDados,
+            Pessoa pessoa) {
+
+        boolean adicionado = true;
+        Connection conn;
+
+        String inserePessoa = "insert into pessoa (nome,enderecopessoa,cpf,telefonepessoa) \n"
+                + "values (?,?,?,?)";
+
+        String insereTipoUsuario = "insert into tipousuario (cpfpessoa,logintipousuario,senhatipousuario,tipousuario,datacriacao) \n"
+                + "values (?,?,?,?,?)";
+
+        conn = conexaoBancoDeDados.ConectaBancoDeDados();
+
+        try (PreparedStatement pstm = conn.prepareStatement(inserePessoa); 
+                PreparedStatement pstm2 = conn.prepareStatement(insereTipoUsuario)) {
+
+            conn.setAutoCommit(false);
+            pstm.setString(1, pessoa.getNomePessoa());
+            pstm.setString(2, pessoa.getEnderecoPessoa());
+            pstm.setString(3, pessoa.getCpf());
+            pstm.setString(4, pessoa.getTelefonePessoa());
+
+            pstm.execute();
+
+            pstm2.setString(1, pessoa.getCpf());
+            pstm2.setString(2, pessoa.getLoginPessoa());
+            pstm2.setString(3, pessoa.getSenhaPessoa());
+            pstm2.setString(4, pessoa.getTipoUsuario());
+
+            LocalDateTime dc = pessoa.getDataCriacao();
+            DateTimeFormatter fd = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
+            fd.format(dc);
+            String dataModificacao = dc.format(fd);
+            pstm2.setString(5, dataModificacao);
+            
+            pstm2.execute();
+            conn.commit();
+
+        } catch (SQLException erro) {
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+
+            }
+
+            System.out.println("\n Nao foi possivel inserir a pessoa no banco de dados!\n" + erro);
+            adicionado = false;
+        }
+
+        return adicionado != false;
+
+    }
+
 }
