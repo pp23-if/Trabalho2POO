@@ -3,6 +3,7 @@ package Model;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -413,8 +414,7 @@ public class PessoaDAO {
 
         conn = conexaoBancoDeDados.ConectaBancoDeDados();
 
-        try (PreparedStatement pstm = conn.prepareStatement(inserePessoa); 
-                PreparedStatement pstm2 = conn.prepareStatement(insereTipoUsuario)) {
+        try (PreparedStatement pstm = conn.prepareStatement(inserePessoa); PreparedStatement pstm2 = conn.prepareStatement(insereTipoUsuario)) {
 
             conn.setAutoCommit(false);
             pstm.setString(1, pessoa.getNomePessoa());
@@ -434,7 +434,7 @@ public class PessoaDAO {
             fd.format(dc);
             String dataModificacao = dc.format(fd);
             pstm2.setString(5, dataModificacao);
-            
+
             pstm2.execute();
             conn.commit();
 
@@ -452,5 +452,56 @@ public class PessoaDAO {
         return adicionado != false;
 
     }
+//+ "tp.datacriacao, tp.datamodificacao\n"
 
+    public void BuscaPessoaNoBancoDeDados(ConexaoBancoDeDados conexaoBancoDeDados) {
+
+        Connection conn;
+
+        String buscaPessoa = "select p.idpessoa,p.nome, p.enderecopessoa,\n"
+                + "p.cpf, p.telefonepessoa, \n"
+                + "tp.tipousuario, tp.logintipousuario, tp.senhatipousuario, tp.tipousuario\n"
+                + "from pessoa p inner join tipousuario tp\n"
+                + "on p.cpf = tp.cpfpessoa;";
+
+        conn = conexaoBancoDeDados.ConectaBancoDeDados();
+
+        try (PreparedStatement pstm = conn.prepareStatement(buscaPessoa); ResultSet rs = pstm.executeQuery()) {
+
+            while (rs.next()) {
+                Pessoa pessoa = new Pessoa();
+
+                pessoa.setIdPessoa(rs.getInt("idpessoa"));
+                pessoa.setNomePessoa(rs.getString("nome"));
+                pessoa.setCpf(rs.getString("cpf"));
+                pessoa.setEnderecoPessoa(rs.getString("enderecopessoa"));
+                pessoa.setTelefonePessoa(rs.getString("telefonepessoa"));
+                pessoa.setLoginPessoa(rs.getString("logintipousuario"));
+                pessoa.setSenhaPessoa(rs.getString("senhatipousuario"));
+                pessoa.setTipoUsuario(rs.getString("tipousuario"));
+                pessoa.setHabilitado(true);
+
+//                String dc = rs.getString("datacriacao");
+//                LocalDateTime dataCriacao = null;
+//                if (dataCriacao != null) {
+//                    DateTimeFormatter fd = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+//                    dataCriacao.parse(dc, fd);
+//                }
+//
+//                String dm = rs.getString("datamodificacao");
+//                LocalDateTime dataModificacao = null;
+//                DateTimeFormatter fdm = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+//                dataModificacao.parse(dm, fdm);
+//                pessoa.setDataCriacao(dataCriacao);
+//                pessoa.setDataModificacao(dataModificacao);
+                listaPessoa.add(pessoa);
+
+            }
+
+        } catch (SQLException erro) {
+            System.out.println("\n Nao foi possivel Buscar os dados das pessoas no banco de dados!\n" + erro.getMessage());
+
+        }
+
+    }
 }

@@ -72,8 +72,13 @@ public class GerenciaControladoras {
                 }
 
                 case 3: {
+                    pessoaDAO.BuscaPessoaNoBancoDeDados(conexaoBancoDeDados);
+                    
                     System.out.println("\nMostrando Todas as PESSOAS Cadastradas: " + "\n");
                     pessoaDAO.mostraTodasPessoas();
+                    
+                    
+                    
                     /*System.out.println("\nMostrando TodOS os MEDICOS Cadastrados: " + "\n");
                     medicoDAO.mostraTodosMedicosHabilitados();
                     System.out.println("\nMostrando Todas as FRANQUIAS Cadastradas: " + "\n");
@@ -82,6 +87,7 @@ public class GerenciaControladoras {
                     unidadeFranquiaDAO.MostraTodasUnidadesDeFranquia();
                     System.out.println("\nMostrando Todos os ADMNISTRADORES Cadastradas: " + "\n");
                     admnistradorDAO.buscaTodosAdmnistradores();*/
+                    
                   
                     break;
                 }

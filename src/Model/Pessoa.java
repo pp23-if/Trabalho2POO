@@ -25,6 +25,14 @@ public class Pessoa {
         return idPessoa;
     }
 
+    public void setIdPessoa(int idPessoa) {
+        this.idPessoa = idPessoa;
+    }
+
+    public void setTipoUsuario(String tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
+    }
+    
     public String getNomePessoa() {
         return nomePessoa;
     }
@@ -191,8 +199,8 @@ public class Pessoa {
                     + "Login: " + this.loginPessoa + "," + " "
                     + "Senha: " + this.senhaPessoa + "," + " " + "\n"
                     + "Telefone: " + this.telefonePessoa + "," + " "
-                    + "Tipo de Usuario: " + this.tipoUsuario + "," + " "
-                    + "Data e Hora da Criacao: " + fd.format(this.dataCriacao) + "," + " ";
+                    + "Tipo de Usuario: " + this.tipoUsuario + "," + " ";
+//                    + "Data e Hora da Criacao: " + fd.format(this.dataCriacao) + "," + " ";
         } else {
             return "ID - Pessoa: " + this.idPessoa + "," + " "
                     + "Nome: " + this.nomePessoa + "," + " "
@@ -201,9 +209,9 @@ public class Pessoa {
                     + "Login: " + this.loginPessoa + "," + " "
                     + "Senha: " + this.senhaPessoa + "," + " " + "\n"
                     + "Telefone: " + this.telefonePessoa + "," + " "
-                    + "Tipo de Usuario: " + this.tipoUsuario + "," + " "
-                    + "Data e Hora da Criacao: " + fd.format(this.dataCriacao) + "," + " "
-                    + "Data e Hora da Modificacao: " + fd.format(this.dataModificacao) + "," + " ";
+                    + "Tipo de Usuario: " + this.tipoUsuario + "," + " ";
+//                    + "Data e Hora da Criacao: " + fd.format(this.dataCriacao) + "," + " "
+//                    + "Data e Hora da Modificacao: " + fd.format(this.dataModificacao) + "," + " ";
         }
 
     }
