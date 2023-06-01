@@ -6,7 +6,6 @@ import java.util.Objects;
 
 public class FinanceiroAdm {
 
-    private static int sequence = 1;
     private int idFinanceiroAdm;
     private String tipoMovimento;
     private double valor;
@@ -14,6 +13,10 @@ public class FinanceiroAdm {
     private String descritivoMovimento;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataModificacao;
+
+    public FinanceiroAdm() {
+    }
+    
 
     public int getIdFinanceiroAdm() {
         return idFinanceiroAdm;
@@ -69,7 +72,7 @@ public class FinanceiroAdm {
 
     public FinanceiroAdm(String tipoMovimento, double valor, UnidadeFranquia unidadeFranquia,
             String descritivoMovimento, LocalDateTime dataCriacao) {
-        this.idFinanceiroAdm = sequence++;
+        
         this.tipoMovimento = tipoMovimento;
         this.valor = valor;
         this.unidadeFranquia = unidadeFranquia;

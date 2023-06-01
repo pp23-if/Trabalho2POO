@@ -18,6 +18,9 @@ public class Pessoa {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataModificacao;
 
+    public Pessoa() {
+    }
+    
     public int getId() {
         return idPessoa;
     }
@@ -101,7 +104,6 @@ public class Pessoa {
     public Pessoa(String nomePessoa, String cpf, String enderecoPessoa, String telefonePessoa,
             String loginPessoa, String senhaPessoa, String tipoUsuario, LocalDateTime dataCriacao) {
         
-        //this.idPessoa = sequence++;
         this.nomePessoa = nomePessoa;
         this.cpf = cpf;
         this.enderecoPessoa = enderecoPessoa;

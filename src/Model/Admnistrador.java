@@ -6,12 +6,15 @@ import java.util.Objects;
 
 public class Admnistrador {
 
-    private static int serial = 1;
     private int idAdmnistrador;
     private Pessoa pessoa;
     private Franquia franquia;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataModificacao;
+
+    public Admnistrador() {
+    }
+    
 
     public int getIdAdmnistrador() {
         return idAdmnistrador;
@@ -50,7 +53,6 @@ public class Admnistrador {
     }
 
     public Admnistrador(Pessoa pessoa, Franquia franquia, LocalDateTime dataCriacao) {
-        this.idAdmnistrador = serial++;
         this.pessoa = pessoa;
         this.franquia = franquia;
         this.dataCriacao = dataCriacao;

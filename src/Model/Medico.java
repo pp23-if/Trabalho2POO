@@ -6,7 +6,6 @@ import java.util.Objects;
 
 public class Medico {
 
-    private static int serial = 1;
     private int idMedico;
     private String crm;
     private Pessoa pessoa;
@@ -14,9 +13,11 @@ public class Medico {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataModificacao;
 
+    public Medico() {
+    }
+    
     public Medico(String crm, Pessoa pessoa, String especialidade,
             LocalDateTime dataCriacao) {
-        this.idMedico = serial++;
         this.crm = crm;
         this.pessoa = pessoa;
         this.especialidade = especialidade;

@@ -6,7 +6,6 @@ import java.util.Objects;
 
 public class FinanceiroMedico {
 
-    private static int sequence = 1;
     private int idFinanceiroMedico;
     private double valor;
     private Medico medico;
@@ -14,6 +13,9 @@ public class FinanceiroMedico {
     private Franquia franquia;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataModificacao;
+
+    public FinanceiroMedico() {
+    }
 
     public int getIdFinanceiroMedico() {
         return idFinanceiroMedico;
@@ -69,7 +71,6 @@ public class FinanceiroMedico {
 
     public FinanceiroMedico(double valor, Medico medico, String Estado, Franquia franquia, LocalDateTime dataCriacao) {
 
-        this.idFinanceiroMedico = sequence++;
         this.valor = valor;
         this.medico = medico;
         this.Estado = Estado;

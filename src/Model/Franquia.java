@@ -6,7 +6,6 @@ import java.util.Objects;
 
 public class Franquia {
 
-    private static int sequence = 1;
     private int idFranquia;
     private String nomeFranquia;
     private String cnpj;
@@ -16,6 +15,9 @@ public class Franquia {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataModificacao;
 
+    public Franquia() {
+    }
+    
     public int getIdFranquia() {
         return idFranquia;
     }
@@ -79,7 +81,6 @@ public class Franquia {
     public Franquia(String nomeFranquia, String cnpj, String cidade,
             String enderecoFranquia, Pessoa pessoa, LocalDateTime dataCriacao) {
 
-        this.idFranquia = sequence++;
         this.nomeFranquia = nomeFranquia;
         this.cnpj = cnpj;
         this.cidade = cidade;

@@ -10,62 +10,62 @@ public class PessoaDAO {
     public PessoaDAO(CalendarioSistema calendarioSistema) {
         
 
-        /*Pessoa pessoa = new Pessoa("Pedro Augusto Rodrigues", "123",  "Rua 13", "225544",
-                "1", "1", "Paciente", calendarioSistema.getDataHoraSistema());
-        adicionaPessoa(pessoa);
-
-        Pessoa pessoa2 = new Pessoa("Lucas Rocha Pereira", "7272", "rua 32", "9999",
-                "lu123", "2", "Paciente", calendarioSistema.getDataHoraSistema());
-        adicionaPessoa(pessoa2);
-
-        Pessoa pessoa3 = new Pessoa("Lucas Rocha Pereira", "7272", "rua 32", "9999",
-                "lm23", "456", "Medico", calendarioSistema.getDataHoraSistema());
-        adicionaPessoa(pessoa3);
-
-        Pessoa pessoa4 = new Pessoa("Juliana Carla De Souza", "789101010", "rua da batata", "3333",
-                "ju", "10", "Paciente", calendarioSistema.getDataHoraSistema());
-        adicionaPessoa(pessoa4);
-
-        Pessoa pessoa5 = new Pessoa("Juliana Carla De Souza", "789101010", "rua da batata", "3333",
-                "ju25", "123", "Medico", calendarioSistema.getDataHoraSistema());
-        adicionaPessoa(pessoa5);
-
-        Pessoa pessoa6 = new Pessoa("Eduardo Silvestre", "456666", "Rua dos Limoes", "33112020",
-                "dudu10", "12", "Paciente", calendarioSistema.getDataHoraSistema());
-        adicionaPessoa(pessoa6);
-
-        Pessoa pessoa7 = new Pessoa("Eduardo Silvestre", "456666", "Rua dos Limoes", "33112020",
-                "Edu28", "24", "DonodeFranquia", calendarioSistema.getDataHoraSistema());
-        adicionaPessoa(pessoa7);
-        
-        Pessoa pessoa8 = new Pessoa("Roberto Gomes", "332288", "Rua das uvas - 17", "32985427",
-                "gb35", "50", "Paciente", calendarioSistema.getDataHoraSistema());
-        adicionaPessoa(pessoa8);
-        
-        Pessoa pessoa9 = new Pessoa("Roberto Gomes", "332288", "Rua das uvas - 17", "32985427",
-                "rgd", "30", "DonoDeUnidadeDeFranquia", calendarioSistema.getDataHoraSistema());
-        adicionaPessoa(pessoa9);
-        
-         Pessoa pessoa10 = new Pessoa("Marcos Pereira Faria", "3315152626", "Rua das Bananas - 600", "999612854",
-                "mp22", "36", "Paciente", calendarioSistema.getDataHoraSistema());
-        adicionaPessoa(pessoa10);
-        
-        Pessoa pessoa11 = new Pessoa("Marcos Pereira Faria", "3315152626", "Rua das Bananas - 600", "999612854",
-                "mpm", "100", "Medico", calendarioSistema.getDataHoraSistema());
-        adicionaPessoa(pessoa11);
-        
-         Pessoa pessoa12 = new Pessoa("Roberta Miranda De Sousa", "77882424", "Rua dos Abacates - 557", "99330044",
-                "ro25", "99", "Paciente", calendarioSistema.getDataHoraSistema());
-        adicionaPessoa(pessoa12);
-        
-        Pessoa pessoa13 = new Pessoa("Roberta Miranda De Sousa", "77882424", "Rua dos Abacates - 557", "99330044",
-                "roadm", "20", "Admnistrador", calendarioSistema.getDataHoraSistema());
-        adicionaPessoa(pessoa13);
-        
-        
-        Pessoa pessoa14 = new Pessoa("Pedro Augusto Rodrigues", "123", "Rua 13", "225544",
-                "pp23", "69", "DonoDeUnidadeDeFranquia", calendarioSistema.getDataHoraSistema());
-        adicionaPessoa(pessoa14);*/
+//        Pessoa pessoa = new Pessoa("Pedro Augusto Rodrigues", "123",  "Rua 13", "225544",
+//                "1", "1", "Paciente", calendarioSistema.getDataHoraSistema());
+//        adicionaPessoa(pessoa);
+//
+//        Pessoa pessoa2 = new Pessoa("Lucas Rocha Pereira", "7272", "rua 32", "9999",
+//                "lu123", "2", "Paciente", calendarioSistema.getDataHoraSistema());
+//        adicionaPessoa(pessoa2);
+//
+//        Pessoa pessoa3 = new Pessoa("Lucas Rocha Pereira", "7272", "rua 32", "9999",
+//                "lm23", "456", "Medico", calendarioSistema.getDataHoraSistema());
+//        adicionaPessoa(pessoa3);
+//
+//        Pessoa pessoa4 = new Pessoa("Juliana Carla De Souza", "789101010", "rua da batata", "3333",
+//                "ju", "10", "Paciente", calendarioSistema.getDataHoraSistema());
+//        adicionaPessoa(pessoa4);
+//
+//        Pessoa pessoa5 = new Pessoa("Juliana Carla De Souza", "789101010", "rua da batata", "3333",
+//                "ju25", "123", "Medico", calendarioSistema.getDataHoraSistema());
+//        adicionaPessoa(pessoa5);
+//
+//        Pessoa pessoa6 = new Pessoa("Eduardo Silvestre", "456666", "Rua dos Limoes", "33112020",
+//                "dudu10", "12", "Paciente", calendarioSistema.getDataHoraSistema());
+//        adicionaPessoa(pessoa6);
+//
+//        Pessoa pessoa7 = new Pessoa("Eduardo Silvestre", "456666", "Rua dos Limoes", "33112020",
+//                "Edu28", "24", "DonodeFranquia", calendarioSistema.getDataHoraSistema());
+//        adicionaPessoa(pessoa7);
+//        
+//        Pessoa pessoa8 = new Pessoa("Roberto Gomes", "332288", "Rua das uvas - 17", "32985427",
+//                "gb35", "50", "Paciente", calendarioSistema.getDataHoraSistema());
+//        adicionaPessoa(pessoa8);
+//        
+//        Pessoa pessoa9 = new Pessoa("Roberto Gomes", "332288", "Rua das uvas - 17", "32985427",
+//                "rgd", "30", "DonoDeUnidadeDeFranquia", calendarioSistema.getDataHoraSistema());
+//        adicionaPessoa(pessoa9);
+//        
+//         Pessoa pessoa10 = new Pessoa("Marcos Pereira Faria", "3315152626", "Rua das Bananas - 600", "999612854",
+//                "mp22", "36", "Paciente", calendarioSistema.getDataHoraSistema());
+//        adicionaPessoa(pessoa10);
+//        
+//        Pessoa pessoa11 = new Pessoa("Marcos Pereira Faria", "3315152626", "Rua das Bananas - 600", "999612854",
+//                "mpm", "100", "Medico", calendarioSistema.getDataHoraSistema());
+//        adicionaPessoa(pessoa11);
+//        
+//         Pessoa pessoa12 = new Pessoa("Roberta Miranda De Sousa", "77882424", "Rua dos Abacates - 557", "99330044",
+//                "ro25", "99", "Paciente", calendarioSistema.getDataHoraSistema());
+//        adicionaPessoa(pessoa12);
+//        
+//        Pessoa pessoa13 = new Pessoa("Roberta Miranda De Sousa", "77882424", "Rua dos Abacates - 557", "99330044",
+//                "roadm", "20", "Admnistrador", calendarioSistema.getDataHoraSistema());
+//        adicionaPessoa(pessoa13);
+//        
+//        
+//        Pessoa pessoa14 = new Pessoa("Pedro Augusto Rodrigues", "123", "Rua 13", "225544",
+//                "pp23", "69", "DonoDeUnidadeDeFranquia", calendarioSistema.getDataHoraSistema());
+//        adicionaPessoa(pessoa14);
 
     }
 

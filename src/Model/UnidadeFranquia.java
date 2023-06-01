@@ -6,7 +6,6 @@ import java.util.Objects;
 
 public class UnidadeFranquia {
 
-    private static int serial = 1;
     private int idUnidadeFranquia;
     private Franquia franquia;
     private String cidadeUnidadeFranquia;
@@ -15,6 +14,9 @@ public class UnidadeFranquia {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataModificacao;
 
+    public UnidadeFranquia() {
+    }
+    
     public int getIdUnidadeFranquia() {
         return idUnidadeFranquia;
     }
@@ -69,7 +71,7 @@ public class UnidadeFranquia {
 
     public UnidadeFranquia(Franquia franquia, String cidadeUnidadeFranquia,
             String enderecoUnidadeFranquia, Pessoa pessoa, LocalDateTime dataCriacao) {
-        this.idUnidadeFranquia = serial++;
+        
         this.franquia = franquia;
         this.cidadeUnidadeFranquia = cidadeUnidadeFranquia;
         this.enderecoUnidadeFranquia = enderecoUnidadeFranquia;

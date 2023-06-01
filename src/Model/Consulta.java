@@ -8,7 +8,6 @@ import java.util.Objects;
 
 public class Consulta {
 
-    private static int serial = 1;
     private int idConsulta;
     private LocalDate diaConsulta;
     private LocalTime horaConsulta;
@@ -20,6 +19,9 @@ public class Consulta {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataModificacao;
 
+    public Consulta() {
+    }
+    
     public int getIdConsulta() {
         return idConsulta;
     }
@@ -100,7 +102,6 @@ public class Consulta {
             Pessoa pessoa, UnidadeFranquia unidadeFranquia,
             double valor, String estado, LocalDateTime dataCriacao) {
 
-        this.idConsulta = serial++;
         this.diaConsulta = diaConsulta;
         this.horaConsulta = horaConsulta;
         this.medico = medico;

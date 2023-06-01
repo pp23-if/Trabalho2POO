@@ -8,7 +8,6 @@ import java.util.Objects;
 
 public class Procedimento {
 
-    private static int serial = 1;
     private int idProcedimento;
     private String nomeProcedimento;
     private Consulta consulta;
@@ -20,6 +19,9 @@ public class Procedimento {
     private LocalDateTime dataCriacao;
     private LocalDateTime dataModificacao;
 
+    public Procedimento() {
+    }
+    
     public int getIdProcedimento() {
         return idProcedimento;
     }
@@ -98,7 +100,6 @@ public class Procedimento {
 
     public Procedimento(String nomeProcedimento, Consulta consulta, LocalDate diaProcedimento, LocalTime horaProcedimento,
             String estadoProcedimento, double valorProcedimento, String laudo, LocalDateTime dataCriacao) {
-        this.idProcedimento = serial++;
         this.nomeProcedimento = nomeProcedimento;
         this.consulta = consulta;
         this.diaProcedimento = diaProcedimento;

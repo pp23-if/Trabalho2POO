@@ -6,12 +6,14 @@ import java.util.Objects;
 
 public class InfoConsulta {
 
-    private static int serial = 1;
     private int idInfoConsulta;
     private Consulta consulta;
     private String descricao;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataModificacao;
+
+    public InfoConsulta() {
+    }
 
     public int getIdInfoConsulta() {
         return idInfoConsulta;
@@ -50,7 +52,6 @@ public class InfoConsulta {
     }
 
     public InfoConsulta(Consulta consulta, String descricao, LocalDateTime dataCriacao) {
-        this.idInfoConsulta = serial++;
         this.consulta = consulta;
         this.descricao = descricao;
         this.dataCriacao = dataCriacao;
