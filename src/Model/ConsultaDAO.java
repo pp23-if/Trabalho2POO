@@ -2,38 +2,25 @@ package Model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ConsultaDAO {
 
-    private Consulta vetorConsulta[] = new Consulta[50];
+    private List <Consulta> listaConsulta = new LinkedList();
 
     public ConsultaDAO() {
     }
 
-    private int proximaPosilivreConsulta() {
-        for (int i = 0; i < vetorConsulta.length; i++) {
-            if (vetorConsulta[i] == null) {
-                return i;
-            }
-
-        }
-        return -1;
-    }
 
     public boolean adicionaConsulta(Consulta consulta) {
-        int proxima = proximaPosilivreConsulta();
-        if (proxima != -1) {
-            vetorConsulta[proxima] = consulta;
-            return true;
-        } else {
-            return false;
-        }
+        return listaConsulta.add(consulta) == true;
 
     }
 
     public Consulta mostraTodasConsultas() {
 
-        for (Consulta consulta : vetorConsulta) {
+        for (Consulta consulta : listaConsulta) {
 
             if (consulta != null) {
                 System.out.println(consulta + "\n");
@@ -43,7 +30,7 @@ public class ConsultaDAO {
     }
 
     public Consulta buscaConsultaAtravesDaPessoaVinculada(Pessoa p) {
-        for (Consulta consulta : vetorConsulta) {
+        for (Consulta consulta : listaConsulta) {
 
             if (consulta != null && consulta.getPessoa().equals(p)) {
                 System.out.println(consulta + "\n");
@@ -53,7 +40,7 @@ public class ConsultaDAO {
     }
 
     public Consulta buscaConsultaPorId(int idConsulta) {
-        for (Consulta consulta : vetorConsulta) {
+        for (Consulta consulta : listaConsulta) {
 
             if (consulta != null && consulta.getIdConsulta() == idConsulta) {
                 return consulta;
@@ -63,7 +50,7 @@ public class ConsultaDAO {
     }
 
     public Consulta buscaConsultaRealizadaPorId(int idConsulta) {
-        for (Consulta consulta : vetorConsulta) {
+        for (Consulta consulta : listaConsulta) {
 
             if (consulta != null && consulta.getIdConsulta() == idConsulta
                     && consulta.getEstadoConsulta().equals("Realizada")) {
@@ -85,7 +72,7 @@ public class ConsultaDAO {
     public boolean verificaDisponibilidadeDiaEHoraConsultaMedico(LocalDate novoDiaConsulta,
             LocalTime novaHoraConsulta, Medico medico) {
 
-        for (Consulta consulta : vetorConsulta) {
+        for (Consulta consulta : listaConsulta) {
 
             if (consulta != null && consulta.getDiaConsulta().equals(novoDiaConsulta)
                     && consulta.getHoraConsulta().equals(novaHoraConsulta)
@@ -118,7 +105,7 @@ public class ConsultaDAO {
     }
 
     public Consulta buscaConsultaPorFranquia(Franquia franquia) {
-        for (Consulta consulta : vetorConsulta) {
+        for (Consulta consulta : listaConsulta) {
             if (consulta != null
                     && consulta.getUnidadeFranquia().getFranquia().equals(franquia)) {
 
@@ -130,7 +117,7 @@ public class ConsultaDAO {
     }
 
     public Consulta buscaConsultaPorMedico(Medico medico) {
-        for (Consulta consulta : vetorConsulta) {
+        for (Consulta consulta : listaConsulta) {
             if (consulta != null && consulta.getMedico().equals(medico)) {
                 System.out.println(consulta + "\n");
 
@@ -141,7 +128,7 @@ public class ConsultaDAO {
 
     public boolean atenderConsulta(Medico medico, InfoConsultaDAO infoConsultaDAO, CalendarioSistema calendarioSistema,
             FinanceiroAdmDAO financeiroAdmDAO) {
-        for (Consulta consulta : vetorConsulta) {
+        for (Consulta consulta : listaConsulta) {
             if (consulta != null
                     && consulta.getMedico().equals(medico)
                     && consulta.getEstadoConsulta().equals("Agendada")
@@ -161,7 +148,7 @@ public class ConsultaDAO {
 
     public Consulta buscaConsultasDoDia(CalendarioSistema calendarioSistema, Medico medico) {
 
-        for (Consulta consulta : vetorConsulta) {
+        for (Consulta consulta : listaConsulta) {
 
             if (consulta != null
                     && consulta.getMedico().equals(medico)
@@ -174,7 +161,7 @@ public class ConsultaDAO {
     }
 
     public Consulta buscaConsultasQueTemMedicoSolicitanteEPacienteEscolhido(Pessoa pessoa, Medico medico) {
-        for (Consulta consulta : vetorConsulta) {
+        for (Consulta consulta : listaConsulta) {
 
             if (consulta != null
                     && consulta.getMedico().equals(medico)
@@ -189,7 +176,7 @@ public class ConsultaDAO {
     public boolean cancelaConsultasNaoRealizadasNoDia(CalendarioSistema calendarioSistema) {
 
         boolean canceladas = false;
-        for (Consulta consulta : vetorConsulta) {
+        for (Consulta consulta : listaConsulta) {
             if (consulta != null && consulta.getEstadoConsulta().equals("Agendada")
                     && calendarioSistema.getDiaDoSistema().isAfter(consulta.getDiaConsulta())) {
 
@@ -211,7 +198,7 @@ public class ConsultaDAO {
 
         int mesSitemaComparavel = calendarioSistema.getDiaDoSistema().minusDays(1).getMonthValue();
 
-        for (Consulta consulta : vetorConsulta) {
+        for (Consulta consulta : listaConsulta) {
 
             if (consulta != null
                     && consulta.getMedico().equals(medico)
@@ -230,7 +217,7 @@ public class ConsultaDAO {
         
         double totalConsulta = 0;
 
-        for (Consulta consulta : vetorConsulta) {
+        for (Consulta consulta : listaConsulta) {
 
             if (consulta != null
                     && consulta.getMedico().equals(medico)
@@ -248,7 +235,7 @@ public class ConsultaDAO {
         
         double totalConsulta = 0;
 
-        for (Consulta consulta : vetorConsulta) {
+        for (Consulta consulta : listaConsulta) {
 
             if (consulta != null
                     && consulta.getMedico().equals(medico)

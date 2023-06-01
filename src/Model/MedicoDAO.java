@@ -1,57 +1,45 @@
 package Model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class MedicoDAO {
 
-    private Medico[] vetorMedico = new Medico[50];
+    private List <Medico> listaMedico = new LinkedList();
 
     public MedicoDAO(PessoaDAO pessoaDAO, CalendarioSistema calendarioSistema) {
 
-        Pessoa pessoaMedico1 = pessoaDAO.buscaPessoaCadastrada("lm23", "456");
-
-        if (pessoaMedico1 != null) {
-            Medico medico1 = new Medico("ABC-123", pessoaMedico1, "Ortopedista", calendarioSistema.getDataHoraSistema());
-            adicionaMedico(medico1);
-        }
-
-        Pessoa pessoaMedico2 = pessoaDAO.buscaPessoaCadastrada("ju25", "123");
-
-        if (pessoaMedico2 != null) {
-            Medico medico2 = new Medico("DEF-456", pessoaMedico2, "Nutricionista", calendarioSistema.getDataHoraSistema());
-            adicionaMedico(medico2);
-        }
-
-        Pessoa pessoaMedico3 = pessoaDAO.buscaPessoaCadastrada("mpm", "100");
-
-        if (pessoaMedico3 != null) {
-            Medico medico3 = new Medico("GHI-789", pessoaMedico3, "Cardiologista", calendarioSistema.getDataHoraSistema());
-            adicionaMedico(medico3);
-        }
+//        Pessoa pessoaMedico1 = pessoaDAO.buscaPessoaCadastrada("lm23", "456");
+//
+//        if (pessoaMedico1 != null) {
+//            Medico medico1 = new Medico("ABC-123", pessoaMedico1, "Ortopedista", calendarioSistema.getDataHoraSistema());
+//            adicionaMedico(medico1);
+//        }
+//
+//        Pessoa pessoaMedico2 = pessoaDAO.buscaPessoaCadastrada("ju25", "123");
+//
+//        if (pessoaMedico2 != null) {
+//            Medico medico2 = new Medico("DEF-456", pessoaMedico2, "Nutricionista", calendarioSistema.getDataHoraSistema());
+//            adicionaMedico(medico2);
+//        }
+//
+//        Pessoa pessoaMedico3 = pessoaDAO.buscaPessoaCadastrada("mpm", "100");
+//
+//        if (pessoaMedico3 != null) {
+//            Medico medico3 = new Medico("GHI-789", pessoaMedico3, "Cardiologista", calendarioSistema.getDataHoraSistema());
+//            adicionaMedico(medico3);
+//        }
 
     }
 
-    private int proximaPosilivreMedico() {
-        for (int i = 0; i < vetorMedico.length; i++) {
-            if (vetorMedico[i] == null) {
-                return i;
-            }
-
-        }
-        return -1;
-    }
 
     public boolean adicionaMedico(Medico medico) {
-        int proxima = proximaPosilivreMedico();
-        if (proxima != -1) {
-            vetorMedico[proxima] = medico;
-            return true;
-        } else {
-            return false;
-        }
+        return listaMedico.add(medico) == true;
 
     }
 
     public void mostraTodosMedicosHabilitados() {
-        for (Medico medico : vetorMedico) {
+        for (Medico medico : listaMedico) {
             if (medico != null && medico.getPessoa().isHabilitado() == true) {
                 System.out.println(medico + "\n");
             }
@@ -60,7 +48,7 @@ public class MedicoDAO {
     
     
      public void mostraTodosMedicos() {
-        for (Medico medico : vetorMedico) {
+        for (Medico medico : listaMedico) {
             if (medico != null) {
                 System.out.println(medico + "\n");
             }
@@ -69,7 +57,7 @@ public class MedicoDAO {
 
     public Medico buscaMedico(Medico m) {
 
-        for (Medico medico : vetorMedico) {
+        for (Medico medico : listaMedico) {
 
             if (medico != null && medico.equals(m)) {
                 return medico;
@@ -80,7 +68,7 @@ public class MedicoDAO {
 
     public Medico buscaMedicoAtravesdaPessoaVinculada(Pessoa pessoaLogada) {
 
-        for (Medico medico : vetorMedico) {
+        for (Medico medico : listaMedico) {
             if (medico != null && medico.getPessoa().equals(pessoaLogada)) {
                 return medico;
             }
@@ -92,7 +80,7 @@ public class MedicoDAO {
     public boolean atualizaLoginMedico(Medico m, String novoLogin, CalendarioSistema calendarioSistema) {
 
         if (!verificaSeloginEstaSendoUsado(novoLogin) == true) {
-            for (Medico medico : vetorMedico) {
+            for (Medico medico : listaMedico) {
 
                 if (medico != null && medico.equals(m)) {
                     medico.getPessoa().setLoginPessoa(novoLogin);
@@ -108,7 +96,7 @@ public class MedicoDAO {
 
     public boolean atualizaSenhaMedico(Medico m, String novaSenha, CalendarioSistema calendarioSistema) {
 
-        for (Medico medico : vetorMedico) {
+        for (Medico medico : listaMedico) {
 
             if (medico != null && medico.equals(m)) {
                 medico.getPessoa().setSenhaPessoa(novaSenha);
@@ -123,7 +111,7 @@ public class MedicoDAO {
     public boolean atualizaTelefoneMedico(Medico m, String novoTelefone, CalendarioSistema calendarioSistema) {
 
         if (!verificaSeTelefoneEstaSendoUsado(novoTelefone) == true) {
-            for (Medico medico : vetorMedico) {
+            for (Medico medico : listaMedico) {
 
                 if (medico != null && medico.equals(m)) {
                     medico.getPessoa().setTelefonePessoa(novoTelefone);
@@ -137,7 +125,7 @@ public class MedicoDAO {
     }
 
     public boolean verificaSeloginEstaSendoUsado(String login) {
-        for (Medico medico : vetorMedico) {
+        for (Medico medico : listaMedico) {
             if (medico != null && medico.getPessoa().getLoginPessoa().equals(login)) {
                 return true;
             }
@@ -146,7 +134,7 @@ public class MedicoDAO {
     }
 
     private boolean verificaSeTelefoneEstaSendoUsado(String telefone) {
-        for (Medico medico : vetorMedico) {
+        for (Medico medico : listaMedico) {
             if (medico != null && medico.getPessoa().getTelefonePessoa().equals(telefone)) {
                 return true;
             }
@@ -155,7 +143,7 @@ public class MedicoDAO {
     }
 
     public boolean verificaSeMedicoExiste(Pessoa p) {
-        for (Medico medico : vetorMedico) {
+        for (Medico medico : listaMedico) {
 
             if (medico != null && medico.getPessoa().getCpf().equals(p.getCpf())) {
                 return true;
@@ -165,7 +153,7 @@ public class MedicoDAO {
     }
 
     public boolean verificaCrm(String Crm) {
-        for (Medico medico : vetorMedico) {
+        for (Medico medico : listaMedico) {
 
             if (medico != null && medico.getCrm().equals(Crm.toUpperCase())
                     || medico != null && medico.getCrm().equals(Crm.toLowerCase())) {
@@ -176,7 +164,7 @@ public class MedicoDAO {
     }
 
     public Medico buscaMedicoPorId(int idMedico) {
-        for (Medico medico : vetorMedico) {
+        for (Medico medico : listaMedico) {
 
             if (medico != null && medico.getIdMedico() == idMedico) {
                 return medico;
@@ -222,7 +210,7 @@ public class MedicoDAO {
     
     public void filtraMedicosExcluidos()
     {
-        for (Medico medico : vetorMedico) {
+        for (Medico medico : listaMedico) {
             
             if(medico != null && medico.getPessoa().isHabilitado() == false)
             {
@@ -245,7 +233,7 @@ public class MedicoDAO {
    }
    
     public Medico buscaMedicoExcluidoPorId(int idMedicoExcluido) {
-        for (Medico medico : vetorMedico) {
+        for (Medico medico : listaMedico) {
 
             if (medico != null && medico.getIdMedico() == idMedicoExcluido
                     && medico.getPessoa().isHabilitado() == false) {

@@ -1,35 +1,22 @@
 package Model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class InfoConsultaDAO {
 
-    private InfoConsulta vetorInfoConsulta[] = new InfoConsulta[50];
+    private List <InfoConsulta> listaInfoConsulta = new LinkedList();
 
     public InfoConsultaDAO() {
     }
 
     public boolean adicionaInfoConsulta(InfoConsulta infoConsulta) {
-        int proxima = proximaPosilivreInfoConsulta();
-        if (proxima != -1) {
-            vetorInfoConsulta[proxima] = infoConsulta;
-            return true;
-        } else {
-            return false;
-        }
+        return listaInfoConsulta.add(infoConsulta) == true;
 
-    }
-
-    private int proximaPosilivreInfoConsulta() {
-        for (int i = 0; i < vetorInfoConsulta.length; i++) {
-            if (vetorInfoConsulta[i] == null) {
-                return i;
-            }
-
-        }
-        return -1;
     }
 
     public InfoConsulta mostraTodasInfoConsultas() {
-        for (InfoConsulta infoConsulta : vetorInfoConsulta) {
+        for (InfoConsulta infoConsulta : listaInfoConsulta) {
 
             if (infoConsulta != null) {
                 System.out.println(infoConsulta + "\n");
@@ -39,7 +26,7 @@ public class InfoConsultaDAO {
     }
 
     public InfoConsulta buscaInfoConsultasPorMedico(Medico medico) {
-        for (InfoConsulta infoConsulta : vetorInfoConsulta) {
+        for (InfoConsulta infoConsulta : listaInfoConsulta) {
 
             if (infoConsulta != null && infoConsulta.getConsulta().getMedico().equals(medico)) {
                 System.out.println(infoConsulta + "\n");
@@ -50,7 +37,7 @@ public class InfoConsultaDAO {
     
     public InfoConsulta buscaInfoConsultaPorId(int idInfoConsulta)
     {
-        for (InfoConsulta infoConsulta : vetorInfoConsulta) {
+        for (InfoConsulta infoConsulta : listaInfoConsulta) {
             
             if(infoConsulta != null && infoConsulta.getIdInfoConsulta() == idInfoConsulta)
             {

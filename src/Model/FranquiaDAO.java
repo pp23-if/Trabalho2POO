@@ -1,8 +1,11 @@
 package Model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class FranquiaDAO {
 
-    private Franquia[] vetorFranquia = new Franquia[50];
+    private List <Franquia> listaFranquia = new LinkedList();
 
     public FranquiaDAO(PessoaDAO pessoaDAO, CalendarioSistema calendarioSistema) {
         
@@ -20,7 +23,7 @@ public class FranquiaDAO {
     }
 
     public Franquia buscaFranquia(Franquia f) {
-        for (Franquia franquia : vetorFranquia) {
+        for (Franquia franquia : listaFranquia) {
 
             if (franquia != null && franquia.equals(f)) {
                 return franquia;
@@ -30,7 +33,7 @@ public class FranquiaDAO {
     }
 
     public Franquia buscaFranquiaAtravesDaPessoaVinculada(Pessoa pessoaLogada) {
-        for (Franquia franquia : vetorFranquia) {
+        for (Franquia franquia : listaFranquia) {
 
             if (franquia != null && franquia.getPessoa().equals(pessoaLogada)) {
                 return franquia;
@@ -40,28 +43,13 @@ public class FranquiaDAO {
     }
 
     public boolean adicionaFranquia(Franquia franquia) {
-        int proxima = proximaPosilivreFranquia();
-        if (proxima != -1) {
-            vetorFranquia[proxima] = franquia;
-            return true;
-        } else {
-            return false;
-        }
+        return listaFranquia.add(franquia) == true;
 
     }
 
-    private int proximaPosilivreFranquia() {
-        for (int i = 0; i < vetorFranquia.length; i++) {
-            if (vetorFranquia[i] == null) {
-                return i;
-            }
-
-        }
-        return -1;
-    }
 
     public void mostraTodasFranquias() {
-        for (Franquia franquia : vetorFranquia) {
+        for (Franquia franquia : listaFranquia) {
 
             if (franquia != null) {
                 System.out.println(franquia + "\n");
@@ -70,7 +58,7 @@ public class FranquiaDAO {
     }
 
     public boolean verificaSeFranquiaExiste(String nomeFranquia, String cnpj) {
-        for (Franquia franquia : vetorFranquia) {
+        for (Franquia franquia : listaFranquia) {
 
             if (franquia != null && franquia.getNomeFranquia().equals(nomeFranquia.toUpperCase())
                     || franquia != null && franquia.getNomeFranquia().equals(nomeFranquia.toLowerCase())
@@ -82,7 +70,7 @@ public class FranquiaDAO {
     }
 
     public boolean verificaDonosDeFranquia(Pessoa p) {
-        for (Franquia franquia : vetorFranquia) {
+        for (Franquia franquia : listaFranquia) {
 
             if (franquia != null && franquia.getPessoa().getCpf().equals(p.getCpf())) {
                 return true;
@@ -95,7 +83,7 @@ public class FranquiaDAO {
             CalendarioSistema calendarioSistema) {
 
         if (!verificaSeNomeFranquiaEstaSendoUsado(novoNomeFranquia) == true) {
-            for (Franquia franquia : vetorFranquia) {
+            for (Franquia franquia : listaFranquia) {
 
                 if (franquia != null && franquia.equals(f)) {
                     franquia.setNomeFranquia(novoNomeFranquia.toUpperCase());
@@ -112,7 +100,7 @@ public class FranquiaDAO {
 
     public boolean atualizarCidadeFranquia(Franquia f, String novaCidadeFranquia, 
             CalendarioSistema calendarioSistema) {
-        for (Franquia franquia : vetorFranquia) {
+        for (Franquia franquia : listaFranquia) {
 
             if (franquia != null && franquia.equals(f)) {
                 franquia.setCidade(novaCidadeFranquia);
@@ -125,7 +113,7 @@ public class FranquiaDAO {
 
     public boolean atualizarEnderecoFranquia(Franquia f, String novoEnderecoFranquia, 
             CalendarioSistema calendarioSistema) {
-        for (Franquia franquia : vetorFranquia) {
+        for (Franquia franquia : listaFranquia) {
 
             if (franquia != null && franquia.equals(f)) {
                 franquia.setEnderecoFranquia(novoEnderecoFranquia);
@@ -140,7 +128,7 @@ public class FranquiaDAO {
             CalendarioSistema calendarioSistema) {
 
         if (!verificaSeLoginDonoFranquiaEstaSendoUsado(novoLoginDonoFranquia) == true) {
-            for (Franquia franquia : vetorFranquia) {
+            for (Franquia franquia : listaFranquia) {
 
                 if (franquia != null && franquia.equals(f)) {
                     franquia.getPessoa().setLoginPessoa(novoLoginDonoFranquia);
@@ -155,7 +143,7 @@ public class FranquiaDAO {
 
     public boolean atualizaSenhaDonoDeFranquia(Franquia f, String novaSenhaDonoFranquia, 
             CalendarioSistema calendarioSistema) {
-        for (Franquia franquia : vetorFranquia) {
+        for (Franquia franquia : listaFranquia) {
 
             if (franquia != null && franquia.equals(f)) {
                 franquia.getPessoa().setSenhaPessoa(novaSenhaDonoFranquia);
@@ -171,7 +159,7 @@ public class FranquiaDAO {
 
         if (!verificaSeTelefoneDonoFranquiaEstaSendoUsado(novoTelefoneDonoFranquia) == true) {
 
-            for (Franquia franquia : vetorFranquia) {
+            for (Franquia franquia : listaFranquia) {
 
                 if (franquia != null && franquia.equals(f)) {
                     franquia.getPessoa().setTelefonePessoa(novoTelefoneDonoFranquia);
@@ -185,7 +173,7 @@ public class FranquiaDAO {
     }
 
     private boolean verificaSeNomeFranquiaEstaSendoUsado(String novoNomeFranquia) {
-        for (Franquia franquia : vetorFranquia) {
+        for (Franquia franquia : listaFranquia) {
 
             if (franquia != null && franquia.getNomeFranquia().equals(novoNomeFranquia.toUpperCase())
                     || franquia != null && franquia.getNomeFranquia().equals(novoNomeFranquia.toLowerCase())) {
@@ -198,7 +186,7 @@ public class FranquiaDAO {
    
 
     public boolean verificaSeLoginDonoFranquiaEstaSendoUsado(String novoLoginDonoFranquia) {
-        for (Franquia franquia : vetorFranquia) {
+        for (Franquia franquia : listaFranquia) {
 
             if (franquia != null && franquia.getPessoa().getLoginPessoa().equals(novoLoginDonoFranquia)) {
                 return true;
@@ -208,7 +196,7 @@ public class FranquiaDAO {
     }
 
     private boolean verificaSeTelefoneDonoFranquiaEstaSendoUsado(String novoTelefoneDonoFranquia) {
-        for (Franquia franquia : vetorFranquia) {
+        for (Franquia franquia : listaFranquia) {
 
             if (franquia != null && franquia.getPessoa().getTelefonePessoa().equals(novoTelefoneDonoFranquia)) {
                 return true;
@@ -219,7 +207,7 @@ public class FranquiaDAO {
     
    public Franquia buscaFranquiaPorCnpj(String cnpjFranquia)
    {
-       for (Franquia franquia : vetorFranquia) {
+       for (Franquia franquia : listaFranquia) {
            
            if(franquia != null && franquia.getCnpj().equals(cnpjFranquia))
            {
@@ -231,7 +219,7 @@ public class FranquiaDAO {
    
    public Franquia buscaFranquiaPorId(int idFranquia)
    {
-       for (Franquia franquia : vetorFranquia) {
+       for (Franquia franquia : listaFranquia) {
            
            if(franquia != null && franquia.getIdFranquia() == idFranquia)
            {

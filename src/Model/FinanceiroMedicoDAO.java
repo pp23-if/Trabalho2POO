@@ -1,41 +1,27 @@
 
 package Model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 
 public class FinanceiroMedicoDAO {
 
-    private FinanceiroMedico[] vetorFinanceiroMedico = new FinanceiroMedico[50];
+    private List <FinanceiroMedico> listaFinanceiroMedico = new LinkedList();
     
     
     public FinanceiroMedicoDAO() {
     }
     
      public boolean adicionaFinanceiroMedico(FinanceiroMedico financeiroMedico) {
-        int proxima = proximaPosilivreFinanceiroMedico();
-        if (proxima != -1) {
-            vetorFinanceiroMedico[proxima] = financeiroMedico;
-            return true;
-        } else {
-            return false;
-        }
+        return listaFinanceiroMedico.add(financeiroMedico) == true;
 
     }
     
-    
-    
-     private int proximaPosilivreFinanceiroMedico() {
-        for (int i = 0; i < vetorFinanceiroMedico.length; i++) {
-            if (vetorFinanceiroMedico[i] == null) {
-                return i;
-            }
-        }
-        return -1;
-    }
-     
      
      public FinanceiroMedico mostraTodosFinanceiroMedico()
      {
-         for (FinanceiroMedico financeiroMedico : vetorFinanceiroMedico) {
+         for (FinanceiroMedico financeiroMedico : listaFinanceiroMedico) {
              
              if(financeiroMedico != null)
              {
@@ -48,7 +34,7 @@ public class FinanceiroMedicoDAO {
      public boolean verificaCalculosValoresMedico(Medico medico, CalendarioSistema calendarioSistema, Franquia franquia) 
      {
          
-         for (FinanceiroMedico financeiroMedico : vetorFinanceiroMedico) {
+         for (FinanceiroMedico financeiroMedico : listaFinanceiroMedico) {
              
              if(financeiroMedico != null
                 && financeiroMedico.getMedico().equals(medico)
@@ -64,7 +50,7 @@ public class FinanceiroMedicoDAO {
      
      public FinanceiroMedico buscaPagamentosMedicosPorFranquia(Franquia franquia)
      {
-         for (FinanceiroMedico financeiroMedico : vetorFinanceiroMedico) {
+         for (FinanceiroMedico financeiroMedico : listaFinanceiroMedico) {
              
              if(financeiroMedico != null && financeiroMedico.getFranquia().equals(franquia))
              {
@@ -76,7 +62,7 @@ public class FinanceiroMedicoDAO {
      
      public boolean buscaPagamentosMedicosPorFranquiaEhMes(Franquia franquia, CalendarioSistema calendarioSistema)
      {
-         for (FinanceiroMedico financeiroMedico : vetorFinanceiroMedico) {
+         for (FinanceiroMedico financeiroMedico : listaFinanceiroMedico) {
              
              if(financeiroMedico != null && financeiroMedico.getFranquia().equals(franquia)
                 && financeiroMedico.getEstado().equals("Agendado")
@@ -92,7 +78,7 @@ public class FinanceiroMedicoDAO {
      
      public FinanceiroMedico buscaPagamentosMedicosPorID(int idFinanceiroMedico)
      {
-         for (FinanceiroMedico financeiroMedico : vetorFinanceiroMedico) {
+         for (FinanceiroMedico financeiroMedico : listaFinanceiroMedico) {
              
              if(financeiroMedico != null && financeiroMedico.getIdFinanceiroMedico() == idFinanceiroMedico)
              {
@@ -104,7 +90,7 @@ public class FinanceiroMedicoDAO {
      
      public FinanceiroMedico buscaPagamentosMedicosPorMedico(Medico medico)
      {
-         for (FinanceiroMedico financeiroMedico : vetorFinanceiroMedico) {
+         for (FinanceiroMedico financeiroMedico : listaFinanceiroMedico) {
              
              if(financeiroMedico != null && financeiroMedico.getMedico().equals(medico))
              {
@@ -116,7 +102,7 @@ public class FinanceiroMedicoDAO {
      
      public FinanceiroMedico buscaPagamentosMedicosPorMedicoMes(Medico medico, int numeroMes)
      {
-         for (FinanceiroMedico financeiroMedico : vetorFinanceiroMedico) {
+         for (FinanceiroMedico financeiroMedico : listaFinanceiroMedico) {
              
              if(financeiroMedico != null && financeiroMedico.getMedico().equals(medico)
                 && financeiroMedico.getDataCriacao().getMonthValue() == numeroMes)
@@ -151,7 +137,7 @@ public class FinanceiroMedicoDAO {
      
      public void geraRelatorioPagamentoMedicosPorFranquia(Franquia franquia)
      {
-         for (FinanceiroMedico financeiroMedico : vetorFinanceiroMedico) {
+         for (FinanceiroMedico financeiroMedico : listaFinanceiroMedico) {
              
              if(financeiroMedico != null && financeiroMedico.getFranquia().equals(franquia))
              {
@@ -162,7 +148,7 @@ public class FinanceiroMedicoDAO {
      
      public void geraRelatorioPagamentoMedicosPorFranquiaMes(Franquia franquia, int numeroMes)
      {
-         for (FinanceiroMedico financeiroMedico : vetorFinanceiroMedico) {
+         for (FinanceiroMedico financeiroMedico : listaFinanceiroMedico) {
              
              if(financeiroMedico != null 
                 && financeiroMedico.getFranquia().equals(franquia)

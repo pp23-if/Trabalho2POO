@@ -1,35 +1,25 @@
 package Model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class FinanceiroAdmDAO {
 
-    private FinanceiroAdm[] vetotFinanceiroAdm = new FinanceiroAdm[50];
+    
+    private List <FinanceiroAdm> listaFinanceiroAdm = new LinkedList();
 
     public FinanceiroAdmDAO() {
     }
 
-    private int proximaPosilivreFinanceiroAdm() {
-        for (int i = 0; i < vetotFinanceiroAdm.length; i++) {
-            if (vetotFinanceiroAdm[i] == null) {
-                return i;
-            }
-
-        }
-        return -1;
-    }
+    
 
     public boolean adicionaFinanceiroAdm(FinanceiroAdm financeiroAdm) {
-        int proxima = proximaPosilivreFinanceiroAdm();
-        if (proxima != -1) {
-            vetotFinanceiroAdm[proxima] = financeiroAdm;
-            return true;
-        } else {
-            return false;
-        }
+        return listaFinanceiroAdm.add(financeiroAdm) == true;
 
     }
 
     public FinanceiroAdm mostraTodosMovimentosFinanceiros() {
-        for (FinanceiroAdm financeiroAdm : vetotFinanceiroAdm) {
+        for (FinanceiroAdm financeiroAdm : listaFinanceiroAdm) {
 
             if (financeiroAdm != null) {
                 System.out.println(financeiroAdm + "\n");
@@ -39,7 +29,7 @@ public class FinanceiroAdmDAO {
     }
 
     public FinanceiroAdm buscaMovimentacoesFinanceirasPorFranquia(Franquia franquia) {
-        for (FinanceiroAdm financeiroAdm : vetotFinanceiroAdm) {
+        for (FinanceiroAdm financeiroAdm : listaFinanceiroAdm) {
 
             if (financeiroAdm != null && financeiroAdm.getUnidadeFranquia().getFranquia().equals(franquia)) {
                 System.out.println(financeiroAdm + "\n");
@@ -71,7 +61,7 @@ public class FinanceiroAdmDAO {
     public boolean verificaPagamentoUnidade(CalendarioSistema calendarioSistema, UnidadeFranquia unidadeFranquia)
     {
        
-        for (FinanceiroAdm financeiroAdm : vetotFinanceiroAdm) {
+        for (FinanceiroAdm financeiroAdm : listaFinanceiroAdm) {
             
             if(financeiroAdm != null
               && financeiroAdm.getUnidadeFranquia().equals(unidadeFranquia)
@@ -94,7 +84,7 @@ public class FinanceiroAdmDAO {
       
         int mesSitemaComparavel = calendarioSistema.getDiaDoSistema().minusDays(1).getMonthValue();
         
-        for (FinanceiroAdm financeiroAdm : vetotFinanceiroAdm) {
+        for (FinanceiroAdm financeiroAdm : listaFinanceiroAdm) {
              
              
             if (financeiroAdm != null
@@ -138,7 +128,7 @@ public class FinanceiroAdmDAO {
     
     public void geraRelatorioEntradaSaidaFranquia(Franquia franquia)
     {
-        for (FinanceiroAdm financeiroAdm : vetotFinanceiroAdm) {
+        for (FinanceiroAdm financeiroAdm : listaFinanceiroAdm) {
             
             if(financeiroAdm != null && financeiroAdm.getUnidadeFranquia().getFranquia().equals(franquia))
             {
@@ -149,7 +139,7 @@ public class FinanceiroAdmDAO {
     
     public void geraRelatorioEntradaSaidaFranquiaMes(Franquia franquia, int numeroMes)
     {
-        for (FinanceiroAdm financeiroAdm : vetotFinanceiroAdm) {
+        for (FinanceiroAdm financeiroAdm : listaFinanceiroAdm) {
             
             if(financeiroAdm != null 
                && financeiroAdm.getUnidadeFranquia().getFranquia().equals(franquia)
@@ -162,7 +152,7 @@ public class FinanceiroAdmDAO {
     
      public void geraRelatorioEntradaSaidaUnidadeFranquia(UnidadeFranquia unidadeFranquia)
     {
-        for (FinanceiroAdm financeiroAdm : vetotFinanceiroAdm) {
+        for (FinanceiroAdm financeiroAdm : listaFinanceiroAdm) {
             
             if(financeiroAdm != null && financeiroAdm.getUnidadeFranquia().equals(unidadeFranquia))
             {
@@ -173,7 +163,7 @@ public class FinanceiroAdmDAO {
      
       public void geraRelatorioEntradaSaidaUnidadeFranquiaMes(UnidadeFranquia unidadeFranquia, int numeroMes)
     {
-        for (FinanceiroAdm financeiroAdm : vetotFinanceiroAdm) {
+        for (FinanceiroAdm financeiroAdm : listaFinanceiroAdm) {
             
             if(financeiroAdm != null 
                && financeiroAdm.getUnidadeFranquia().equals(unidadeFranquia)

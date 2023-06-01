@@ -1,62 +1,51 @@
 package Model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class UnidadeFranquiaDAO {
 
-    private UnidadeFranquia[] vetorUnidadeFranquia = new UnidadeFranquia[50];
+    private List <UnidadeFranquia> listaUnidadeFranquia = new LinkedList();
 
     public UnidadeFranquiaDAO(PessoaDAO pessoaDAO, FranquiaDAO franquiaDAO, CalendarioSistema calendarioSistema) {
         
-        Pessoa donoUnidadeFranquia = pessoaDAO.buscaPessoaCadastrada("rgd", "30");
-
-        if (donoUnidadeFranquia != null) {
-            Franquia franquiaCadastrada = franquiaDAO.buscaFranquiaPorCnpj("123456789-30");
-
-            if (franquiaCadastrada != null) {
-                UnidadeFranquia unidadeFranquia = new UnidadeFranquia(franquiaCadastrada, "Uberaba",
-                        "Avenida Leopoldino De Oliveira - 580", donoUnidadeFranquia, calendarioSistema.getDataHoraSistema());
-
-                adicionaUnidadeFranquia(unidadeFranquia);
-            }
-        }
+//        Pessoa donoUnidadeFranquia = pessoaDAO.buscaPessoaCadastrada("rgd", "30");
+//
+//        if (donoUnidadeFranquia != null) {
+//            Franquia franquiaCadastrada = franquiaDAO.buscaFranquiaPorCnpj("123456789-30");
+//
+//            if (franquiaCadastrada != null) {
+//                UnidadeFranquia unidadeFranquia = new UnidadeFranquia(franquiaCadastrada, "Uberaba",
+//                        "Avenida Leopoldino De Oliveira - 580", donoUnidadeFranquia, calendarioSistema.getDataHoraSistema());
+//
+//                adicionaUnidadeFranquia(unidadeFranquia);
+//            }
         
-         Pessoa donoUnidadeFranquia2 = pessoaDAO.buscaPessoaCadastrada("pp23", "69");
-         
-           if (donoUnidadeFranquia2 != null) {
-            Franquia franquiaCadastrada = franquiaDAO.buscaFranquiaPorCnpj("123456789-30");
-
-            if (franquiaCadastrada != null) {
-                UnidadeFranquia unidadeFranquia2 = new UnidadeFranquia(franquiaCadastrada, "Uberlandia",
-                        "Avenida Rondom Pacheco - 1200", donoUnidadeFranquia2, calendarioSistema.getDataHoraSistema());
-
-                adicionaUnidadeFranquia(unidadeFranquia2);
-            }
-        }
+        
+//         Pessoa donoUnidadeFranquia2 = pessoaDAO.buscaPessoaCadastrada("pp23", "69");
+//         
+//           if (donoUnidadeFranquia2 != null) {
+//            Franquia franquiaCadastrada = franquiaDAO.buscaFranquiaPorCnpj("123456789-30");
+//
+//            if (franquiaCadastrada != null) {
+//                UnidadeFranquia unidadeFranquia2 = new UnidadeFranquia(franquiaCadastrada, "Uberlandia",
+//                        "Avenida Rondom Pacheco - 1200", donoUnidadeFranquia2, calendarioSistema.getDataHoraSistema());
+//
+//                adicionaUnidadeFranquia(unidadeFranquia2);
+//            }
+//        }
 
     }
 
-    private int proximaPosilivreUnidadeFranquia() {
-        for (int i = 0; i < vetorUnidadeFranquia.length; i++) {
-            if (vetorUnidadeFranquia[i] == null) {
-                return i;
-            }
-
-        }
-        return -1;
-    }
+    
 
     public boolean adicionaUnidadeFranquia(UnidadeFranquia unidadeFranquia) {
-        int proxima = proximaPosilivreUnidadeFranquia();
-        if (proxima != -1) {
-            vetorUnidadeFranquia[proxima] = unidadeFranquia;
-            return true;
-        } else {
-            return false;
-        }
+        return listaUnidadeFranquia.add(unidadeFranquia) == true;
 
     }
 
     public UnidadeFranquia MostraTodasUnidadesDeFranquia() {
-        for (UnidadeFranquia unidadeFranquia : vetorUnidadeFranquia) {
+        for (UnidadeFranquia unidadeFranquia : listaUnidadeFranquia) {
 
             if (unidadeFranquia != null) {
                 System.out.println(unidadeFranquia + "\n");
@@ -66,7 +55,7 @@ public class UnidadeFranquiaDAO {
     }
 
     public UnidadeFranquia buscaUnidadeFranquiaAtravesDaPessoaVinculada(Pessoa pessoa) {
-        for (UnidadeFranquia unidadeFranquia : vetorUnidadeFranquia) {
+        for (UnidadeFranquia unidadeFranquia : listaUnidadeFranquia) {
 
             if (unidadeFranquia != null && unidadeFranquia.getPessoa().equals(pessoa)) {
                 return unidadeFranquia;
@@ -76,7 +65,7 @@ public class UnidadeFranquiaDAO {
     }
 
     public UnidadeFranquia buscaUnidadeFranquiaAtravesDaFranquiaVinculada(Franquia franquia) {
-        for (UnidadeFranquia unidadeFranquia : vetorUnidadeFranquia) {
+        for (UnidadeFranquia unidadeFranquia : listaUnidadeFranquia) {
 
             if (unidadeFranquia != null && unidadeFranquia.getFranquia().equals(franquia)) {
                 System.out.println(unidadeFranquia + "\n");
@@ -86,7 +75,7 @@ public class UnidadeFranquiaDAO {
     }
 
     public boolean verificaSeDonoUnidadeFranquiaExiste(Pessoa pessoa) {
-        for (UnidadeFranquia unidadeFranquia : vetorUnidadeFranquia) {
+        for (UnidadeFranquia unidadeFranquia : listaUnidadeFranquia) {
 
             if (unidadeFranquia != null
                     && unidadeFranquia.getPessoa().getCpf().equals(pessoa.getCpf())) {
@@ -97,7 +86,7 @@ public class UnidadeFranquiaDAO {
     }
 
     public UnidadeFranquia buscaUnidadeDeFranquia(UnidadeFranquia uniFran) {
-        for (UnidadeFranquia unidadeFranquia : vetorUnidadeFranquia) {
+        for (UnidadeFranquia unidadeFranquia : listaUnidadeFranquia) {
 
             if (unidadeFranquia != null && unidadeFranquia.equals(uniFran)) {
                 return unidadeFranquia;
@@ -108,7 +97,7 @@ public class UnidadeFranquiaDAO {
 
     public boolean atualizaCidadeUnidadeFranquia(UnidadeFranquia uf, String novaCidadeUnidadeFranquia,
             CalendarioSistema calendarioSistema) {
-        for (UnidadeFranquia unidadeFranquia : vetorUnidadeFranquia) {
+        for (UnidadeFranquia unidadeFranquia : listaUnidadeFranquia) {
 
             if (unidadeFranquia != null && unidadeFranquia.equals(uf)) {
                 unidadeFranquia.setCidadeUnidadeFranquia(novaCidadeUnidadeFranquia);
@@ -121,7 +110,7 @@ public class UnidadeFranquiaDAO {
 
     public boolean atualizaEnderecoUnidadeDeFranquia(UnidadeFranquia uf, String novoEnderecoUnidadeFranquia,
             CalendarioSistema calendarioSistema) {
-        for (UnidadeFranquia unidadeFranquia : vetorUnidadeFranquia) {
+        for (UnidadeFranquia unidadeFranquia : listaUnidadeFranquia) {
 
             if (unidadeFranquia != null && unidadeFranquia.equals(uf)) {
                 unidadeFranquia.setEnderecoUnidadeFranquia(novoEnderecoUnidadeFranquia);
@@ -136,7 +125,7 @@ public class UnidadeFranquiaDAO {
             CalendarioSistema calendarioSistema) {
 
         if (!verificaSeLoginDonoDeUnidadeFranquiaEstaEmUso(novoLoginDonoDeUnidadeFranquia) == true) {
-            for (UnidadeFranquia unidadeFranquia : vetorUnidadeFranquia) {
+            for (UnidadeFranquia unidadeFranquia : listaUnidadeFranquia) {
 
                 if (unidadeFranquia != null && unidadeFranquia.equals(uf)) {
                     unidadeFranquia.getPessoa().setLoginPessoa(novoLoginDonoDeUnidadeFranquia);
@@ -152,7 +141,7 @@ public class UnidadeFranquiaDAO {
     public boolean atualizaSenhaDonoDeUnidadeDeFranquia(UnidadeFranquia uf, String novaSenhaDonoDeUnidadeFranquia,
             CalendarioSistema calendarioSistema) {
 
-        for (UnidadeFranquia unidadeFranquia : vetorUnidadeFranquia) {
+        for (UnidadeFranquia unidadeFranquia : listaUnidadeFranquia) {
 
             if (unidadeFranquia != null && unidadeFranquia.equals(uf)) {
                 unidadeFranquia.getPessoa().setSenhaPessoa(novaSenhaDonoDeUnidadeFranquia);
@@ -168,7 +157,7 @@ public class UnidadeFranquiaDAO {
             CalendarioSistema calendarioSistema) {
 
         if (!verificaSeTelefoneDonoDeUnidadeFranquiaEstaEmUso(novoTelefoneDonoDeUnidadeFranquia) == true) {
-            for (UnidadeFranquia unidadeFranquia : vetorUnidadeFranquia) {
+            for (UnidadeFranquia unidadeFranquia : listaUnidadeFranquia) {
 
                 if (unidadeFranquia != null && unidadeFranquia.equals(uf)) {
                     unidadeFranquia.getPessoa().setTelefonePessoa(novoTelefoneDonoDeUnidadeFranquia);
@@ -183,7 +172,7 @@ public class UnidadeFranquiaDAO {
     }
 
     public boolean verificaSeLoginDonoDeUnidadeFranquiaEstaEmUso(String novoLoginDonoUnidadeFranquia) {
-        for (UnidadeFranquia unidadeFranquia : vetorUnidadeFranquia) {
+        for (UnidadeFranquia unidadeFranquia : listaUnidadeFranquia) {
 
             if (unidadeFranquia != null
                     && unidadeFranquia.getPessoa().getLoginPessoa().equals(novoLoginDonoUnidadeFranquia)) {
@@ -194,7 +183,7 @@ public class UnidadeFranquiaDAO {
     }
 
     public boolean verificaSeTelefoneDonoDeUnidadeFranquiaEstaEmUso(String novoTelefoneDonoUnidadeFranquia) {
-        for (UnidadeFranquia unidadeFranquia : vetorUnidadeFranquia) {
+        for (UnidadeFranquia unidadeFranquia : listaUnidadeFranquia) {
 
             if (unidadeFranquia != null
                     && unidadeFranquia.getPessoa().getTelefonePessoa().equals(novoTelefoneDonoUnidadeFranquia)) {
@@ -206,7 +195,7 @@ public class UnidadeFranquiaDAO {
 
     public UnidadeFranquia buscaUnidadeFranquiaPorId(int idUnidadeFranquia)
     {
-        for (UnidadeFranquia unidadeFranquia : vetorUnidadeFranquia) {
+        for (UnidadeFranquia unidadeFranquia : listaUnidadeFranquia) {
             
             if(unidadeFranquia != null && unidadeFranquia.getIdUnidadeFranquia() == idUnidadeFranquia)
             {

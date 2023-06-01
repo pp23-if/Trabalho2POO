@@ -3,78 +3,65 @@ package Model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
+import java.util.List;
 
 public class ProcedimentoDAO {
 
-    private Procedimento vetorProcedimento[] = new Procedimento[50];
+    private List <Procedimento> listaProcedimento = new LinkedList();
 
     public ProcedimentoDAO(PessoaDAO pessoaDAO, MedicoDAO medicoDAO, UnidadeFranquiaDAO unidadeFranquiaDAO,
             CalendarioSistema calendarioSistema, ConsultaDAO consultaDAO) {
         
         
-        UnidadeFranquia unidadeEncontrada = unidadeFranquiaDAO.buscaUnidadeFranquiaPorId(2);
-        
-        if(unidadeEncontrada != null)
-        {
-            Medico medicoEncontrado = medicoDAO.buscaMedicoPorId(1);
-            
-            if(medicoEncontrado != null)
-            {
-                Pessoa pessoaEncontrada = pessoaDAO.buscaPessoaPorId(1);
-                
-                if(pessoaEncontrada != null)
-                {
-                    
-                    DateTimeFormatter fdia = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                
-                    
-                    LocalDate diaConsulta = LocalDate.parse("27/01/2023", fdia);
-                    LocalTime horaConsulta = LocalTime.parse("15:23");
-                    
-                    Consulta consultaProcedimento = new Consulta(diaConsulta, horaConsulta, medicoEncontrado, 
-                            pessoaEncontrada, unidadeEncontrada, 500,"Agendada", calendarioSistema.getDataHoraSistema());
-                    
-                    if(consultaDAO.adicionaConsulta(consultaProcedimento) == true)
-                    {
-                        
-                        LocalDate diaProcedimento = LocalDate.parse("28/01/2023", fdia);
-                        LocalTime horaProcedimento = LocalTime.parse("16:14");
-                        
-                          Procedimento procedimentoMarcado = new Procedimento("Exame De Sangue", consultaProcedimento, 
-                            diaProcedimento, horaProcedimento, "Agendado", 1500, "", calendarioSistema.getDataHoraSistema());
-                    
-                        adicionaProcedimento(procedimentoMarcado);
-                    }
-                    
-                }
-            }
-        }
+//        UnidadeFranquia unidadeEncontrada = unidadeFranquiaDAO.buscaUnidadeFranquiaPorId(2);
+//        
+//        if(unidadeEncontrada != null)
+//        {
+//            Medico medicoEncontrado = medicoDAO.buscaMedicoPorId(1);
+//            
+//            if(medicoEncontrado != null)
+//            {
+//                Pessoa pessoaEncontrada = pessoaDAO.buscaPessoaPorId(1);
+//                
+//                if(pessoaEncontrada != null)
+//                {
+//                    
+//                    DateTimeFormatter fdia = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//                
+//                    
+//                    LocalDate diaConsulta = LocalDate.parse("27/01/2023", fdia);
+//                    LocalTime horaConsulta = LocalTime.parse("15:23");
+//                    
+//                    Consulta consultaProcedimento = new Consulta(diaConsulta, horaConsulta, medicoEncontrado, 
+//                            pessoaEncontrada, unidadeEncontrada, 500,"Agendada", calendarioSistema.getDataHoraSistema());
+//                    
+//                    if(consultaDAO.adicionaConsulta(consultaProcedimento) == true)
+//                    {
+//                        
+//                        LocalDate diaProcedimento = LocalDate.parse("28/01/2023", fdia);
+//                        LocalTime horaProcedimento = LocalTime.parse("16:14");
+//                        
+//                          Procedimento procedimentoMarcado = new Procedimento("Exame De Sangue", consultaProcedimento, 
+//                            diaProcedimento, horaProcedimento, "Agendado", 1500, "", calendarioSistema.getDataHoraSistema());
+//                    
+//                        adicionaProcedimento(procedimentoMarcado);
+//                    }
+//                    
+//                }
+//            }
+//        }
         
     }
 
     public boolean adicionaProcedimento(Procedimento procedimento) {
-        int proxima = proximaPosilivreProcedimento();
-        if (proxima != -1) {
-            vetorProcedimento[proxima] = procedimento;
-            return true;
-        } else {
-            return false;
-        }
+        return listaProcedimento.add(procedimento) == true;
 
     }
 
-    private int proximaPosilivreProcedimento() {
-        for (int i = 0; i < vetorProcedimento.length; i++) {
-            if (vetorProcedimento[i] == null) {
-                return i;
-            }
-
-        }
-        return -1;
-    }
 
     public Procedimento buscaProcedimentoPorPaciente(Pessoa pessoa) {
-        for (Procedimento procedimento : vetorProcedimento) {
+        for (Procedimento procedimento : listaProcedimento) {
 
             if (procedimento != null && procedimento.getConsulta().getPessoa().equals(pessoa)) {
                 System.out.println(procedimento + "\n");
@@ -84,7 +71,7 @@ public class ProcedimentoDAO {
     }
 
     public Procedimento buscaProcedimentoPorMedico(Medico medico) {
-        for (Procedimento procedimento : vetorProcedimento) {
+        for (Procedimento procedimento : listaProcedimento) {
 
             if (procedimento != null && procedimento.getConsulta().getMedico().equals(medico)) {
                 System.out.println(procedimento + "\n");
@@ -94,7 +81,7 @@ public class ProcedimentoDAO {
     }
 
     public Procedimento buscaProcedimentoPorFranquia(Franquia franquia) {
-        for (Procedimento procedimento : vetorProcedimento) {
+        for (Procedimento procedimento : listaProcedimento) {
 
             if (procedimento != null && procedimento.getConsulta()
                     .getUnidadeFranquia().getFranquia().equals(franquia)) {
@@ -105,7 +92,7 @@ public class ProcedimentoDAO {
     }
 
     public Procedimento buscaProcedimentoPorId(int idProcediemnto) {
-        for (Procedimento procedimento : vetorProcedimento) {
+        for (Procedimento procedimento : listaProcedimento) {
 
             if (procedimento != null && procedimento.getIdProcedimento() == idProcediemnto) {
                 return procedimento;
@@ -126,7 +113,7 @@ public class ProcedimentoDAO {
     public boolean verificaDisponibilidadeDataEHoraProcedimentoMedico(LocalDate diaProcedimento, LocalTime horaProcedimento,
             Medico medico) {
         
-        for (Procedimento procedimento : vetorProcedimento) {
+        for (Procedimento procedimento : listaProcedimento) {
 
             if (procedimento != null && procedimento.getDiaProcedimento().equals(diaProcedimento)
                     && procedimento.getHoraProcedimento().equals(horaProcedimento)
@@ -161,7 +148,7 @@ public class ProcedimentoDAO {
     }
 
     public Procedimento buscaProcedimentosQueTemMedicoSolicitanteEPacienteEscolhido(Pessoa pessoa, Medico medico) {
-        for (Procedimento procedimento : vetorProcedimento) {
+        for (Procedimento procedimento : listaProcedimento) {
 
             if (procedimento != null
                     && procedimento.getConsulta().getMedico().equals(medico)
@@ -173,7 +160,7 @@ public class ProcedimentoDAO {
     }
 
     public Procedimento buscaProcedimentoNaoRealizado(Medico medico, CalendarioSistema calendarioSistema) {
-        for (Procedimento procedimento : vetorProcedimento) {
+        for (Procedimento procedimento : listaProcedimento) {
 
             if (procedimento != null
                     && procedimento.getConsulta().getMedico().equals(medico)
@@ -202,7 +189,7 @@ public class ProcedimentoDAO {
     public boolean cancelaProcedimentosNaoRealizadosNoDia(CalendarioSistema calendarioSistema) {
 
         boolean canceladas = false;
-        for (Procedimento procedimento : vetorProcedimento) {
+        for (Procedimento procedimento : listaProcedimento) {
 
             if (procedimento != null && procedimento.getEstadoProcedimento().equals("Agendado")
                     && calendarioSistema.getDiaDoSistema().isAfter(procedimento.getDiaProcedimento())) {
@@ -224,7 +211,7 @@ public class ProcedimentoDAO {
 
         int mesSitemaComparavel = calendarioSistema.getDiaDoSistema().minusDays(1).getMonthValue();
 
-        for (Procedimento procedimento : vetorProcedimento) {
+        for (Procedimento procedimento : listaProcedimento) {
 
             if (procedimento != null
                     && procedimento.getConsulta().getMedico().equals(medico)
@@ -245,7 +232,7 @@ public class ProcedimentoDAO {
         
         double totalProcedimentos = 0;
 
-        for (Procedimento procedimento : vetorProcedimento) {
+        for (Procedimento procedimento : listaProcedimento) {
 
             if (procedimento != null
                     && procedimento.getConsulta().getMedico().equals(medico)
@@ -264,7 +251,7 @@ public class ProcedimentoDAO {
         
         double totalProcedimentos = 0;
 
-        for (Procedimento procedimento : vetorProcedimento) {
+        for (Procedimento procedimento : listaProcedimento) {
 
             if (procedimento != null
                     && procedimento.getConsulta().getMedico().equals(medico)

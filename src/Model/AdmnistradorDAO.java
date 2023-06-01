@@ -1,8 +1,13 @@
 package Model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class AdmnistradorDAO {
 
-    private Admnistrador[] vetorAdm = new Admnistrador[50];
+    private List <Admnistrador> listaAdmnistrador = new LinkedList();
+    
+    
 
     public AdmnistradorDAO(PessoaDAO pessoaDAO, FranquiaDAO franquiaDAO, CalendarioSistema calendarioSistema) {
         
@@ -20,29 +25,14 @@ public class AdmnistradorDAO {
 
     }
 
-    private int proximaPosilivreAdm() {
-        for (int i = 0; i < vetorAdm.length; i++) {
-            if (vetorAdm[i] == null) {
-                return i;
-            }
-
-        }
-        return -1;
-    }
-
     public boolean adicionaAdmnistrador(Admnistrador adm) {
-        int proxima = proximaPosilivreAdm();
-        if (proxima != -1) {
-            vetorAdm[proxima] = adm;
-            return true;
-        } else {
-            return false;
-        }
+       
+        return listaAdmnistrador.add(adm) == true;
 
     }
 
     public Admnistrador buscaTodosAdmnistradores() {
-        for (Admnistrador admnistrador : vetorAdm) {
+        for (Admnistrador admnistrador : listaAdmnistrador) {
             if (admnistrador != null) {
                 System.out.println(admnistrador + "\n");
             }
@@ -51,7 +41,7 @@ public class AdmnistradorDAO {
     }
 
     public Admnistrador buscaAdmnistradorAtravesPessoaVinculada(Pessoa pessoa) {
-        for (Admnistrador admnistrador : vetorAdm) {
+        for (Admnistrador admnistrador : listaAdmnistrador) {
             if (admnistrador != null && admnistrador.getPessoa().equals(pessoa)) {
                 return admnistrador;
             }
@@ -61,7 +51,7 @@ public class AdmnistradorDAO {
     
     public boolean verificaSeFranquiaPossuiAdmnistrador(Franquia franquia)
     {
-        for (Admnistrador admnistrador : vetorAdm) {
+        for (Admnistrador admnistrador : listaAdmnistrador) {
             
             if(admnistrador != null && admnistrador.getFranquia().equals(franquia))
             {
@@ -73,7 +63,7 @@ public class AdmnistradorDAO {
     
     public boolean verificaSePessoaEhAdmnistrador(Pessoa pessoa)
     {
-        for (Admnistrador admnistrador : vetorAdm) {
+        for (Admnistrador admnistrador : listaAdmnistrador) {
             
             if(admnistrador != null 
                && admnistrador.getPessoa().getCpf().equals(pessoa.getCpf()))
@@ -86,7 +76,7 @@ public class AdmnistradorDAO {
     
     public boolean verificaSeLoginAdmnistradorEstaEmUso(String loginAdmnistrador)
     {
-        for (Admnistrador admnistrador : vetorAdm) {
+        for (Admnistrador admnistrador : listaAdmnistrador) {
             
             if(admnistrador != null && admnistrador.getPessoa().getLoginPessoa().equals(loginAdmnistrador))
             {
