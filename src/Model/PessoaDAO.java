@@ -18,9 +18,9 @@ public class PessoaDAO {
 
     public PessoaDAO(CalendarioSistema calendarioSistema) {
 
-//        Pessoa pessoa = new Pessoa("Pedro Augusto Rodrigues", "123",  "Rua 13", "225544",
-//                "1", "1", "Paciente", calendarioSistema.getDataHoraSistema());
-//        adicionaPessoa(pessoa);
+//      Pessoa pessoa = new Pessoa("Pedro Augusto Rodrigues", "123",  "Rua 13", "225544",
+//               "1", "1", "Paciente", calendarioSistema.getDataHoraSistema());
+//       adicionaPessoa(pessoa);
 //
 //        Pessoa pessoa2 = new Pessoa("Lucas Rocha Pereira", "7272", "rua 32", "9999",
 //                "lu123", "2", "Paciente", calendarioSistema.getDataHoraSistema());
@@ -456,6 +456,8 @@ public class PessoaDAO {
 
     public void BuscaPessoaNoBancoDeDados(ConexaoBancoDeDados conexaoBancoDeDados) {
 
+        listaPessoa.clear();
+        
         Connection conn;
 
         String buscaPessoa = "select p.idpessoa,p.nome, p.enderecopessoa,\n"
@@ -466,9 +468,11 @@ public class PessoaDAO {
 
         conn = conexaoBancoDeDados.ConectaBancoDeDados();
 
-        try (PreparedStatement pstm = conn.prepareStatement(buscaPessoa); ResultSet rs = pstm.executeQuery()) {
+        try (PreparedStatement pstm = conn.prepareStatement(buscaPessoa); 
+                ResultSet rs = pstm.executeQuery()) {
 
             while (rs.next()) {
+                
                 Pessoa pessoa = new Pessoa();
 
                 pessoa.setIdPessoa(rs.getInt("idpessoa"));
