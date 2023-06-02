@@ -29,7 +29,7 @@ public class GerenciaControladoras {
     /*Conectando No Banco De Dados.*/
     ConexaoBancoDeDados conexaoBancoDeDados = new ConexaoBancoDeDados();
     
-
+    
     /*Instanciando a Classe de Validacao de dados.*/
     ValidacaoEntradaDados vd = new ValidacaoEntradaDados();
     
@@ -52,7 +52,7 @@ public class GerenciaControladoras {
 
     public GerenciaControladoras() {
 
-        
+        pessoaDAO.BuscaPessoaNoBancoDeDados(conexaoBancoDeDados);
         
         int opcao;
 
