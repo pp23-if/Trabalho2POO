@@ -127,7 +127,7 @@ public class PessoaDAO {
         return null;
     }
 
-    public boolean atualizaNomePessoa(String nomePessoa, String novoNomePessoa,
+    /*public boolean atualizaNomePessoa(String nomePessoa, String novoNomePessoa,
             String cpf, CalendarioSistema calendarioSistema) {
 
         boolean atualizado = false;
@@ -148,8 +148,7 @@ public class PessoaDAO {
         }
         return atualizado;
 
-    }
-
+    }*/
     public boolean atualizaCpfPessoa(String cpf, String novoCpf,
             CalendarioSistema calendarioSistema) {
 
@@ -236,15 +235,14 @@ public class PessoaDAO {
         return false;
     }
 
-    private boolean verificaSeNomeEstaSendoUsado(String nome) {
+    /*private boolean verificaSeNomeEstaSendoUsado(String nome) {
         for (Pessoa pessoa : listaPessoa) {
             if (pessoa != null && pessoa.getNomePessoa().equals(nome)) {
                 return true;
             }
         }
         return false;
-    }
-
+    }*/
     private boolean verificaSeCpfEstaSendoUsado(String cpf) {
         for (Pessoa pessoa : listaPessoa) {
             if (pessoa != null && pessoa.getCpf().equals(cpf)) {
@@ -513,23 +511,51 @@ public class PessoaDAO {
 
         String atualizaNomePessoa = "update pessoa set nome = ? where cpf = ?";
 
-            try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                 PreparedStatement pstm = connection.prepareStatement(atualizaNomePessoa)) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                PreparedStatement pstm = connection.prepareStatement(atualizaNomePessoa)) {
 
-                pstm.setString(1, novoNome);
+            pstm.setString(1, novoNome);
+            pstm.setString(2, pessoa.getCpf());
+
+            pstm.execute();
+
+        } catch (SQLException erro) {
+
+            atualizado = false;
+            System.out.println("\n Nao foi possivel Atualizar o Nome da pessoa no banco de dados!\n" + erro.getMessage());
+        }
+
+        return atualizado != false;
+    }
+
+    public boolean AtualizaCpfPessoaNoBancoDeDados(String novoCpf, Pessoa pessoa) {
+
+        boolean atualizado = true;
+
+        String atualizaCpfPessoa = "update pessoa set cpf = ? where cpf = ?";
+
+        if (!verificaSeCpfEstaSendoUsado(novoCpf) == true) {
+
+            try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                    PreparedStatement pstm = connection.prepareStatement(atualizaCpfPessoa)) {
+
+                pstm.setString(1, novoCpf);
                 pstm.setString(2, pessoa.getCpf());
 
                 pstm.execute();
 
-
             } catch (SQLException erro) {
 
                 atualizado = false;
-                System.out.println("\n Nao foi possivel Atualizar o Nome da pessoa no banco de dados!\n" + erro.getMessage());
+                System.out.println("\n Nao foi possivel Atualizar o Cpf da pessoa no banco de dados!\n" + erro.getMessage());
             }
 
-        
+        } else {
+            atualizado = false;
+        }
 
         return atualizado != false;
+
     }
+
 }

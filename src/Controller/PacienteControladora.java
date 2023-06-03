@@ -17,14 +17,14 @@ public class PacienteControladora {
     MenuTitulosPaciente telaPaciente = new MenuTitulosPaciente();
 
     public PacienteControladora(Pessoa pessoa, PessoaDAO pessoaDAO,
-            ValidacaoEntradaDados vd, ConsultaDAO consultaDAO, ProcedimentoDAO procedimentoDAO, 
+            ValidacaoEntradaDados vd, ConsultaDAO consultaDAO, ProcedimentoDAO procedimentoDAO,
             CalendarioSistema calendarioSistema, MedicoDAO medicoDAO) {
 
         menuOpcoesPaciente(pessoa, pessoaDAO, vd, consultaDAO, procedimentoDAO, calendarioSistema, medicoDAO);
     }
 
     private void menuOpcoesPaciente(Pessoa pessoa, PessoaDAO pessoaDAO, ValidacaoEntradaDados vd,
-            ConsultaDAO consultaDAO, ProcedimentoDAO procedimentoDAO, CalendarioSistema calendarioSistema, 
+            ConsultaDAO consultaDAO, ProcedimentoDAO procedimentoDAO, CalendarioSistema calendarioSistema,
             MedicoDAO medicoDAO) {
 
         int opcao;
@@ -48,12 +48,12 @@ public class PacienteControladora {
                     break;
                 }
                 case 4: {
-                     System.out.println("\n");
-                     procedimentoDAO.buscaProcedimentoPorPaciente(pessoa);
+                    System.out.println("\n");
+                    procedimentoDAO.buscaProcedimentoPorPaciente(pessoa);
                     break;
                 }
                 case 5: {
-                    gerarRelatorioDeConsultasEProcedimentosDeUmDadoPaciente(consultaDAO, procedimentoDAO, 
+                    gerarRelatorioDeConsultasEProcedimentosDeUmDadoPaciente(consultaDAO, procedimentoDAO,
                             pessoa, vd, medicoDAO);
                     break;
                 }
@@ -62,7 +62,7 @@ public class PacienteControladora {
         } while (opcao != 0);
     }
 
-    private void menuOpcoesAtualizarDadosPaciente(Pessoa pessoa, PessoaDAO pessoaDAO, ValidacaoEntradaDados vd, 
+    private void menuOpcoesAtualizarDadosPaciente(Pessoa pessoa, PessoaDAO pessoaDAO, ValidacaoEntradaDados vd,
             CalendarioSistema calendarioSistema) {
 
         int opcao;
@@ -77,7 +77,6 @@ public class PacienteControladora {
                     novoNomePessoa = vd.validaString(novoNomePessoa);
 
                     if (pessoaDAO.AtualizaNomePessoaNoBancoDeDados(novoNomePessoa, pessoa) == true) {
-                        
                         System.out.println("\nO Nome Foi Atualizado Com Sucesso!");
                     } else {
                         System.out.println("\nNome Foi possivel Atualizar o Nome.");
@@ -89,10 +88,10 @@ public class PacienteControladora {
                     String novoCpf = scanner.nextLine();
                     novoCpf = vd.validaString(novoCpf);
 
-                    if (pessoaDAO.atualizaCpfPessoa(pessoa.getCpf(), novoCpf, calendarioSistema) == true) {
+                    if (pessoaDAO.AtualizaCpfPessoaNoBancoDeDados(novoCpf, pessoa) == true) {
                         System.out.println("\nO Cpf Foi Atualizado Com Sucesso!");
                     } else {
-                        System.out.println("\nCpf Informado Ja Se Encontra Cadastrado.");
+                       System.out.println("\nNome Foi possivel Atualizar o Cpf.");
                     }
 
                     break;
@@ -130,7 +129,7 @@ public class PacienteControladora {
                     String novoLogin = scanner.nextLine();
                     novoLogin = vd.validaString(novoLogin);
 
-                    if (pessoaDAO.atualizaLoginPessoa(pessoa.getLoginPessoa(), novoLogin, 
+                    if (pessoaDAO.atualizaLoginPessoa(pessoa.getLoginPessoa(), novoLogin,
                             pessoa.getTipoUsuario(), calendarioSistema) == true) {
                         System.out.println("\nO Login Foi Atualizado Com Sucesso!");
                     } else {
@@ -157,7 +156,7 @@ public class PacienteControladora {
 
         } while (opcao != 0);
     }
-    
+
     private void gerarRelatorioDeConsultasEProcedimentosDeUmDadoPaciente(ConsultaDAO consultaDAO,
             ProcedimentoDAO procedimentoDAO, Pessoa pessoa, ValidacaoEntradaDados vd, MedicoDAO medicoDAO) {
 
