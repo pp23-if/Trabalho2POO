@@ -102,7 +102,7 @@ public class PacienteControladora {
                     String novoEndereco = scanner.nextLine();
                     novoEndereco = vd.validaString(novoEndereco);
 
-                    if (pessoaDAO.atualizaEnderecoPessoa(pessoa.getEnderecoPessoa(), novoEndereco, calendarioSistema) == true) {
+                    if (pessoaDAO.AtualizaEnderecoPessoaNoBancoDeDados(novoEndereco, pessoa) == true) {
                         System.out.println("\nO Endereco Foi Atualizado Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar O Endereco");

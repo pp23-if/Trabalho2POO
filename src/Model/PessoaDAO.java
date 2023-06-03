@@ -557,5 +557,28 @@ public class PessoaDAO {
         return atualizado != false;
 
     }
+    
+    public boolean AtualizaEnderecoPessoaNoBancoDeDados(String novoeEndereco, Pessoa pessoa) {
+
+        boolean atualizado = true;
+
+        String atualizaCpfPessoa = "update pessoa set enderecopessoa = ? where cpf = ?";
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                PreparedStatement pstm = connection.prepareStatement(atualizaCpfPessoa)) {
+
+            pstm.setString(1, novoeEndereco);
+            pstm.setString(2, pessoa.getCpf());
+
+            pstm.execute();
+
+        } catch (SQLException erro) {
+
+            atualizado = false;
+            System.out.println("\n Nao foi possivel Atualizar o Cpf da pessoa no banco de dados!\n" + erro.getMessage());
+        }
+
+        return atualizado != false;
+    }
 
 }
