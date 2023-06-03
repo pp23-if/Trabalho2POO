@@ -400,11 +400,9 @@ public class PessoaDAO {
         return false;
     }
 
-    public boolean inserePessoaNoBancoDeDados(ConexaoBancoDeDados conexaoBancoDeDados,
-            Pessoa pessoa) {
+    public boolean inserePessoaNoBancoDeDados(Pessoa pessoa) {
 
         boolean adicionado = true;
-        Connection conn;
 
         String inserePessoa = "insert into pessoa (nome,enderecopessoa,cpf,telefonepessoa) \n"
                 + "values (?,?,?,?)";
@@ -412,41 +410,45 @@ public class PessoaDAO {
         String insereTipoUsuario = "insert into tipousuario (cpfpessoa,logintipousuario,senhatipousuario,tipousuario,datacriacao) \n"
                 + "values (?,?,?,?,?)";
 
-        conn = conexaoBancoDeDados.ConectaBancoDeDados();
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
 
-        try (PreparedStatement pstm = conn.prepareStatement(inserePessoa); PreparedStatement pstm2 = conn.prepareStatement(insereTipoUsuario)) {
+            connection.setAutoCommit(false);
 
-            conn.setAutoCommit(false);
-            pstm.setString(1, pessoa.getNomePessoa());
-            pstm.setString(2, pessoa.getEnderecoPessoa());
-            pstm.setString(3, pessoa.getCpf());
-            pstm.setString(4, pessoa.getTelefonePessoa());
+            try (PreparedStatement pstmInserePessoa = connection.prepareStatement(inserePessoa);
+                    PreparedStatement pstmInsereTipoUsuario = connection.prepareStatement(insereTipoUsuario)) {
 
-            pstm.execute();
+                pstmInserePessoa.setString(1, pessoa.getNomePessoa());
+                pstmInserePessoa.setString(2, pessoa.getEnderecoPessoa());
+                pstmInserePessoa.setString(3, pessoa.getCpf());
+                pstmInserePessoa.setString(4, pessoa.getTelefonePessoa());
 
-            pstm2.setString(1, pessoa.getCpf());
-            pstm2.setString(2, pessoa.getLoginPessoa());
-            pstm2.setString(3, pessoa.getSenhaPessoa());
-            pstm2.setString(4, pessoa.getTipoUsuario());
+                pstmInserePessoa.execute();
 
-            LocalDateTime dc = pessoa.getDataCriacao();
-            DateTimeFormatter fd = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
-            fd.format(dc);
-            String dataModificacao = dc.format(fd);
-            pstm2.setString(5, dataModificacao);
+                pstmInsereTipoUsuario.setString(1, pessoa.getCpf());
+                pstmInsereTipoUsuario.setString(2, pessoa.getLoginPessoa());
+                pstmInsereTipoUsuario.setString(3, pessoa.getSenhaPessoa());
+                pstmInsereTipoUsuario.setString(4, pessoa.getTipoUsuario());
 
-            pstm2.execute();
-            conn.commit();
+                LocalDateTime dc = pessoa.getDataCriacao();
+                DateTimeFormatter fd = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
+                fd.format(dc);
+                String dataModificacao = dc.format(fd);
+                pstmInsereTipoUsuario.setString(5, dataModificacao);
 
-        } catch (SQLException erro) {
-            try {
-                conn.rollback();
-            } catch (SQLException ex) {
+                pstmInsereTipoUsuario.execute();
+
+                connection.commit();
+
+            } catch (SQLException erro) {
+
+                connection.rollback();
+                adicionado = false;
+                System.out.println("\n Nao foi possivel inserir a pessoa no banco de dados!\n" + erro.getMessage());
 
             }
 
-            System.out.println("\n Nao foi possivel inserir a pessoa no banco de dados!\n" + erro);
-            adicionado = false;
+        } catch (SQLException erro) {
+
         }
 
         return adicionado != false;
@@ -454,11 +456,9 @@ public class PessoaDAO {
     }
 //+ "tp.datacriacao, tp.datamodificacao\n"
 
-    public void BuscaPessoaNoBancoDeDados(ConexaoBancoDeDados conexaoBancoDeDados) {
+    public void BuscaPessoaNoBancoDeDados() {
 
         listaPessoa.clear();
-        
-        Connection conn;
 
         String buscaPessoa = "select p.idpessoa,p.nome, p.enderecopessoa,\n"
                 + "p.cpf, p.telefonepessoa, \n"
@@ -466,13 +466,12 @@ public class PessoaDAO {
                 + "from pessoa p inner join tipousuario tp\n"
                 + "on p.cpf = tp.cpfpessoa;";
 
-        conn = conexaoBancoDeDados.ConectaBancoDeDados();
-
-        try (PreparedStatement pstm = conn.prepareStatement(buscaPessoa); 
-                ResultSet rs = pstm.executeQuery()) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                PreparedStatement pstm = connection.prepareStatement(buscaPessoa);
+                ResultSet rs = pstm.executeQuery(buscaPessoa)) {
 
             while (rs.next()) {
-                
+
                 Pessoa pessoa = new Pessoa();
 
                 pessoa.setIdPessoa(rs.getInt("idpessoa"));
@@ -504,8 +503,33 @@ public class PessoaDAO {
 
         } catch (SQLException erro) {
             System.out.println("\n Nao foi possivel Buscar os dados das pessoas no banco de dados!\n" + erro.getMessage());
-
         }
 
+    }
+
+    public boolean AtualizaNomePessoaNoBancoDeDados(String novoNome, Pessoa pessoa) {
+
+        boolean atualizado = true;
+
+        String atualizaNomePessoa = "update pessoa set nome = ? where cpf = ?";
+
+            try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                 PreparedStatement pstm = connection.prepareStatement(atualizaNomePessoa)) {
+
+                pstm.setString(1, novoNome);
+                pstm.setString(2, pessoa.getCpf());
+
+                pstm.execute();
+
+
+            } catch (SQLException erro) {
+
+                atualizado = false;
+                System.out.println("\n Nao foi possivel Atualizar o Nome da pessoa no banco de dados!\n" + erro.getMessage());
+            }
+
+        
+
+        return atualizado != false;
     }
 }

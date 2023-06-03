@@ -26,10 +26,7 @@ public class GerenciaControladoras {
 
     MenuTitulos Tela = new MenuTitulos();
     
-    /*Conectando No Banco De Dados.*/
-    ConexaoBancoDeDados conexaoBancoDeDados = new ConexaoBancoDeDados();
-    
-    
+   
     /*Instanciando a Classe de Validacao de dados.*/
     ValidacaoEntradaDados vd = new ValidacaoEntradaDados();
     
@@ -52,7 +49,7 @@ public class GerenciaControladoras {
 
     public GerenciaControladoras() {
 
-        pessoaDAO.BuscaPessoaNoBancoDeDados(conexaoBancoDeDados);
+        pessoaDAO.BuscaPessoaNoBancoDeDados();
         
         int opcao;
 
@@ -72,7 +69,7 @@ public class GerenciaControladoras {
                 }
 
                 case 3: {
-                    pessoaDAO.BuscaPessoaNoBancoDeDados(conexaoBancoDeDados);
+                    pessoaDAO.BuscaPessoaNoBancoDeDados();
                     
                     System.out.println("\nMostrando Todas as PESSOAS Cadastradas: " + "\n");
                     pessoaDAO.mostraTodasPessoas();
@@ -138,7 +135,7 @@ public class GerenciaControladoras {
             Pessoa pessoa = new Pessoa(nomePessoa, cpf, enderecoPessoa, telefonePessoa,
                     loginPessoa, senhaPessoa, tipoUsuario, calendarioSistema.getDataHoraSistema());
 
-            adicionado = pessoaDAO.inserePessoaNoBancoDeDados(conexaoBancoDeDados, pessoa);
+            adicionado = pessoaDAO.inserePessoaNoBancoDeDados(pessoa);
 
             if (adicionado == true) {
                 System.out.println("\nPessoa Cadastrada Com Sucesso!!!");

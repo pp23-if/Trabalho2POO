@@ -76,12 +76,11 @@ public class PacienteControladora {
                     String novoNomePessoa = scanner.nextLine();
                     novoNomePessoa = vd.validaString(novoNomePessoa);
 
-                    if (pessoaDAO.atualizaNomePessoa(pessoa.getNomePessoa(), novoNomePessoa, pessoa.getCpf(), 
-                            calendarioSistema) == true) {
+                    if (pessoaDAO.AtualizaNomePessoaNoBancoDeDados(novoNomePessoa, pessoa) == true) {
                         
                         System.out.println("\nO Nome Foi Atualizado Com Sucesso!");
                     } else {
-                        System.out.println("\nNome Informado Ja Se Encontra Cadastrado.");
+                        System.out.println("\nNome Foi possivel Atualizar o Nome.");
                     }
                     break;
                 }

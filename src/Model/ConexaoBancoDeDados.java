@@ -31,11 +31,11 @@ public class ConexaoBancoDeDados {
         } 
          catch (SQLException erro) 
          {
-             System.out.println("ERRO! nao foi possivel conectar no banco de dados. " + erro.getMessage() + "\n");
+            System.out.println("ERRO! nao foi possivel conectar no banco de dados. " + erro.getMessage() + "\n");
          }
+        
         return connect;
-       
-       
+      
     }
     
 }
