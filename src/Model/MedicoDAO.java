@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -245,6 +247,74 @@ public class MedicoDAO {
             }
         }
         return null;
+    }
+    
+    
+     public boolean insereMedicoNoBancoDeDados(Pessoa pessoa, Medico medico) {
+
+        boolean adicionado = true;
+        
+        
+        String inserePessoaMedico = "insert into tipousuario (cpfpessoa,logintipousuario,senhatipousuario,"
+                + "tipousuario, telefonepessoa, datacriacao) \n"
+                + "values (?,?,?,?,?,?)";
+
+        String insereMedico = "insert into medico (cpfmedico,crm,especialidade,datacriacao) \n"
+                + "values (?,?,?,?)";
+
+       
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement pstmInsereMedico = connection.prepareStatement(insereMedico);
+                 PreparedStatement pstmInserePessoaMedico = connection.prepareStatement(inserePessoaMedico)) {
+
+                pstmInserePessoaMedico.setString(1, pessoa.getCpf());
+                pstmInserePessoaMedico.setString(2, pessoa.getLoginPessoa());
+                pstmInserePessoaMedico.setString(3, pessoa.getSenhaPessoa());
+                pstmInserePessoaMedico.setString(4, pessoa.getTipoUsuario());
+                pstmInserePessoaMedico.setString(5, pessoa.getTelefonePessoa());
+
+                LocalDateTime dc = pessoa.getDataCriacao();
+                DateTimeFormatter fd = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
+                fd.format(dc);
+                String dataCriacao = dc.format(fd);
+                
+                pstmInserePessoaMedico.setString(6,dataCriacao);
+
+                pstmInserePessoaMedico.execute();
+                
+                
+                pstmInsereMedico.setString(1, pessoa.getCpf());
+                pstmInsereMedico.setString(2, medico.getCrm());
+                pstmInsereMedico.setString(3, medico.getEspecialidade());
+               
+                LocalDateTime dcm = medico.getDataCriacao();
+                DateTimeFormatter fdm = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
+                fd.format(dcm);
+                String dataCriacaoMedico = dcm.format(fdm);
+                
+                pstmInsereMedico.setString(4, dataCriacaoMedico);
+                  
+                pstmInsereMedico.execute();
+
+                connection.commit();
+
+            } catch (SQLException erro) {
+
+                connection.rollback();
+                adicionado = false;
+                System.out.println("\n Nao foi possivel inserir o Medico no banco de dados!\n" + erro.getMessage());
+
+            }
+
+        } catch (SQLException erro) {
+
+        }
+
+        return adicionado != false;
+
     }
     
     
