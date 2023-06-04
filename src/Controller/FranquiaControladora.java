@@ -135,7 +135,7 @@ public class FranquiaControladora {
                         pessoa.getTelefonePessoa(), loginDonoFranquia, senhaDonoFranquia, "DonodeFranquia",
                         calendarioSistema.getDataHoraSistema());
 
-                if (pessoaDAO.adicionaPessoa(pessoaDonoFranquia) == true) {
+              
                     System.out.println("\nInforme o Nome da Franquia: ");
                     String nomeFranquia = scanner.nextLine();
                     nomeFranquia = vd.validaString(nomeFranquia);
@@ -155,21 +155,23 @@ public class FranquiaControladora {
                     if (franquiaDAO.verificaSeFranquiaExiste(nomeFranquia, cnpjFranquia) == true) {
                         System.out.println("\nA Franquia Ja Existe");
                     } else {
-                        Franquia franquia = new Franquia(nomeFranquia.toUpperCase(), cnpjFranquia,
-                                cidadeFranquia, enderecoFranquia, pessoaDonoFranquia, calendarioSistema.getDataHoraSistema());
-
-                        boolean franquiaAdicionada = franquiaDAO.adicionaFranquia(franquia);
-
+                        
+                        Franquia franquia = new Franquia();
+                        franquia.setNomeFranquia(nomeFranquia.toUpperCase());
+                        franquia.setCnpj(cnpjFranquia);
+                        franquia.setCidade(cidadeFranquia);
+                        franquia.setEnderecoFranquia(enderecoFranquia);
+                        franquia.setDataCriacao(calendarioSistema.getDataHoraSistema());
+                        
+                        boolean franquiaAdicionada = franquiaDAO.insereFranquiaNoBancoDeDados(pessoaDonoFranquia, franquia);
+                        
                         if (franquiaAdicionada == true) {
                             System.out.println("\nFranquia Cadastrada Com Sucesso!");
                         } else {
                             System.out.println("\nNao Foi Possivel Cadastrar a Franquia.");
                         }
                     }
-
-                } else {
-                    System.out.println("\nErro Ao Cadastrar Franquia.");
-                }
+                
             }
 
         }
