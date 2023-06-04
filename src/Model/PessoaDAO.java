@@ -149,7 +149,7 @@ public class PessoaDAO {
         return atualizado;
 
     }*/
-    public boolean atualizaCpfPessoa(String cpf, String novoCpf,
+    /*public boolean atualizaCpfPessoa(String cpf, String novoCpf,
             CalendarioSistema calendarioSistema) {
 
         boolean atualizado = false;
@@ -166,9 +166,9 @@ public class PessoaDAO {
         }
 
         return atualizado;
-    }
+    }*/
 
-    public boolean atualizaEnderecoPessoa(String endereco, String novoEndereco,
+    /*public boolean atualizaEnderecoPessoa(String endereco, String novoEndereco,
             CalendarioSistema calendarioSistema) {
 
         boolean atualizado = false;
@@ -183,9 +183,9 @@ public class PessoaDAO {
 
         }
         return atualizado;
-    }
+    }*/
 
-    public boolean atualizaTelefonePessoa(String telefone, String novoTelefone, String tipoUsuario,
+    /*public boolean atualizaTelefonePessoa(String telefone, String novoTelefone, String tipoUsuario,
             CalendarioSistema calendarioSistema) {
 
         if (!verificaSeTelefoneEstaSendoUsado(novoTelefone) == true) {
@@ -201,9 +201,9 @@ public class PessoaDAO {
         }
 
         return false;
-    }
+    }*/
 
-    public boolean atualizaLoginPessoa(String login, String novoLogin, String tipoUsuario,
+    /*public boolean atualizaLoginPessoa(String login, String novoLogin, String tipoUsuario,
             CalendarioSistema calendarioSistema) {
         if (!verificaSeloginEstaSendoUsado(novoLogin) == true) {
             for (Pessoa pessoa : listaPessoa) {
@@ -218,9 +218,9 @@ public class PessoaDAO {
         }
 
         return false;
-    }
+    }*/
 
-    public boolean atualizaSenhaPessoa(String senha, String login, String novaSenha, String tipoUsuario,
+    /*public boolean atualizaSenhaPessoa(String senha, String login, String novaSenha, String tipoUsuario,
             CalendarioSistema calendarioSistema) {
         for (Pessoa pessoa : listaPessoa) {
 
@@ -233,7 +233,7 @@ public class PessoaDAO {
 
         }
         return false;
-    }
+    }*/
 
     /*private boolean verificaSeNomeEstaSendoUsado(String nome) {
         for (Pessoa pessoa : listaPessoa) {
@@ -454,7 +454,7 @@ public class PessoaDAO {
         return adicionado != false;
 
     }
-//+ "tp.datacriacao, tp.datamodificacao\n"
+
 
     public void BuscaPessoaNoBancoDeDados() {
 
@@ -564,10 +564,10 @@ public class PessoaDAO {
 
         boolean atualizado = true;
 
-        String atualizaCpfPessoa = "update pessoa set enderecopessoa = ? where cpf = ?";
+        String atualizaEnderecoPessoa = "update pessoa set enderecopessoa = ? where cpf = ?";
 
         try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                PreparedStatement pstm = connection.prepareStatement(atualizaCpfPessoa)) {
+                PreparedStatement pstm = connection.prepareStatement(atualizaEnderecoPessoa)) {
 
             pstm.setString(1, novoeEndereco);
             pstm.setString(2, pessoa.getCpf());
@@ -583,26 +583,27 @@ public class PessoaDAO {
         return atualizado != false;
     }
 
-    public boolean AtualizaTelefonePessoaNoBancoDeDados(String novoCpf, Pessoa pessoa) {
+    public boolean AtualizaTelefonePessoaNoBancoDeDados(String novoTelefonePessoa, Pessoa pessoa) {
 
         boolean atualizado = true;
 
-        String atualizaCpfPessoa = "update pessoa set cpf = ? where cpf = ?";
+        String atualizaTelefonePessoa = "update tipousuario set telefonepessoa = ? where cpfpessoa = ? and tipousuario = ?";
 
-        if (!verificaSeCpfEstaSendoUsado(novoCpf) == true) {
+        if (!verificaSeTelefoneEstaSendoUsado(novoTelefonePessoa) == true) {
 
             try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                    PreparedStatement pstm = connection.prepareStatement(atualizaCpfPessoa)) {
+                    PreparedStatement pstm = connection.prepareStatement(atualizaTelefonePessoa)) {
 
-                pstm.setString(1, novoCpf);
+                pstm.setString(1, novoTelefonePessoa);
                 pstm.setString(2, pessoa.getCpf());
+                pstm.setString(3, pessoa.getTipoUsuario());
 
                 pstm.execute();
 
             } catch (SQLException erro) {
 
                 atualizado = false;
-                System.out.println("\n Nao foi possivel Atualizar o Cpf da pessoa no banco de dados!\n" + erro.getMessage());
+                System.out.println("\n Nao foi possivel Atualizar o telefone da pessoa no banco de dados!\n" + erro.getMessage());
             }
 
         } else {
@@ -611,6 +612,61 @@ public class PessoaDAO {
 
         return atualizado != false;
 
+    }
+    
+    public boolean AtualizaloginPessoaNoBancoDeDados(String novoLoginPessoa, Pessoa pessoa) {
+
+        boolean atualizado = true;
+
+        String atualizaLoginPessoa = "update tipousuario set logintipousuario = ? where cpfpessoa = ? and tipousuario = ?";
+
+        if (!verificaSeloginEstaSendoUsado(novoLoginPessoa) == true) {
+
+            try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                    PreparedStatement pstm = connection.prepareStatement(atualizaLoginPessoa)) {
+
+                pstm.setString(1, novoLoginPessoa);
+                pstm.setString(2, pessoa.getCpf());
+                pstm.setString(3, pessoa.getTipoUsuario());
+
+                pstm.execute();
+
+            } catch (SQLException erro) {
+
+                atualizado = false;
+                System.out.println("\n Nao foi possivel Atualizar o Login da pessoa no banco de dados!\n" + erro.getMessage());
+            }
+
+        } else {
+            atualizado = false;
+        }
+
+        return atualizado != false;
+
+    }
+    
+    public boolean AtualizaSenhaPessoaNoBancoDeDados(String novaSenha, Pessoa pessoa) {
+
+        boolean atualizado = true;
+
+        String atualizaSenhaPessoa = "update tipousuario set senhatipousuario = ? where cpfpessoa = ? and tipousuario = ?";
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                PreparedStatement pstm = connection.prepareStatement(atualizaSenhaPessoa)) {
+
+            pstm.setString(1, novaSenha);
+            pstm.setString(2, pessoa.getCpf());
+            pstm.setString(3, pessoa.getTipoUsuario());
+
+            pstm.execute();
+
+        } catch (SQLException erro) {
+
+            atualizado = false;
+            System.out.println("\n Nao foi possivel Atualizar A Senha da pessoa no banco de dados!\n" + erro.getMessage());
+        }
+
+        return atualizado != false;
     }
 
 }
