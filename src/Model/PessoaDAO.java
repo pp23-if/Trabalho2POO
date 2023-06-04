@@ -402,11 +402,12 @@ public class PessoaDAO {
 
         boolean adicionado = true;
 
-        String inserePessoa = "insert into pessoa (nome,enderecopessoa,cpf,telefonepessoa) \n"
-                + "values (?,?,?,?)";
+        String inserePessoa = "insert into pessoa (nome,enderecopessoa,cpf) \n"
+                + "values (?,?,?)";
 
-        String insereTipoUsuario = "insert into tipousuario (cpfpessoa,logintipousuario,senhatipousuario,tipousuario,datacriacao) \n"
-                + "values (?,?,?,?,?)";
+        String insereTipoUsuario = "insert into tipousuario (cpfpessoa,logintipousuario,senhatipousuario,"
+                + "tipousuario, telefonepessoa, datacriacao) \n"
+                + "values (?,?,?,?,?,?)";
 
         try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
 
@@ -418,20 +419,21 @@ public class PessoaDAO {
                 pstmInserePessoa.setString(1, pessoa.getNomePessoa());
                 pstmInserePessoa.setString(2, pessoa.getEnderecoPessoa());
                 pstmInserePessoa.setString(3, pessoa.getCpf());
-                pstmInserePessoa.setString(4, pessoa.getTelefonePessoa());
-
+                
                 pstmInserePessoa.execute();
 
                 pstmInsereTipoUsuario.setString(1, pessoa.getCpf());
                 pstmInsereTipoUsuario.setString(2, pessoa.getLoginPessoa());
                 pstmInsereTipoUsuario.setString(3, pessoa.getSenhaPessoa());
                 pstmInsereTipoUsuario.setString(4, pessoa.getTipoUsuario());
+                pstmInsereTipoUsuario.setString(5, pessoa.getTelefonePessoa());
 
                 LocalDateTime dc = pessoa.getDataCriacao();
                 DateTimeFormatter fd = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
                 fd.format(dc);
-                String dataModificacao = dc.format(fd);
-                pstmInsereTipoUsuario.setString(5, dataModificacao);
+                String dataCriacao = dc.format(fd);
+                
+                pstmInsereTipoUsuario.setString(6,dataCriacao);
 
                 pstmInsereTipoUsuario.execute();
 
