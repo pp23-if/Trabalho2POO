@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Admnistrador;
 import Model.AdmnistradorDAO;
+import Model.AtualizaAplicacao;
 import Model.CalendarioSistema;
 import Model.ConexaoBancoDeDados;
 import Model.ConsultaDAO;
@@ -46,10 +47,14 @@ public class GerenciaControladoras {
             calendarioSistema, consultaDAO);
     FinanceiroAdmDAO financeiroAdmDAO = new FinanceiroAdmDAO();
     FinanceiroMedicoDAO financeiroMedicoDAO = new FinanceiroMedicoDAO();
+    
+    AtualizaAplicacao atualizaAplicacao = new AtualizaAplicacao();
 
     public GerenciaControladoras() {
 
-        pessoaDAO.BuscaPessoaNoBancoDeDados();
+        atualizaAplicacao.atualizaAplicacaoComBancoDeDados(pessoaDAO, medicoDAO, franquiaDAO, unidadeFranquiaDAO, 
+                consultaDAO, procedimentoDAO, infoConsultaDAO, financeiroAdmDAO, 
+                financeiroMedicoDAO, admnistradorDAO);
         
         int opcao;
 
