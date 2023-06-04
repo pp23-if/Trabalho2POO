@@ -1,5 +1,9 @@
 package Model;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -229,4 +233,54 @@ public class FranquiaDAO {
         return null;
    }
 
+   
+   public void BuscaFranquiaNoBancoDeDados(PessoaDAO pessoaDAO) {
+
+        listaFranquia.clear();
+        
+        String buscaFranquia = "select idfranquia, nomefranquia, cnpj, cidade, endereco, cpfdono from franquia;";
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                PreparedStatement pstm = connection.prepareStatement(buscaFranquia);
+                ResultSet rs = pstm.executeQuery(buscaFranquia)) {
+
+            while (rs.next()) {
+
+                Franquia franquia = new Franquia();
+
+                String cpfDonoFranquia = rs.getString("cpfdono");
+                Pessoa pessoaDonoFranquia = pessoaDAO.buscaPessoaDonoDeFranquiaPorCpf(cpfDonoFranquia);
+                franquia.setPessoa(pessoaDonoFranquia);
+                
+                franquia.setIdFranquia(rs.getInt("idfranquia"));
+                franquia.setNomeFranquia(rs.getString("nomefranquia"));
+                franquia.setCnpj(rs.getString("cnpj"));
+                franquia.setCidade(rs.getString("cidade"));
+                franquia.setEnderecoFranquia(rs.getString("endereco"));
+               
+                
+
+//                String dc = rs.getString("datacriacao");
+//                LocalDateTime dataCriacao = null;
+//                if (dataCriacao != null) {
+//                    DateTimeFormatter fd = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+//                    dataCriacao.parse(dc, fd);
+//                }
+//
+//                String dm = rs.getString("datamodificacao");
+//                LocalDateTime dataModificacao = null;
+//                DateTimeFormatter fdm = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+//                dataModificacao.parse(dm, fdm);
+//                pessoa.setDataCriacao(dataCriacao);
+//                pessoa.setDataModificacao(dataModificacao);
+                listaFranquia.add(franquia);
+
+            }
+
+        } catch (SQLException erro) {
+            System.out.println("\n Nao foi possivel Buscar os dados dos Medicos no banco de dados!\n" + erro.getMessage());
+        }
+
+    }
+   
 }

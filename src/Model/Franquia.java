@@ -17,6 +17,11 @@ public class Franquia {
 
     public Franquia() {
     }
+
+    public void setIdFranquia(int idFranquia) {
+        this.idFranquia = idFranquia;
+    }
+    
     
     public int getIdFranquia() {
         return idFranquia;
@@ -154,8 +159,8 @@ public class Franquia {
                     + "Cidade: " + this.cidade + "," + " "
                     + "Endereco: " + this.enderecoFranquia + "\n"
                     + "Dono: " + pessoa.getNomePessoa() + "," + " "
-                    + "Cpf: " + pessoa.getCpf() + "," + " "
-                    + "Data e Hora de Criacao: " + fd.format(dataCriacao) + "," + " ";
+                    + "Cpf: " + pessoa.getCpf() + "," + " ";
+                    //+ "Data e Hora de Criacao: " + fd.format(dataCriacao) + "," + " ";
         } else {
             return "ID - Franquia: " + this.idFranquia + "," + " "
                     + "Franquia: " + this.nomeFranquia + "," + " "
@@ -163,9 +168,9 @@ public class Franquia {
                     + "Cidade: " + this.cidade + "," + " "
                     + "Endereco: " + this.enderecoFranquia + "\n"
                     + "Dono: " + pessoa.getNomePessoa() + "," + " "
-                    + "Cpf: " + pessoa.getCpf() + "," + " "
-                    + "Data e Hora de Criacao: " + fd.format(dataCriacao) + "," + " "
-                    + "Data e Hora de Modificacao: " + fd.format(dataModificacao) + "," + " ";
+                    + "Cpf: " + pessoa.getCpf() + "," + " ";
+                    //+ "Data e Hora de Criacao: " + fd.format(dataCriacao) + "," + " "
+                    //+ "Data e Hora de Modificacao: " + fd.format(dataModificacao) + "," + " ";
         }
 
     }
