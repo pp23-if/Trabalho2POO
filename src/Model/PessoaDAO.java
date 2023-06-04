@@ -458,9 +458,9 @@ public class PessoaDAO {
 
         listaPessoa.clear();
 
-        String buscaPessoa = "select p.idpessoa,p.nome, p.enderecopessoa,\n"
-                + "p.cpf, p.telefonepessoa, \n"
-                + "tp.tipousuario, tp.logintipousuario, tp.senhatipousuario, tp.tipousuario\n"
+        String buscaPessoa = "select p.nome, p.enderecopessoa,\n"
+                + "p.cpf, \n"
+                + "tp.idpessoa, tp.logintipousuario, tp.senhatipousuario, tp.tipousuario, tp.telefonepessoa\n"
                 + "from pessoa p inner join tipousuario tp\n"
                 + "on p.cpf = tp.cpfpessoa;";
 
@@ -472,14 +472,14 @@ public class PessoaDAO {
 
                 Pessoa pessoa = new Pessoa();
 
-                pessoa.setIdPessoa(rs.getInt("idpessoa"));
                 pessoa.setNomePessoa(rs.getString("nome"));
-                pessoa.setCpf(rs.getString("cpf"));
                 pessoa.setEnderecoPessoa(rs.getString("enderecopessoa"));
-                pessoa.setTelefonePessoa(rs.getString("telefonepessoa"));
+                pessoa.setCpf(rs.getString("cpf"));
+                pessoa.setIdPessoa(rs.getInt("idpessoa"));
                 pessoa.setLoginPessoa(rs.getString("logintipousuario"));
                 pessoa.setSenhaPessoa(rs.getString("senhatipousuario"));
                 pessoa.setTipoUsuario(rs.getString("tipousuario"));
+                pessoa.setTelefonePessoa(rs.getString("telefonepessoa"));
                 pessoa.setHabilitado(true);
 
 //                String dc = rs.getString("datacriacao");
@@ -557,7 +557,7 @@ public class PessoaDAO {
         return atualizado != false;
 
     }
-    
+
     public boolean AtualizaEnderecoPessoaNoBancoDeDados(String novoeEndereco, Pessoa pessoa) {
 
         boolean atualizado = true;
@@ -575,10 +575,40 @@ public class PessoaDAO {
         } catch (SQLException erro) {
 
             atualizado = false;
-            System.out.println("\n Nao foi possivel Atualizar o Cpf da pessoa no banco de dados!\n" + erro.getMessage());
+            System.out.println("\n Nao foi possivel Atualizar O Endereco da pessoa no banco de dados!\n" + erro.getMessage());
         }
 
         return atualizado != false;
+    }
+
+    public boolean AtualizaTelefonePessoaNoBancoDeDados(String novoCpf, Pessoa pessoa) {
+
+        boolean atualizado = true;
+
+        String atualizaCpfPessoa = "update pessoa set cpf = ? where cpf = ?";
+
+        if (!verificaSeCpfEstaSendoUsado(novoCpf) == true) {
+
+            try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                    PreparedStatement pstm = connection.prepareStatement(atualizaCpfPessoa)) {
+
+                pstm.setString(1, novoCpf);
+                pstm.setString(2, pessoa.getCpf());
+
+                pstm.execute();
+
+            } catch (SQLException erro) {
+
+                atualizado = false;
+                System.out.println("\n Nao foi possivel Atualizar o Cpf da pessoa no banco de dados!\n" + erro.getMessage());
+            }
+
+        } else {
+            atualizado = false;
+        }
+
+        return atualizado != false;
+
     }
 
 }
