@@ -4,7 +4,6 @@ import Model.Admnistrador;
 import Model.AdmnistradorDAO;
 import Model.AtualizaAplicacao;
 import Model.CalendarioSistema;
-import Model.ConexaoBancoDeDados;
 import Model.ConsultaDAO;
 import Model.FinanceiroAdmDAO;
 import Model.FinanceiroMedicoDAO;
@@ -79,11 +78,11 @@ public class GerenciaControladoras {
                     System.out.println("\nMostrando Todas as PESSOAS Cadastradas: " + "\n");
                     pessoaDAO.mostraTodasPessoas();
                     
+                    System.out.println("\nMostrando TodOS os MEDICOS Cadastrados: " + "\n");
+                    medicoDAO.mostraTodosMedicos();
                     
                     
-                    /*System.out.println("\nMostrando TodOS os MEDICOS Cadastrados: " + "\n");
-                    medicoDAO.mostraTodosMedicosHabilitados();
-                    System.out.println("\nMostrando Todas as FRANQUIAS Cadastradas: " + "\n");
+                    /*System.out.println("\nMostrando Todas as FRANQUIAS Cadastradas: " + "\n");
                     franquiaDAO.mostraTodasFranquias();
                     System.out.println("\nMostrando Todas as UNIDADES DE FRANQUIAS Cadastradas: " + "\n");
                     unidadeFranquiaDAO.MostraTodasUnidadesDeFranquia();

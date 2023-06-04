@@ -1,5 +1,9 @@
 package Model;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -241,5 +245,52 @@ public class MedicoDAO {
             }
         }
         return null;
+    }
+    
+    
+    public void BuscaMedicoNoBancoDeDados(PessoaDAO pessoaDAO) {
+
+        listaMedico.clear();
+        
+        String buscaMedico = "select idmedico, cpfmedico, crm, especialidade from  medico;";
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                PreparedStatement pstm = connection.prepareStatement(buscaMedico);
+                ResultSet rs = pstm.executeQuery(buscaMedico)) {
+
+            while (rs.next()) {
+
+                Medico medico = new Medico();
+
+                String cpfPessoa = rs.getString("cpfmedico");
+                Pessoa pessoa = pessoaDAO.buscaPessoaMedicoPorCpf(cpfPessoa);
+                medico.setPessoa(pessoa);
+                
+                medico.setIdMedico(rs.getInt("idmedico"));
+                medico.setEspecialidade(rs.getString("especialidade"));
+                medico.setCrm(rs.getString("crm"));
+                
+
+//                String dc = rs.getString("datacriacao");
+//                LocalDateTime dataCriacao = null;
+//                if (dataCriacao != null) {
+//                    DateTimeFormatter fd = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+//                    dataCriacao.parse(dc, fd);
+//                }
+//
+//                String dm = rs.getString("datamodificacao");
+//                LocalDateTime dataModificacao = null;
+//                DateTimeFormatter fdm = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+//                dataModificacao.parse(dm, fdm);
+//                pessoa.setDataCriacao(dataCriacao);
+//                pessoa.setDataModificacao(dataModificacao);
+                listaMedico.add(medico);
+
+            }
+
+        } catch (SQLException erro) {
+            System.out.println("\n Nao foi possivel Buscar os dados dos Medicos no banco de dados!\n" + erro.getMessage());
+        }
+
     }
 }
