@@ -1,5 +1,9 @@
 package Model;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,14 +48,14 @@ public class UnidadeFranquiaDAO {
 
     }
 
-    public UnidadeFranquia MostraTodasUnidadesDeFranquia() {
+    public void MostraTodasUnidadesDeFranquia() {
         for (UnidadeFranquia unidadeFranquia : listaUnidadeFranquia) {
 
             if (unidadeFranquia != null) {
                 System.out.println(unidadeFranquia + "\n");
             }
         }
-        return null;
+        
     }
 
     public UnidadeFranquia buscaUnidadeFranquiaAtravesDaPessoaVinculada(Pessoa pessoa) {
@@ -206,4 +210,60 @@ public class UnidadeFranquiaDAO {
     }
     
    
+    
+    
+    public void BuscaUnidadeFranquiaNoBancoDeDados(PessoaDAO pessoaDAO, FranquiaDAO franquiaDAO) {
+
+        listaUnidadeFranquia.clear();
+        
+        String buscaUnidadeFranquia = "select idunidadefranquia, cnpjfranquia, cidade, endereco, cpfdonounidade"
+                + " from unidadefranquia;";
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                PreparedStatement pstm = connection.prepareStatement(buscaUnidadeFranquia);
+                ResultSet rs = pstm.executeQuery(buscaUnidadeFranquia)) {
+
+            while (rs.next()) {
+
+                UnidadeFranquia unidadeFranquia = new UnidadeFranquia();
+
+                String cpfDonoUnidadeFranquia = rs.getString("cpfdonounidade");
+                Pessoa pessoaDonoUnidadeFranquia = pessoaDAO.buscaPessoaDonoDeUnidadeFranquiaPorCpf(cpfDonoUnidadeFranquia);
+              
+                String cnpjFranquia = rs.getString("cnpjfranquia");
+                Franquia franquiaVinculada = franquiaDAO.buscaFranquiaPorCnpj(cnpjFranquia);
+                
+                unidadeFranquia.setPessoa(pessoaDonoUnidadeFranquia);
+                unidadeFranquia.setFranquia(franquiaVinculada);
+                
+                unidadeFranquia.setIdUnidadeFranquia(rs.getInt("idunidadefranquia"));
+                unidadeFranquia.setCidadeUnidadeFranquia(rs.getString("cidade"));
+                unidadeFranquia.setEnderecoUnidadeFranquia(rs.getString("endereco"));
+               
+                
+
+//                String dc = rs.getString("datacriacao");
+//                LocalDateTime dataCriacao = null;
+//                if (dataCriacao != null) {
+//                    DateTimeFormatter fd = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+//                    dataCriacao.parse(dc, fd);
+//                }
+//
+//                String dm = rs.getString("datamodificacao");
+//                LocalDateTime dataModificacao = null;
+//                DateTimeFormatter fdm = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+//                dataModificacao.parse(dm, fdm);
+//                pessoa.setDataCriacao(dataCriacao);
+//                pessoa.setDataModificacao(dataModificacao);
+                listaUnidadeFranquia.add(unidadeFranquia);
+
+            }
+
+        } catch (SQLException erro) {
+            System.out.println("\n Nao foi possivel Buscar os dados da Unidade de Franquia no banco de dados!\n" + erro.getMessage());
+        }
+
+    }
+   
+    
 }
