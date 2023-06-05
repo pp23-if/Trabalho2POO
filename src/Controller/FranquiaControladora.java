@@ -244,7 +244,7 @@ public class FranquiaControladora {
                     String novaSenhaDonoFranquia = scanner.nextLine();
                     novaSenhaDonoFranquia = vd.validaString(novaSenhaDonoFranquia);
 
-                    if (franquiaDAO.atualizaSenhaDonoDeFranquia(franquia, novaSenhaDonoFranquia, calendarioSistema) == true) {
+                    if (franquiaDAO.AtualizaSenhaDonoFranquiaNoBancoDeDados(novaSenhaDonoFranquia, franquia) == true) {
                         System.out.println("\nSenha De Dono De Franquia Atualizado Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar a Senha De Dono De Franquia.");
@@ -257,7 +257,7 @@ public class FranquiaControladora {
                     String novoTelefoneDonoFranquia = scanner.nextLine();
                     novoTelefoneDonoFranquia = vd.validaString(novoTelefoneDonoFranquia);
 
-                    if (franquiaDAO.atualizaTelefoneDonoDeFranquia(franquia, novoTelefoneDonoFranquia, calendarioSistema) == true) {
+                    if (franquiaDAO.AtualizaTelefoneDonoFranquiaNoBancoDeDados(novoTelefoneDonoFranquia, franquia) == true) {
                         System.out.println("\nTelefone De Dono De Franquia Atualizado Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar o Telefone De Dono De Franquia.");
