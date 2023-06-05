@@ -369,8 +369,6 @@ public class FranquiaControladora {
                     System.out.println("\nLogin De Dono Unidade Franquia Ja Esta Sendo Usado!");
                 } else {
                     
-                    
-                    
                     System.out.println("\nInforme A Senha De Dono De Unidade De Franquia: ");
                     String senhaDonoUnidadeFranquia = scanner.nextLine();
                     senhaDonoUnidadeFranquia = vd.validaString(senhaDonoUnidadeFranquia);
@@ -382,7 +380,6 @@ public class FranquiaControladora {
                             "DonoDeUnidadeDeFranquia", calendarioSistema.getDataHoraSistema());
 
                   
-                        
                         UnidadeFranquia unidadeFranquia = new UnidadeFranquia();
                         unidadeFranquia.setCidadeUnidadeFranquia(cidadeUnidadeFranquia);
                         unidadeFranquia.setEnderecoUnidadeFranquia(enderecoUnidadeFranquia);
@@ -395,11 +392,6 @@ public class FranquiaControladora {
                             System.out.println("\nNao Foi Possivel Cadastrar A Unidade De Franquia.");
                         }
                    
-
-                    
-                    
-                    
-                    
                     
                 }
 

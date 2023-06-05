@@ -101,7 +101,7 @@ public class UnidadeFranquiaDAO {
         return null;
     }
 
-    public boolean atualizaCidadeUnidadeFranquia(UnidadeFranquia uf, String novaCidadeUnidadeFranquia,
+   /* public boolean atualizaCidadeUnidadeFranquia(UnidadeFranquia uf, String novaCidadeUnidadeFranquia,
             CalendarioSistema calendarioSistema) {
         for (UnidadeFranquia unidadeFranquia : listaUnidadeFranquia) {
 
@@ -125,7 +125,7 @@ public class UnidadeFranquiaDAO {
             }
         }
         return false;
-    }
+    }*/
 
     public boolean atualizaLoginDonoDeUnidadeDeFranquia(UnidadeFranquia uf, String novoLoginDonoDeUnidadeFranquia,
             CalendarioSistema calendarioSistema) {
@@ -336,5 +336,56 @@ public class UnidadeFranquiaDAO {
 
     }
    
+    
+    
+    public boolean AtualizaCidadeUnidadeFranquiaNoBancoDeDados(String novaCidadeUnidadeFranquia,
+            UnidadeFranquia unidadeFranquia) {
+
+        boolean atualizado = true;
+
+        String atualizaCidadeUnidadeFranquia = "update unidadefranquia set cidade = ? where idunidadefranquia = ?";
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                PreparedStatement pstm = connection.prepareStatement(atualizaCidadeUnidadeFranquia)) {
+
+            pstm.setString(1, novaCidadeUnidadeFranquia);
+            pstm.setInt(2, unidadeFranquia.getIdUnidadeFranquia());
+
+            pstm.execute();
+
+        } catch (SQLException erro) {
+
+            atualizado = false;
+            System.out.println("\n Nao foi possivel Atualizar A Cidade Da Unidade Franquia no banco de dados!\n" + erro.getMessage());
+        }
+
+        return atualizado != false;
+    }
+   
+
+    
+    public boolean AtualizaEnderecoUnidadeFranquiaNoBancoDeDados(String novoEnderecoUnidadeFranquia,
+            UnidadeFranquia unidadeFranquia) {
+
+        boolean atualizado = true;
+
+       String atualizaEnderecoUnidadeFranquia = "update unidadefranquia set endereco = ? where idunidadefranquia = ?";
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+             PreparedStatement pstm = connection.prepareStatement(atualizaEnderecoUnidadeFranquia)) {
+
+            pstm.setString(1, novoEnderecoUnidadeFranquia);
+            pstm.setInt(2, unidadeFranquia.getIdUnidadeFranquia());
+
+            pstm.execute();
+
+        } catch (SQLException erro) {
+
+            atualizado = false;
+            System.out.println("\n Nao foi possivel Atualizar O Endereco Da Unidade Franquia no banco de dados!\n" + erro.getMessage());
+        }
+
+        return atualizado != false;
+    }
     
 }
