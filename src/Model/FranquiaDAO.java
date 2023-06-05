@@ -85,7 +85,7 @@ public class FranquiaDAO {
         return false;
     }
 
-    public boolean atualizarNomeFranquia(Franquia f, String novoNomeFranquia, 
+    /*public boolean atualizarNomeFranquia(Franquia f, String novoNomeFranquia, 
             CalendarioSistema calendarioSistema) {
 
         if (!verificaSeNomeFranquiaEstaSendoUsado(novoNomeFranquia) == true) {
@@ -100,11 +100,11 @@ public class FranquiaDAO {
         }
 
         return false;
-    }
+    }*/
 
     
 
-    public boolean atualizarCidadeFranquia(Franquia f, String novaCidadeFranquia, 
+    /*public boolean atualizarCidadeFranquia(Franquia f, String novaCidadeFranquia, 
             CalendarioSistema calendarioSistema) {
         for (Franquia franquia : listaFranquia) {
 
@@ -115,7 +115,7 @@ public class FranquiaDAO {
             }
         }
         return false;
-    }
+    }*/
 
     public boolean atualizarEnderecoFranquia(Franquia f, String novoEnderecoFranquia, 
             CalendarioSistema calendarioSistema) {
@@ -353,6 +353,60 @@ public class FranquiaDAO {
             System.out.println("\n Nao foi possivel Buscar os dados dos Medicos no banco de dados!\n" + erro.getMessage());
         }
 
+    }
+   
+   
+   public boolean AtualizaNomeFranquiaNoBancoDeDados(String novoNomeFranquia, Franquia franquia) {
+
+        boolean atualizado = true;
+
+        String atualizaNomeFranquia = "update franquia set nomefranquia = ? where cnpj = ?";
+
+        if (!verificaSeNomeFranquiaEstaSendoUsado(novoNomeFranquia) == true) {
+
+            try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                 PreparedStatement pstm = connection.prepareStatement(atualizaNomeFranquia)) {
+
+                pstm.setString(1, novoNomeFranquia);
+                pstm.setString(2, franquia.getCnpj());
+               
+                pstm.execute();
+
+            } catch (SQLException erro) {
+
+                atualizado = false;
+                System.out.println("\n Nao foi possivel Atualizar o Nome Da Franquia no banco de dados!\n" + erro.getMessage());
+            }
+
+        } else {
+            atualizado = false;
+        }
+
+        return atualizado != false;
+
+    }
+   
+   public boolean AtualizaCidadeFranquiaNoBancoDeDados(String novaCidadeFranquia, Franquia franquia) {
+
+        boolean atualizado = true;
+
+        String atualizaCidadeFranquia = "update franquia set cidade = ? where cnpj = ?";
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                PreparedStatement pstm = connection.prepareStatement(atualizaCidadeFranquia)) {
+
+            pstm.setString(1, novaCidadeFranquia);
+            pstm.setString(2, franquia.getCnpj());
+
+            pstm.execute();
+
+        } catch (SQLException erro) {
+
+            atualizado = false;
+            System.out.println("\n Nao foi possivel Atualizar A Cidade Da Franquia no banco de dados!\n" + erro.getMessage());
+        }
+
+        return atualizado != false;
     }
    
 }

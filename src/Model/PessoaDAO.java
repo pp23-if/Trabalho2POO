@@ -560,6 +560,7 @@ public class PessoaDAO {
         return atualizado != false;
     }
 
+    
     public boolean AtualizaCpfPessoaNoBancoDeDados(String novoCpf, Pessoa pessoa) {
 
         boolean atualizado = true;
@@ -590,6 +591,7 @@ public class PessoaDAO {
 
     }
 
+    
     public boolean AtualizaEnderecoPessoaNoBancoDeDados(String novoeEndereco, Pessoa pessoa) {
 
         boolean atualizado = true;
@@ -613,6 +615,7 @@ public class PessoaDAO {
         return atualizado != false;
     }
 
+    
     public boolean AtualizaTelefonePessoaNoBancoDeDados(String novoTelefonePessoa, Pessoa pessoa) {
 
         boolean atualizado = true;
@@ -644,6 +647,7 @@ public class PessoaDAO {
 
     }
     
+    
     public boolean AtualizaloginPessoaNoBancoDeDados(String novoLoginPessoa, Pessoa pessoa) {
 
         boolean atualizado = true;
@@ -674,6 +678,7 @@ public class PessoaDAO {
         return atualizado != false;
 
     }
+    
     
     public boolean AtualizaSenhaPessoaNoBancoDeDados(String novaSenha, Pessoa pessoa) {
 

@@ -340,6 +340,7 @@ public class MedicoDAO {
                 medico.setEspecialidade(rs.getString("especialidade"));
                 medico.setCrm(rs.getString("crm"));
                 
+                
 
 //                String dc = rs.getString("datacriacao");
 //                LocalDateTime dataCriacao = null;

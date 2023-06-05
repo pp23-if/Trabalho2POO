@@ -191,7 +191,7 @@ public class FranquiaControladora {
                     String novoNomeFranquia = scanner.nextLine();
                     novoNomeFranquia = vd.validaString(novoNomeFranquia);
 
-                    if (franquiaDAO.atualizarNomeFranquia(franquia, novoNomeFranquia, calendarioSistema) == true) {
+                    if (franquiaDAO.AtualizaNomeFranquiaNoBancoDeDados(novoNomeFranquia, franquia) == true) {
                         System.out.println("\nNome Da Franquia Atualizado Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar O Nome Da Franquia.");
@@ -205,7 +205,7 @@ public class FranquiaControladora {
                     String novaCidadeFranquia = scanner.nextLine();
                     novaCidadeFranquia = vd.validaString(novaCidadeFranquia);
 
-                    if (franquiaDAO.atualizarCidadeFranquia(franquia, novaCidadeFranquia, calendarioSistema) == true) {
+                    if (franquiaDAO.AtualizaCidadeFranquiaNoBancoDeDados(novaCidadeFranquia, franquia) == true) {
                         System.out.println("\nCidade Da Franquia Atualizado Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar A Cidade Da Franquia.");
