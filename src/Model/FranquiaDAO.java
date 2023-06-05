@@ -117,7 +117,7 @@ public class FranquiaDAO {
         return false;
     }*/
 
-    public boolean atualizarEnderecoFranquia(Franquia f, String novoEnderecoFranquia, 
+    /*public boolean atualizarEnderecoFranquia(Franquia f, String novoEnderecoFranquia, 
             CalendarioSistema calendarioSistema) {
         for (Franquia franquia : listaFranquia) {
 
@@ -128,9 +128,9 @@ public class FranquiaDAO {
             }
         }
         return false;
-    }
+    }*/
 
-    public boolean atualizaLoginDonoDeFranquia(Franquia f, String novoLoginDonoFranquia, 
+    /*public boolean atualizaLoginDonoDeFranquia(Franquia f, String novoLoginDonoFranquia, 
             CalendarioSistema calendarioSistema) {
 
         if (!verificaSeLoginDonoFranquiaEstaSendoUsado(novoLoginDonoFranquia) == true) {
@@ -145,7 +145,7 @@ public class FranquiaDAO {
         }
 
         return false;
-    }
+    }*/
 
     public boolean atualizaSenhaDonoDeFranquia(Franquia f, String novaSenhaDonoFranquia, 
             CalendarioSistema calendarioSistema) {
@@ -409,4 +409,61 @@ public class FranquiaDAO {
         return atualizado != false;
     }
    
+   
+    public boolean AtualizaEnderecoFranquiaNoBancoDeDados(String novoEnderecoFranquia, Franquia franquia) {
+
+        boolean atualizado = true;
+
+        String atualizaEnderecoFranquia = "update franquia set endereco = ? where cnpj = ?";
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+             PreparedStatement pstm = connection.prepareStatement(atualizaEnderecoFranquia)) {
+
+            pstm.setString(1, novoEnderecoFranquia);
+            pstm.setString(2, franquia.getCnpj());
+
+            pstm.execute();
+
+        } catch (SQLException erro) {
+
+            atualizado = false;
+            System.out.println("\n Nao foi possivel Atualizar O Endereco Da Franquia no banco de dados!\n" + erro.getMessage());
+        }
+
+        return atualizado != false;
+    }
+    
+    
+    
+     public boolean AtualizaLoginDonoFranquiaNoBancoDeDados(String novoLoginDonoFranquia, Franquia franquia) {
+
+        boolean atualizado = true;
+
+        String atualizaLoginDonoFranquia = "update tipousuario set logintipousuario = ? where cpfpessoa = ? and tipousuario = ?";
+
+        if (!verificaSeLoginDonoFranquiaEstaSendoUsado(novoLoginDonoFranquia) == true) {
+
+            try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                 PreparedStatement pstm = connection.prepareStatement(atualizaLoginDonoFranquia)) {
+
+                pstm.setString(1, novoLoginDonoFranquia);
+                pstm.setString(2, franquia.getPessoa().getCpf());
+                pstm.setString(3, franquia.getPessoa().getTipoUsuario());
+               
+                pstm.execute();
+
+            } catch (SQLException erro) {
+
+                atualizado = false;
+                System.out.println("\n Nao foi possivel Atualizar O Login Do Dono de Franquia no banco de dados!\n" 
+                        + erro.getMessage());
+            }
+
+        } else {
+            atualizado = false;
+        }
+
+        return atualizado != false;
+
+    }
 }

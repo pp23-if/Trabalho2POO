@@ -217,7 +217,7 @@ public class FranquiaControladora {
                     String novoEnderecoFranquia = scanner.nextLine();
                     novoEnderecoFranquia = vd.validaString(novoEnderecoFranquia);
 
-                    if (franquiaDAO.atualizarEnderecoFranquia(franquia, novoEnderecoFranquia, calendarioSistema) == true) {
+                    if (franquiaDAO.AtualizaEnderecoFranquiaNoBancoDeDados(novoEnderecoFranquia, franquia) == true) {
                         System.out.println("\nEndereco Da Franquia Atualizado Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar O Endereco Da Franquia.");
@@ -230,7 +230,7 @@ public class FranquiaControladora {
                     String novoLoginDonoFranquia = scanner.nextLine();
                     novoLoginDonoFranquia = vd.validaString(novoLoginDonoFranquia);
 
-                    if (franquiaDAO.atualizaLoginDonoDeFranquia(franquia, novoLoginDonoFranquia, calendarioSistema) == true) {
+                    if (franquiaDAO.AtualizaLoginDonoFranquiaNoBancoDeDados(novoLoginDonoFranquia, franquia) == true) {
                         System.out.println("\nLogin De Dono De Franquia Atualizado Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar o Login De Dono De Franquia.");
