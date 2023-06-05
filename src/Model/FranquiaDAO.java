@@ -253,23 +253,23 @@ public class FranquiaDAO {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmInsereDonoDeUnidadeDeFranquia = connection.prepareStatement(inserePessoaDonoDeFranquia);
+            try (PreparedStatement pstmInsereDonoDeFranquia = connection.prepareStatement(inserePessoaDonoDeFranquia);
                  PreparedStatement pstmInsereFranquia = connection.prepareStatement(insereFranquia)) {
 
-                pstmInsereDonoDeUnidadeDeFranquia.setString(1, pessoa.getCpf());
-                pstmInsereDonoDeUnidadeDeFranquia.setString(2, pessoa.getLoginPessoa());
-                pstmInsereDonoDeUnidadeDeFranquia.setString(3, pessoa.getSenhaPessoa());
-                pstmInsereDonoDeUnidadeDeFranquia.setString(4, pessoa.getTipoUsuario());
-                pstmInsereDonoDeUnidadeDeFranquia.setString(5, pessoa.getTelefonePessoa());
+                pstmInsereDonoDeFranquia.setString(1, pessoa.getCpf());
+                pstmInsereDonoDeFranquia.setString(2, pessoa.getLoginPessoa());
+                pstmInsereDonoDeFranquia.setString(3, pessoa.getSenhaPessoa());
+                pstmInsereDonoDeFranquia.setString(4, pessoa.getTipoUsuario());
+                pstmInsereDonoDeFranquia.setString(5, pessoa.getTelefonePessoa());
 
                 LocalDateTime dc = pessoa.getDataCriacao();
                 DateTimeFormatter fd = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
                 fd.format(dc);
                 String dataCriacao = dc.format(fd);
                 
-                pstmInsereDonoDeUnidadeDeFranquia.setString(6,dataCriacao);
+                pstmInsereDonoDeFranquia.setString(6,dataCriacao);
 
-                pstmInsereDonoDeUnidadeDeFranquia.execute();
+                pstmInsereDonoDeFranquia.execute();
                 
                 
                 pstmInsereFranquia.setString(1, franquia.getNomeFranquia());
@@ -281,9 +281,9 @@ public class FranquiaDAO {
                 LocalDateTime dcf = franquia.getDataCriacao();
                 DateTimeFormatter fdm = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
                 fd.format(dcf);
-                String dataCriacaoMedico = dcf.format(fdm);
+                String dataCriacaoFranquia = dcf.format(fdm);
                 
-                pstmInsereFranquia.setString(6, dataCriacaoMedico);
+                pstmInsereFranquia.setString(6, dataCriacaoFranquia);
                   
                 pstmInsereFranquia.execute();
 

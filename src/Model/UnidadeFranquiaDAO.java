@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -210,6 +212,75 @@ public class UnidadeFranquiaDAO {
     }
     
    
+    
+     public boolean insereUnidadeFranquiaNoBancoDeDados(Pessoa pessoa, Franquia franquia, UnidadeFranquia unidadeFranquia) {
+
+        boolean adicionado = true;
+        
+        
+       String inserePessoaDonoUnidadeDeFranquia = "insert into tipousuario (cpfpessoa,logintipousuario,senhatipousuario,"
+                + "tipousuario, telefonepessoa, datacriacao) \n"
+                + "values (?,?,?,?,?,?)";
+
+        String insereUnidadeDeFranquia = "insert into unidadefranquia (cnpjfranquia, cidade, endereco, cpfdonounidade, datacriacao) \n"
+                + "values (?,?,?,?,?)";
+
+       
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement pstmInsereDonoDeUnidadeDeFranquia = connection.prepareStatement(inserePessoaDonoUnidadeDeFranquia);
+                 PreparedStatement pstmInsereUnidadeDeFranquia = connection.prepareStatement(insereUnidadeDeFranquia)) {
+
+                pstmInsereDonoDeUnidadeDeFranquia.setString(1, pessoa.getCpf());
+                pstmInsereDonoDeUnidadeDeFranquia.setString(2, pessoa.getLoginPessoa());
+                pstmInsereDonoDeUnidadeDeFranquia.setString(3, pessoa.getSenhaPessoa());
+                pstmInsereDonoDeUnidadeDeFranquia.setString(4, pessoa.getTipoUsuario());
+                pstmInsereDonoDeUnidadeDeFranquia.setString(5, pessoa.getTelefonePessoa());
+
+                LocalDateTime dc = pessoa.getDataCriacao();
+                DateTimeFormatter fd = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
+                fd.format(dc);
+                String dataCriacao = dc.format(fd);
+                
+                pstmInsereDonoDeUnidadeDeFranquia.setString(6,dataCriacao);
+
+                pstmInsereDonoDeUnidadeDeFranquia.execute();
+                
+                
+                pstmInsereUnidadeDeFranquia.setString(1, franquia.getCnpj());
+                pstmInsereUnidadeDeFranquia.setString(2, unidadeFranquia.getCidadeUnidadeFranquia());
+                pstmInsereUnidadeDeFranquia.setString(3, unidadeFranquia.getEnderecoUnidadeFranquia());
+                pstmInsereUnidadeDeFranquia.setString(4, pessoa.getCpf());
+               
+                LocalDateTime ufdc = unidadeFranquia.getDataCriacao();
+                DateTimeFormatter fdm = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
+                fd.format(ufdc);
+                String dataCriacaoUnidadefranquia = ufdc.format(fdm);
+                
+                pstmInsereUnidadeDeFranquia.setString(5, dataCriacaoUnidadefranquia);
+                  
+                pstmInsereUnidadeDeFranquia.execute();
+
+                connection.commit();
+
+            } catch (SQLException erro) {
+
+                connection.rollback();
+                adicionado = false;
+                System.out.println("\n Nao foi possivel inserir o Medico no banco de dados!\n" + erro.getMessage());
+
+            }
+
+        } catch (SQLException erro) {
+
+        }
+
+        return adicionado != false;
+
+    }
+    
     
     
     public void BuscaUnidadeFranquiaNoBancoDeDados(PessoaDAO pessoaDAO, FranquiaDAO franquiaDAO) {

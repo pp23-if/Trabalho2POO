@@ -368,29 +368,39 @@ public class FranquiaControladora {
                 if (unidadeFranquiaDAO.verificaSeLoginDonoDeUnidadeFranquiaEstaEmUso(LoginDonoUnidadeFranquia) == true) {
                     System.out.println("\nLogin De Dono Unidade Franquia Ja Esta Sendo Usado!");
                 } else {
+                    
+                    
+                    
                     System.out.println("\nInforme A Senha De Dono De Unidade De Franquia: ");
                     String senhaDonoUnidadeFranquia = scanner.nextLine();
                     senhaDonoUnidadeFranquia = vd.validaString(senhaDonoUnidadeFranquia);
 
-                    Pessoa donoUnidadeFranquia = new Pessoa(pessoaEncontrada.getNomePessoa(),
+                    Pessoa pessoaDonoUnidadeFranquia = new Pessoa(pessoaEncontrada.getNomePessoa(),
                             pessoaEncontrada.getCpf(), pessoaEncontrada.getEnderecoPessoa(),
                             pessoaEncontrada.getTelefonePessoa(),
                             LoginDonoUnidadeFranquia, senhaDonoUnidadeFranquia,
                             "DonoDeUnidadeDeFranquia", calendarioSistema.getDataHoraSistema());
 
-                    if (pessoaDAO.adicionaPessoa(donoUnidadeFranquia) == true) {
-                        UnidadeFranquia unidadeFranquia = new UnidadeFranquia(franquia, cidadeUnidadeFranquia,
-                                enderecoUnidadeFranquia, donoUnidadeFranquia, calendarioSistema.getDataHoraSistema());
+                  
+                        
+                        UnidadeFranquia unidadeFranquia = new UnidadeFranquia();
+                        unidadeFranquia.setCidadeUnidadeFranquia(cidadeUnidadeFranquia);
+                        unidadeFranquia.setEnderecoUnidadeFranquia(enderecoUnidadeFranquia);
+                        unidadeFranquia.setDataCriacao(calendarioSistema.getDataHoraSistema());
 
-                        if (unidadeFranquiaDAO.adicionaUnidadeFranquia(unidadeFranquia) == true) {
+                        if (unidadeFranquiaDAO.insereUnidadeFranquiaNoBancoDeDados(pessoaDonoUnidadeFranquia, 
+                                franquia, unidadeFranquia) == true) {
                             System.out.println("\nUnidade De Franquia Cadastrada Com Sucesso!");
                         } else {
                             System.out.println("\nNao Foi Possivel Cadastrar A Unidade De Franquia.");
                         }
-                    } else {
-                        System.out.println("\n Erro ao Cadastrar Dono De Unidade Franquia.");
-                    }
+                   
 
+                    
+                    
+                    
+                    
+                    
                 }
 
             }
