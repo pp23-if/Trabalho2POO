@@ -8,6 +8,7 @@ import Model.Pessoa;
 import Model.PessoaDAO;
 import Model.ProcedimentoDAO;
 import View.MenuTitulosPaciente;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class PacienteControladora {
@@ -75,8 +76,9 @@ public class PacienteControladora {
                     System.out.println("\nInforme o Novo Nome: ");
                     String novoNomePessoa = scanner.nextLine();
                     novoNomePessoa = vd.validaString(novoNomePessoa);
+                    
 
-                    if (pessoaDAO.AtualizaNomePessoaNoBancoDeDados(novoNomePessoa, pessoa) == true) {
+                    if (pessoaDAO.AtualizaNomePessoaNoBancoDeDados(novoNomePessoa, pessoa, calendarioSistema) == true) {
                         System.out.println("\nO Nome Foi Atualizado Com Sucesso!");
                     } else {
                         System.out.println("\nNome Foi possivel Atualizar o Nome.");

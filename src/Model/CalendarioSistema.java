@@ -2,11 +2,10 @@ package Model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class CalendarioSistema {
 
-    private DateTimeFormatter fd = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    //private DateTimeFormatter fd = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     private LocalDateTime dataHoraSistema = LocalDateTime.of(2023, 1, 25, 8, 0, 0);
     private LocalDateTime hoje;
     private LocalDateTime amanha;

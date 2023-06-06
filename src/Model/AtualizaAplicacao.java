@@ -10,9 +10,9 @@ public class AtualizaAplicacao {
             AdmnistradorDAO admnistradorDAO)
     {
         pessoaDAO.BuscaPessoaNoBancoDeDados();
-        medicoDAO.BuscaMedicoNoBancoDeDados(pessoaDAO);
+        /*medicoDAO.BuscaMedicoNoBancoDeDados(pessoaDAO);
         franquiaDAO.BuscaFranquiaNoBancoDeDados(pessoaDAO);
-        unidadeFranquiaDAO.BuscaUnidadeFranquiaNoBancoDeDados(pessoaDAO, franquiaDAO);
+        unidadeFranquiaDAO.BuscaUnidadeFranquiaNoBancoDeDados(pessoaDAO, franquiaDAO);*/
     }
     
 }

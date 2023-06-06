@@ -5,12 +5,11 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
-import javax.swing.text.DateFormatter;
 
 public class PessoaDAO {
 
@@ -149,7 +148,7 @@ public class PessoaDAO {
         return atualizado;
 
     }*/
-    /*public boolean atualizaCpfPessoa(String cpf, String novoCpf,
+ /*public boolean atualizaCpfPessoa(String cpf, String novoCpf,
             CalendarioSistema calendarioSistema) {
 
         boolean atualizado = false;
@@ -168,7 +167,7 @@ public class PessoaDAO {
         return atualizado;
     }*/
 
-    /*public boolean atualizaEnderecoPessoa(String endereco, String novoEndereco,
+ /*public boolean atualizaEnderecoPessoa(String endereco, String novoEndereco,
             CalendarioSistema calendarioSistema) {
 
         boolean atualizado = false;
@@ -185,7 +184,7 @@ public class PessoaDAO {
         return atualizado;
     }*/
 
-    /*public boolean atualizaTelefonePessoa(String telefone, String novoTelefone, String tipoUsuario,
+ /*public boolean atualizaTelefonePessoa(String telefone, String novoTelefone, String tipoUsuario,
             CalendarioSistema calendarioSistema) {
 
         if (!verificaSeTelefoneEstaSendoUsado(novoTelefone) == true) {
@@ -203,7 +202,7 @@ public class PessoaDAO {
         return false;
     }*/
 
-    /*public boolean atualizaLoginPessoa(String login, String novoLogin, String tipoUsuario,
+ /*public boolean atualizaLoginPessoa(String login, String novoLogin, String tipoUsuario,
             CalendarioSistema calendarioSistema) {
         if (!verificaSeloginEstaSendoUsado(novoLogin) == true) {
             for (Pessoa pessoa : listaPessoa) {
@@ -220,7 +219,7 @@ public class PessoaDAO {
         return false;
     }*/
 
-    /*public boolean atualizaSenhaPessoa(String senha, String login, String novaSenha, String tipoUsuario,
+ /*public boolean atualizaSenhaPessoa(String senha, String login, String novaSenha, String tipoUsuario,
             CalendarioSistema calendarioSistema) {
         for (Pessoa pessoa : listaPessoa) {
 
@@ -235,7 +234,7 @@ public class PessoaDAO {
         return false;
     }*/
 
-    /*private boolean verificaSeNomeEstaSendoUsado(String nome) {
+ /*private boolean verificaSeNomeEstaSendoUsado(String nome) {
         for (Pessoa pessoa : listaPessoa) {
             if (pessoa != null && pessoa.getNomePessoa().equals(nome)) {
                 return true;
@@ -303,13 +302,12 @@ public class PessoaDAO {
 
     }
 
-    
     public Pessoa buscaPessoaMedicoPorCpf(String CpfPessoa) {
         for (Pessoa pessoa : listaPessoa) {
 
-            if (pessoa != null && pessoa.getCpf().equals(CpfPessoa) 
-               && pessoa.getTipoUsuario().equals("Medico")) {
-                
+            if (pessoa != null && pessoa.getCpf().equals(CpfPessoa)
+                    && pessoa.getTipoUsuario().equals("Medico")) {
+
                 return pessoa;
             }
         }
@@ -317,12 +315,12 @@ public class PessoaDAO {
 
     }
 
-     public Pessoa buscaPessoaDonoDeFranquiaPorCpf(String CpfDonoFranquia) {
+    public Pessoa buscaPessoaDonoDeFranquiaPorCpf(String CpfDonoFranquia) {
         for (Pessoa pessoa : listaPessoa) {
 
-            if (pessoa != null && pessoa.getCpf().equals(CpfDonoFranquia) 
-               && pessoa.getTipoUsuario().equals("DonodeFranquia")) {
-                
+            if (pessoa != null && pessoa.getCpf().equals(CpfDonoFranquia)
+                    && pessoa.getTipoUsuario().equals("DonodeFranquia")) {
+
                 return pessoa;
             }
         }
@@ -330,13 +328,12 @@ public class PessoaDAO {
 
     }
 
-    
-     public Pessoa buscaPessoaDonoDeUnidadeFranquiaPorCpf(String CpfDonoUnidadeFranquia) {
+    public Pessoa buscaPessoaDonoDeUnidadeFranquiaPorCpf(String CpfDonoUnidadeFranquia) {
         for (Pessoa pessoa : listaPessoa) {
 
-            if (pessoa != null && pessoa.getCpf().equals(CpfDonoUnidadeFranquia) 
-               && pessoa.getTipoUsuario().equals("DonoDeUnidadeDeFranquia")) {
-                
+            if (pessoa != null && pessoa.getCpf().equals(CpfDonoUnidadeFranquia)
+                    && pessoa.getTipoUsuario().equals("DonoDeUnidadeDeFranquia")) {
+
                 return pessoa;
             }
         }
@@ -344,7 +341,6 @@ public class PessoaDAO {
 
     }
 
-    
     public Pessoa filtraPessoasCandidatasAMedico() {
 
         for (Pessoa pessoa : listaPessoa) {
@@ -461,7 +457,7 @@ public class PessoaDAO {
                 pstmInserePessoa.setString(1, pessoa.getNomePessoa());
                 pstmInserePessoa.setString(2, pessoa.getEnderecoPessoa());
                 pstmInserePessoa.setString(3, pessoa.getCpf());
-                
+
                 pstmInserePessoa.execute();
 
                 pstmInsereTipoUsuario.setString(1, pessoa.getCpf());
@@ -469,13 +465,7 @@ public class PessoaDAO {
                 pstmInsereTipoUsuario.setString(3, pessoa.getSenhaPessoa());
                 pstmInsereTipoUsuario.setString(4, pessoa.getTipoUsuario());
                 pstmInsereTipoUsuario.setString(5, pessoa.getTelefonePessoa());
-
-                LocalDateTime dc = pessoa.getDataCriacao();
-                DateTimeFormatter fd = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
-                fd.format(dc);
-                String dataCriacao = dc.format(fd);
-                
-                pstmInsereTipoUsuario.setString(6,dataCriacao);
+                pstmInsereTipoUsuario.setTimestamp(6, Timestamp.valueOf(pessoa.getDataCriacao()));
 
                 pstmInsereTipoUsuario.execute();
 
@@ -497,17 +487,13 @@ public class PessoaDAO {
 
     }
 
-    
-
     public void BuscaPessoaNoBancoDeDados() {
 
         listaPessoa.clear();
 
-        String buscaPessoa = "select p.nome, p.enderecopessoa,\n"
-                + "p.cpf, \n"
-                + "tp.idpessoa, tp.logintipousuario, tp.senhatipousuario, tp.tipousuario, tp.telefonepessoa\n"
+        String buscaPessoa = "select p.*, tp.*\n"
                 + "from pessoa p inner join tipousuario tp\n"
-                + "on p.cpf = tp.cpfpessoa;";
+                + "on p.cpf = tp.cpfpessoa";
 
         try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
                 PreparedStatement pstm = connection.prepareStatement(buscaPessoa);
@@ -525,21 +511,19 @@ public class PessoaDAO {
                 pessoa.setSenhaPessoa(rs.getString("senhatipousuario"));
                 pessoa.setTipoUsuario(rs.getString("tipousuario"));
                 pessoa.setTelefonePessoa(rs.getString("telefonepessoa"));
+                
+                Timestamp dataCriacao = rs.getTimestamp("datacriacao");
+                pessoa.setDataCriacao(dataCriacao.toLocalDateTime());
+                
+                Timestamp dataModificacao = rs.getTimestamp("datamodificacao");
+                if(dataModificacao != null)
+                {
+                    pessoa.setDataModificacao(dataModificacao.toLocalDateTime());  
+                }
+              
+                
                 pessoa.setHabilitado(true);
 
-//                String dc = rs.getString("datacriacao");
-//                LocalDateTime dataCriacao = null;
-//                if (dataCriacao != null) {
-//                    DateTimeFormatter fd = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-//                    dataCriacao.parse(dc, fd);
-//                }
-//
-//                String dm = rs.getString("datamodificacao");
-//                LocalDateTime dataModificacao = null;
-//                DateTimeFormatter fdm = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-//                dataModificacao.parse(dm, fdm);
-//                pessoa.setDataCriacao(dataCriacao);
-//                pessoa.setDataModificacao(dataModificacao);
                 listaPessoa.add(pessoa);
 
             }
@@ -550,19 +534,28 @@ public class PessoaDAO {
 
     }
 
-    public boolean AtualizaNomePessoaNoBancoDeDados(String novoNome, Pessoa pessoa) {
+    public boolean AtualizaNomePessoaNoBancoDeDados(String novoNome, Pessoa pessoa, CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
 
-        String atualizaNomePessoa = "update pessoa set nome = ? where cpf = ?";
+        String atualizaNomePessoa = "update pessoa set nome = ?  where cpf = ?";
+        
+        String atualizaDataAlteracaoPessoa = "update tipousuario set datamodificacao = ? where cpfpessoa = ?";
 
         try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                PreparedStatement pstm = connection.prepareStatement(atualizaNomePessoa)) {
+             PreparedStatement pstmAtualizaNomePessoa = connection.prepareStatement(atualizaNomePessoa);
+             PreparedStatement pstmAtualizaDataAlteracaoPessoa = connection.prepareStatement(atualizaDataAlteracaoPessoa)) {
 
-            pstm.setString(1, novoNome);
-            pstm.setString(2, pessoa.getCpf());
+            pstmAtualizaNomePessoa.setString(1, novoNome);
+            pstmAtualizaNomePessoa.setString(2, pessoa.getCpf());
 
-            pstm.execute();
+            pstmAtualizaNomePessoa.execute();
+            
+            
+            pstmAtualizaDataAlteracaoPessoa.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+            pstmAtualizaDataAlteracaoPessoa.setString(2, pessoa.getCpf());
+            
+            pstmAtualizaDataAlteracaoPessoa.execute();
 
         } catch (SQLException erro) {
 
@@ -573,7 +566,6 @@ public class PessoaDAO {
         return atualizado != false;
     }
 
-    
     public boolean AtualizaCpfPessoaNoBancoDeDados(String novoCpf, Pessoa pessoa) {
 
         boolean atualizado = true;
@@ -604,7 +596,6 @@ public class PessoaDAO {
 
     }
 
-    
     public boolean AtualizaEnderecoPessoaNoBancoDeDados(String novoeEndereco, Pessoa pessoa) {
 
         boolean atualizado = true;
@@ -628,7 +619,6 @@ public class PessoaDAO {
         return atualizado != false;
     }
 
-    
     public boolean AtualizaTelefonePessoaNoBancoDeDados(String novoTelefonePessoa, Pessoa pessoa) {
 
         boolean atualizado = true;
@@ -659,8 +649,7 @@ public class PessoaDAO {
         return atualizado != false;
 
     }
-    
-    
+
     public boolean AtualizaloginPessoaNoBancoDeDados(String novoLoginPessoa, Pessoa pessoa) {
 
         boolean atualizado = true;
@@ -691,8 +680,7 @@ public class PessoaDAO {
         return atualizado != false;
 
     }
-    
-    
+
     public boolean AtualizaSenhaPessoaNoBancoDeDados(String novaSenha, Pessoa pessoa) {
 
         boolean atualizado = true;

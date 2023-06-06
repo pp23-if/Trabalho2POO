@@ -197,21 +197,21 @@ public class Pessoa {
                     + "Cpf: " + this.cpf + "," + " "
                     + "Endereco: " + this.enderecoPessoa + "," + " " 
                     + "Login: " + this.loginPessoa + "," + " "
-                    + "Senha: " + this.senhaPessoa + "," + " " + "\n"
-                    + "Telefone: " + this.telefonePessoa + "," + " "
-                    + "Tipo de Usuario: " + this.tipoUsuario + "," + " ";
-//                    + "Data e Hora da Criacao: " + fd.format(this.dataCriacao) + "," + " ";
+                    + "Senha: " + this.senhaPessoa + "," + " " 
+                    + "Telefone: " + this.telefonePessoa + "," + "\n"
+                    + "Tipo de Usuario: " + this.tipoUsuario + "," + " "
+                    + "Data e Hora da Criacao: " + fd.format(this.dataCriacao) + "," + " ";
         } else {
             return "ID - Pessoa: " + this.idPessoa + "," + " "
                     + "Nome: " + this.nomePessoa + "," + " "
                     + "Cpf: " + this.cpf + "," + " "
                     + "Endereco: " + this.enderecoPessoa + "," + " " 
                     + "Login: " + this.loginPessoa + "," + " "
-                    + "Senha: " + this.senhaPessoa + "," + " " + "\n"
-                    + "Telefone: " + this.telefonePessoa + "," + " "
-                    + "Tipo de Usuario: " + this.tipoUsuario + "," + " ";
-//                    + "Data e Hora da Criacao: " + fd.format(this.dataCriacao) + "," + " "
-//                    + "Data e Hora da Modificacao: " + fd.format(this.dataModificacao) + "," + " ";
+                    + "Senha: " + this.senhaPessoa + "," + " " 
+                    + "Telefone: " + this.telefonePessoa + "," + " " + "\n"
+                    + "Tipo de Usuario: " + this.tipoUsuario + "," + " "
+                    + "Data e Hora da Criacao: " + fd.format(this.dataCriacao) + "," + " "
+                    + "Data e Hora da Modificacao: " + fd.format(this.dataModificacao) + "," + " ";
         }
 
     }
