@@ -90,7 +90,7 @@ public class PacienteControladora {
                     String novoCpf = scanner.nextLine();
                     novoCpf = vd.validaString(novoCpf);
 
-                    if (pessoaDAO.AtualizaCpfPessoaNoBancoDeDados(novoCpf, pessoa) == true) {
+                    if (pessoaDAO.AtualizaCpfPessoaNoBancoDeDados(novoCpf, pessoa, calendarioSistema) == true) {
                         System.out.println("\nO Cpf Foi Atualizado Com Sucesso!");
                     } else {
                        System.out.println("\nNome Foi possivel Atualizar o Cpf.");
@@ -104,7 +104,7 @@ public class PacienteControladora {
                     String novoEndereco = scanner.nextLine();
                     novoEndereco = vd.validaString(novoEndereco);
 
-                    if (pessoaDAO.AtualizaEnderecoPessoaNoBancoDeDados(novoEndereco, pessoa) == true) {
+                    if (pessoaDAO.AtualizaEnderecoPessoaNoBancoDeDados(novoEndereco, pessoa, calendarioSistema) == true) {
                         System.out.println("\nO Endereco Foi Atualizado Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar O Endereco");
@@ -117,7 +117,7 @@ public class PacienteControladora {
                     String novoTelefone = scanner.nextLine();
                     novoTelefone = vd.validaString(novoTelefone);
 
-                    if (pessoaDAO.AtualizaTelefonePessoaNoBancoDeDados(novoTelefone, pessoa) == true) {
+                    if (pessoaDAO.AtualizaTelefonePessoaNoBancoDeDados(novoTelefone, pessoa, calendarioSistema) == true) {
                         System.out.println("\nO Telefone Foi Atualizado Com Sucesso!");
                     } else {
                        System.out.println("\nNao Foi Possivel Atualizar O Telefone");
@@ -130,7 +130,7 @@ public class PacienteControladora {
                     String novoLogin = scanner.nextLine();
                     novoLogin = vd.validaString(novoLogin);
 
-                    if (pessoaDAO.AtualizaloginPessoaNoBancoDeDados(novoLogin, pessoa) == true) {
+                    if (pessoaDAO.AtualizaloginPessoaNoBancoDeDados(novoLogin, pessoa, calendarioSistema) == true) {
                         System.out.println("\nO Login Foi Atualizado Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar O Login");
@@ -144,7 +144,7 @@ public class PacienteControladora {
                     String novaSenha = scanner.nextLine();
                     novaSenha = vd.validaString(novaSenha);
 
-                    if (pessoaDAO.AtualizaSenhaPessoaNoBancoDeDados(novaSenha, pessoa) == true) {
+                    if (pessoaDAO.AtualizaSenhaPessoaNoBancoDeDados(novaSenha, pessoa, calendarioSistema) == true) {
                         System.out.println("\nA Senha Foi Atualizada Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar A Senha");
