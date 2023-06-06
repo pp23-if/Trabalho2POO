@@ -673,7 +673,7 @@ public class PessoaDAO {
                 connection.setAutoCommit(false);
 
                 try (PreparedStatement pstmAtualizaTelefonePessoa = connection.prepareStatement(atualizaTelefonePessoa);
-                     PreparedStatement pstmAtualizaDataAlteracaoPessoa = connection.prepareStatement(atualizaDataAlteracaoPessoa)) {
+                        PreparedStatement pstmAtualizaDataAlteracaoPessoa = connection.prepareStatement(atualizaDataAlteracaoPessoa)) {
 
                     pstmAtualizaTelefonePessoa.setString(1, novoTelefonePessoa);
                     pstmAtualizaTelefonePessoa.setString(2, pessoa.getCpf());
@@ -711,21 +711,37 @@ public class PessoaDAO {
 
         String atualizaLoginPessoa = "update tipousuario set logintipousuario = ? where cpfpessoa = ? and tipousuario = ?";
 
+        String atualizaDataAlteracaoPessoa = "update tipousuario set datamodificacao = ? where cpfpessoa = ?";
+
         if (!verificaSeloginEstaSendoUsado(novoLoginPessoa) == true) {
 
-            try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                    PreparedStatement pstm = connection.prepareStatement(atualizaLoginPessoa)) {
+            try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
 
-                pstm.setString(1, novoLoginPessoa);
-                pstm.setString(2, pessoa.getCpf());
-                pstm.setString(3, pessoa.getTipoUsuario());
+                connection.setAutoCommit(false);
 
-                pstm.execute();
+                try (PreparedStatement pstmAtualizaLoginPessoa = connection.prepareStatement(atualizaLoginPessoa);
+                        PreparedStatement pstmAtualizaDataAlteracaoPessoa = connection.prepareStatement(atualizaDataAlteracaoPessoa)) {
 
-            } catch (SQLException erro) {
+                    pstmAtualizaLoginPessoa.setString(1, novoLoginPessoa);
+                    pstmAtualizaLoginPessoa.setString(2, pessoa.getCpf());
+                    pstmAtualizaLoginPessoa.setString(3, pessoa.getTipoUsuario());
 
-                atualizado = false;
-                System.out.println("\n Nao foi possivel Atualizar o Login da pessoa no banco de dados!\n" + erro.getMessage());
+                    pstmAtualizaLoginPessoa.execute();
+
+                    pstmAtualizaDataAlteracaoPessoa.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+                    pstmAtualizaDataAlteracaoPessoa.setString(2, pessoa.getCpf());
+                    pstmAtualizaDataAlteracaoPessoa.execute();
+
+                    connection.commit();
+
+                } catch (SQLException erro) {
+
+                    connection.rollback();
+                    atualizado = false;
+                    System.out.println("\n Nao foi possivel Atualizar o Login da pessoa no banco de dados!\n" + erro.getMessage());
+                }
+
+            } catch (Exception e) {
             }
 
         } else {
@@ -741,20 +757,36 @@ public class PessoaDAO {
         boolean atualizado = true;
 
         String atualizaSenhaPessoa = "update tipousuario set senhatipousuario = ? where cpfpessoa = ? and tipousuario = ?";
+        
+        String atualizaDataAlteracaoPessoa = "update tipousuario set datamodificacao = ? where cpfpessoa = ?";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                PreparedStatement pstm = connection.prepareStatement(atualizaSenhaPessoa)) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
 
-            pstm.setString(1, novaSenha);
-            pstm.setString(2, pessoa.getCpf());
-            pstm.setString(3, pessoa.getTipoUsuario());
+            connection.setAutoCommit(false);
 
-            pstm.execute();
+            try (PreparedStatement pstmAtualizaSenhaPessoa = connection.prepareStatement(atualizaSenhaPessoa);
+                 PreparedStatement pstmAtualizaDataAlteracaoPessoa = connection.prepareStatement(atualizaDataAlteracaoPessoa)) {
 
-        } catch (SQLException erro) {
+                pstmAtualizaSenhaPessoa.setString(1, novaSenha);
+                pstmAtualizaSenhaPessoa.setString(2, pessoa.getCpf());
+                pstmAtualizaSenhaPessoa.setString(3, pessoa.getTipoUsuario());
 
-            atualizado = false;
-            System.out.println("\n Nao foi possivel Atualizar A Senha da pessoa no banco de dados!\n" + erro.getMessage());
+                pstmAtualizaSenhaPessoa.execute();
+                
+                pstmAtualizaDataAlteracaoPessoa.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+                pstmAtualizaDataAlteracaoPessoa.setString(2, pessoa.getCpf());
+                pstmAtualizaDataAlteracaoPessoa.execute();
+                
+                connection.commit();
+
+            } catch (SQLException erro) {
+
+                connection.rollback();
+                atualizado = false;
+                System.out.println("\n Nao foi possivel Atualizar A Senha da pessoa no banco de dados!\n" + erro.getMessage());
+            }
+
+        } catch (Exception e) {
         }
 
         return atualizado != false;
