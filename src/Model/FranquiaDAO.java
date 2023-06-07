@@ -4,17 +4,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
 public class FranquiaDAO {
 
-    private List <Franquia> listaFranquia = new LinkedList();
+    private List<Franquia> listaFranquia = new LinkedList();
 
     public FranquiaDAO(PessoaDAO pessoaDAO, CalendarioSistema calendarioSistema) {
-        
+
         /*Pessoa donoDeFranquia = pessoaDAO.buscaPessoaCadastrada("Edu28", "24");
 
         if (donoDeFranquia != null) {
@@ -25,7 +25,6 @@ public class FranquiaDAO {
 
             adicionaFranquia(franquia);
         }*/
-
     }
 
     public Franquia buscaFranquia(Franquia f) {
@@ -52,7 +51,6 @@ public class FranquiaDAO {
         return listaFranquia.add(franquia) == true;
 
     }
-
 
     public void mostraTodasFranquias() {
         for (Franquia franquia : listaFranquia) {
@@ -101,10 +99,7 @@ public class FranquiaDAO {
 
         return false;
     }*/
-
-    
-
-    /*public boolean atualizarCidadeFranquia(Franquia f, String novaCidadeFranquia, 
+ /*public boolean atualizarCidadeFranquia(Franquia f, String novaCidadeFranquia, 
             CalendarioSistema calendarioSistema) {
         for (Franquia franquia : listaFranquia) {
 
@@ -117,7 +112,7 @@ public class FranquiaDAO {
         return false;
     }*/
 
-    /*public boolean atualizarEnderecoFranquia(Franquia f, String novoEnderecoFranquia, 
+ /*public boolean atualizarEnderecoFranquia(Franquia f, String novoEnderecoFranquia, 
             CalendarioSistema calendarioSistema) {
         for (Franquia franquia : listaFranquia) {
 
@@ -130,7 +125,7 @@ public class FranquiaDAO {
         return false;
     }*/
 
-    /*public boolean atualizaLoginDonoDeFranquia(Franquia f, String novoLoginDonoFranquia, 
+ /*public boolean atualizaLoginDonoDeFranquia(Franquia f, String novoLoginDonoFranquia, 
             CalendarioSistema calendarioSistema) {
 
         if (!verificaSeLoginDonoFranquiaEstaSendoUsado(novoLoginDonoFranquia) == true) {
@@ -147,7 +142,7 @@ public class FranquiaDAO {
         return false;
     }*/
 
-    /*public boolean atualizaSenhaDonoDeFranquia(Franquia f, String novaSenhaDonoFranquia, 
+ /*public boolean atualizaSenhaDonoDeFranquia(Franquia f, String novaSenhaDonoFranquia, 
             CalendarioSistema calendarioSistema) {
         for (Franquia franquia : listaFranquia) {
 
@@ -160,7 +155,7 @@ public class FranquiaDAO {
         return false;
     }*/
 
-    /*public boolean atualizaTelefoneDonoDeFranquia(Franquia f, 
+ /*public boolean atualizaTelefoneDonoDeFranquia(Franquia f, 
             String novoTelefoneDonoFranquia, CalendarioSistema calendarioSistema) {
 
         if (!verificaSeTelefoneDonoFranquiaEstaSendoUsado(novoTelefoneDonoFranquia) == true) {
@@ -177,7 +172,6 @@ public class FranquiaDAO {
 
         return false;
     }*/
-
     private boolean verificaSeNomeFranquiaEstaSendoUsado(String novoNomeFranquia) {
         for (Franquia franquia : listaFranquia) {
 
@@ -188,8 +182,6 @@ public class FranquiaDAO {
         }
         return false;
     }
-
-   
 
     public boolean verificaSeLoginDonoFranquiaEstaSendoUsado(String novoLoginDonoFranquia) {
         for (Franquia franquia : listaFranquia) {
@@ -210,81 +202,61 @@ public class FranquiaDAO {
         }
         return false;
     }
-    
-   public Franquia buscaFranquiaPorCnpj(String cnpjFranquia)
-   {
-       for (Franquia franquia : listaFranquia) {
-           
-           if(franquia != null && franquia.getCnpj().equals(cnpjFranquia))
-           {
-               return franquia;
-           }
-       }
-        return null;
-   }
-   
-   public Franquia buscaFranquiaPorId(int idFranquia)
-   {
-       for (Franquia franquia : listaFranquia) {
-           
-           if(franquia != null && franquia.getIdFranquia() == idFranquia)
-           {
-               return franquia;
-           }
-       }
-        return null;
-   }
 
-   
+    public Franquia buscaFranquiaPorCnpj(String cnpjFranquia) {
+        for (Franquia franquia : listaFranquia) {
+
+            if (franquia != null && franquia.getCnpj().equals(cnpjFranquia)) {
+                return franquia;
+            }
+        }
+        return null;
+    }
+
+    public Franquia buscaFranquiaPorId(int idFranquia) {
+        for (Franquia franquia : listaFranquia) {
+
+            if (franquia != null && franquia.getIdFranquia() == idFranquia) {
+                return franquia;
+            }
+        }
+        return null;
+    }
+
     public boolean insereFranquiaNoBancoDeDados(Pessoa pessoa, Franquia franquia) {
 
         boolean adicionado = true;
-        
-        
-       String inserePessoaDonoDeFranquia = "insert into tipousuario (cpfpessoa,logintipousuario,senhatipousuario,"
+
+        String inserePessoaDonoDeFranquia = "insert into tipousuario (cpfpessoa,logintipousuario,senhatipousuario,"
                 + "tipousuario, telefonepessoa, datacriacao) \n"
                 + "values (?,?,?,?,?,?)";
 
         String insereFranquia = "insert into franquia (nomefranquia, cnpj, cidade, endereco, cpfdono, datacriacao) \n"
                 + "values (?,?,?,?,?,?)";
 
-       
         try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
 
             connection.setAutoCommit(false);
 
             try (PreparedStatement pstmInsereDonoDeFranquia = connection.prepareStatement(inserePessoaDonoDeFranquia);
-                 PreparedStatement pstmInsereFranquia = connection.prepareStatement(insereFranquia)) {
+                    PreparedStatement pstmInsereFranquia = connection.prepareStatement(insereFranquia)) {
 
                 pstmInsereDonoDeFranquia.setString(1, pessoa.getCpf());
                 pstmInsereDonoDeFranquia.setString(2, pessoa.getLoginPessoa());
                 pstmInsereDonoDeFranquia.setString(3, pessoa.getSenhaPessoa());
                 pstmInsereDonoDeFranquia.setString(4, pessoa.getTipoUsuario());
                 pstmInsereDonoDeFranquia.setString(5, pessoa.getTelefonePessoa());
-
-                LocalDateTime dc = pessoa.getDataCriacao();
-                DateTimeFormatter fd = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
-                fd.format(dc);
-                String dataCriacao = dc.format(fd);
-                
-                pstmInsereDonoDeFranquia.setString(6,dataCriacao);
+                pstmInsereDonoDeFranquia.setTimestamp(6, Timestamp.valueOf(pessoa.getDataCriacao()));
 
                 pstmInsereDonoDeFranquia.execute();
-                
-                
+
                 pstmInsereFranquia.setString(1, franquia.getNomeFranquia());
                 pstmInsereFranquia.setString(2, franquia.getCnpj());
                 pstmInsereFranquia.setString(3, franquia.getCidade());
                 pstmInsereFranquia.setString(4, franquia.getEnderecoFranquia());
                 pstmInsereFranquia.setString(5, pessoa.getCpf());
-               
-                LocalDateTime dcf = franquia.getDataCriacao();
-                DateTimeFormatter fdm = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
-                fd.format(dcf);
-                String dataCriacaoFranquia = dcf.format(fdm);
-                
-                pstmInsereFranquia.setString(6, dataCriacaoFranquia);
-                  
+                pstmInsereFranquia.setTimestamp(6, Timestamp.valueOf(franquia.getDataCriacao()));
+
                 pstmInsereFranquia.execute();
 
                 connection.commit();
@@ -304,13 +276,13 @@ public class FranquiaDAO {
         return adicionado != false;
 
     }
-   
-   
-   public void BuscaFranquiaNoBancoDeDados(PessoaDAO pessoaDAO) {
+
+    public void BuscaFranquiaNoBancoDeDados(PessoaDAO pessoaDAO) {
 
         listaFranquia.clear();
-        
-        String buscaFranquia = "select idfranquia, nomefranquia, cnpj, cidade, endereco, cpfdono from franquia;";
+
+        String buscaFranquia = "select idfranquia, nomefranquia, cnpj, cidade, endereco, cpfdono, datacriacao, datamodificacao"
+                + " from franquia;";
 
         try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
                 PreparedStatement pstm = connection.prepareStatement(buscaFranquia);
@@ -323,28 +295,21 @@ public class FranquiaDAO {
                 String cpfDonoFranquia = rs.getString("cpfdono");
                 Pessoa pessoaDonoFranquia = pessoaDAO.buscaPessoaDonoDeFranquiaPorCpf(cpfDonoFranquia);
                 franquia.setPessoa(pessoaDonoFranquia);
-                
+
                 franquia.setIdFranquia(rs.getInt("idfranquia"));
                 franquia.setNomeFranquia(rs.getString("nomefranquia"));
                 franquia.setCnpj(rs.getString("cnpj"));
                 franquia.setCidade(rs.getString("cidade"));
                 franquia.setEnderecoFranquia(rs.getString("endereco"));
-               
-                
 
-//                String dc = rs.getString("datacriacao");
-//                LocalDateTime dataCriacao = null;
-//                if (dataCriacao != null) {
-//                    DateTimeFormatter fd = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-//                    dataCriacao.parse(dc, fd);
-//                }
-//
-//                String dm = rs.getString("datamodificacao");
-//                LocalDateTime dataModificacao = null;
-//                DateTimeFormatter fdm = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-//                dataModificacao.parse(dm, fdm);
-//                pessoa.setDataCriacao(dataCriacao);
-//                pessoa.setDataModificacao(dataModificacao);
+                Timestamp dataCriacaoFranquia = rs.getTimestamp("datacriacao");
+                franquia.setDataCriacao(dataCriacaoFranquia.toLocalDateTime());
+
+                Timestamp dataModificacaoFranquia = rs.getTimestamp("datamodificacao");
+                if (dataModificacaoFranquia != null) {
+                    franquia.setDataCriacao(dataModificacaoFranquia.toLocalDateTime());
+                }
+
                 listaFranquia.add(franquia);
 
             }
@@ -354,28 +319,45 @@ public class FranquiaDAO {
         }
 
     }
-   
-   
-   public boolean AtualizaNomeFranquiaNoBancoDeDados(String novoNomeFranquia, Franquia franquia) {
+
+    public boolean AtualizaNomeFranquiaNoBancoDeDados(String novoNomeFranquia, Franquia franquia, 
+            CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
 
         String atualizaNomeFranquia = "update franquia set nomefranquia = ? where cnpj = ?";
 
+        String atualizaDataAlteracaoFranquia = "update franquia set datamodificacao = ? where cnpj = ?";
+
         if (!verificaSeNomeFranquiaEstaSendoUsado(novoNomeFranquia) == true) {
 
-            try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                 PreparedStatement pstm = connection.prepareStatement(atualizaNomeFranquia)) {
+            try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
 
-                pstm.setString(1, novoNomeFranquia);
-                pstm.setString(2, franquia.getCnpj());
-               
-                pstm.execute();
+                connection.setAutoCommit(false);
 
-            } catch (SQLException erro) {
+                try (PreparedStatement pstmAtualizaNomeFranquia = connection.prepareStatement(atualizaNomeFranquia);
+                     PreparedStatement pstmAtualizaDataAlteracaoFranquia = connection.prepareStatement(atualizaDataAlteracaoFranquia)) {
 
-                atualizado = false;
-                System.out.println("\n Nao foi possivel Atualizar o Nome Da Franquia no banco de dados!\n" + erro.getMessage());
+                    pstmAtualizaNomeFranquia.setString(1, novoNomeFranquia);
+                    pstmAtualizaNomeFranquia.setString(2, franquia.getCnpj());
+
+                    pstmAtualizaNomeFranquia.execute();
+                    
+                    pstmAtualizaDataAlteracaoFranquia.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+                    pstmAtualizaDataAlteracaoFranquia.setString(2, franquia.getCnpj());
+                    
+                    pstmAtualizaDataAlteracaoFranquia.execute();
+                    
+                    connection.commit();
+
+                } catch (SQLException erro) {
+
+                    connection.rollback();
+                    atualizado = false;
+                    System.out.println("\n Nao foi possivel Atualizar o Nome Da Franquia no banco de dados!\n" + erro.getMessage());
+                }
+
+            } catch (Exception e) {
             }
 
         } else {
@@ -385,8 +367,8 @@ public class FranquiaDAO {
         return atualizado != false;
 
     }
-   
-   public boolean AtualizaCidadeFranquiaNoBancoDeDados(String novaCidadeFranquia, Franquia franquia) {
+
+    public boolean AtualizaCidadeFranquiaNoBancoDeDados(String novaCidadeFranquia, Franquia franquia) {
 
         boolean atualizado = true;
 
@@ -408,8 +390,7 @@ public class FranquiaDAO {
 
         return atualizado != false;
     }
-   
-   
+
     public boolean AtualizaEnderecoFranquiaNoBancoDeDados(String novoEnderecoFranquia, Franquia franquia) {
 
         boolean atualizado = true;
@@ -417,7 +398,7 @@ public class FranquiaDAO {
         String atualizaEnderecoFranquia = "update franquia set endereco = ? where cnpj = ?";
 
         try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-             PreparedStatement pstm = connection.prepareStatement(atualizaEnderecoFranquia)) {
+                PreparedStatement pstm = connection.prepareStatement(atualizaEnderecoFranquia)) {
 
             pstm.setString(1, novoEnderecoFranquia);
             pstm.setString(2, franquia.getCnpj());
@@ -432,10 +413,8 @@ public class FranquiaDAO {
 
         return atualizado != false;
     }
-    
-    
-    
-     public boolean AtualizaLoginDonoFranquiaNoBancoDeDados(String novoLoginDonoFranquia, Franquia franquia) {
+
+    public boolean AtualizaLoginDonoFranquiaNoBancoDeDados(String novoLoginDonoFranquia, Franquia franquia) {
 
         boolean atualizado = true;
 
@@ -444,18 +423,18 @@ public class FranquiaDAO {
         if (!verificaSeLoginDonoFranquiaEstaSendoUsado(novoLoginDonoFranquia) == true) {
 
             try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                 PreparedStatement pstm = connection.prepareStatement(atualizaLoginDonoFranquia)) {
+                    PreparedStatement pstm = connection.prepareStatement(atualizaLoginDonoFranquia)) {
 
                 pstm.setString(1, novoLoginDonoFranquia);
                 pstm.setString(2, franquia.getPessoa().getCpf());
                 pstm.setString(3, franquia.getPessoa().getTipoUsuario());
-               
+
                 pstm.execute();
 
             } catch (SQLException erro) {
 
                 atualizado = false;
-                System.out.println("\n Nao foi possivel Atualizar O Login Do Dono de Franquia no banco de dados!\n" 
+                System.out.println("\n Nao foi possivel Atualizar O Login Do Dono de Franquia no banco de dados!\n"
                         + erro.getMessage());
             }
 
@@ -466,17 +445,15 @@ public class FranquiaDAO {
         return atualizado != false;
 
     }
-     
-     
-     
-      public boolean AtualizaSenhaDonoFranquiaNoBancoDeDados(String novaSenhaDonoFranquia, Franquia franquia) {
+
+    public boolean AtualizaSenhaDonoFranquiaNoBancoDeDados(String novaSenhaDonoFranquia, Franquia franquia) {
 
         boolean atualizado = true;
 
         String atualizaSenhaDonoFranquia = "update tipousuario set senhatipousuario = ? where cpfpessoa = ? and tipousuario = ?";
 
         try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-             PreparedStatement pstm = connection.prepareStatement(atualizaSenhaDonoFranquia)) {
+                PreparedStatement pstm = connection.prepareStatement(atualizaSenhaDonoFranquia)) {
 
             pstm.setString(1, novaSenhaDonoFranquia);
             pstm.setString(2, franquia.getPessoa().getCpf());
@@ -492,10 +469,8 @@ public class FranquiaDAO {
 
         return atualizado != false;
     }
-      
-      
-      
-      public boolean AtualizaTelefoneDonoFranquiaNoBancoDeDados(String novoTelefoneDonoFranquia, Franquia franquia) {
+
+    public boolean AtualizaTelefoneDonoFranquiaNoBancoDeDados(String novoTelefoneDonoFranquia, Franquia franquia) {
 
         boolean atualizado = true;
 
@@ -504,18 +479,18 @@ public class FranquiaDAO {
         if (!verificaSeTelefoneDonoFranquiaEstaSendoUsado(novoTelefoneDonoFranquia) == true) {
 
             try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                 PreparedStatement pstm = connection.prepareStatement(atualizaLoginDonoFranquia)) {
+                    PreparedStatement pstm = connection.prepareStatement(atualizaLoginDonoFranquia)) {
 
                 pstm.setString(1, novoTelefoneDonoFranquia);
                 pstm.setString(2, franquia.getPessoa().getCpf());
                 pstm.setString(3, franquia.getPessoa().getTipoUsuario());
-               
+
                 pstm.execute();
 
             } catch (SQLException erro) {
 
                 atualizado = false;
-                System.out.println("\n Nao foi possivel Atualizar O Telefone Do Dono de Franquia no banco de dados!\n" 
+                System.out.println("\n Nao foi possivel Atualizar O Telefone Do Dono de Franquia no banco de dados!\n"
                         + erro.getMessage());
             }
 

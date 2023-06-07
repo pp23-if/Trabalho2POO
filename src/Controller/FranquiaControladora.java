@@ -191,7 +191,7 @@ public class FranquiaControladora {
                     String novoNomeFranquia = scanner.nextLine();
                     novoNomeFranquia = vd.validaString(novoNomeFranquia);
 
-                    if (franquiaDAO.AtualizaNomeFranquiaNoBancoDeDados(novoNomeFranquia, franquia) == true) {
+                    if (franquiaDAO.AtualizaNomeFranquiaNoBancoDeDados(novoNomeFranquia, franquia, calendarioSistema) == true) {
                         System.out.println("\nNome Da Franquia Atualizado Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar O Nome Da Franquia.");
