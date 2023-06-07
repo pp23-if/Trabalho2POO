@@ -457,22 +457,44 @@ public class FranquiaDAO {
 
         String atualizaLoginDonoFranquia = "update tipousuario set logintipousuario = ? where cpfpessoa = ? and tipousuario = ?";
 
+        String atualizaDataAlteracaoPessoaDonoFranquia = "update tipousuario set datamodificacao = ? "
+                + "where cpfpessoa = ? and tipousuario = ?";
+
         if (!verificaSeLoginDonoFranquiaEstaSendoUsado(novoLoginDonoFranquia) == true) {
 
-            try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                    PreparedStatement pstm = connection.prepareStatement(atualizaLoginDonoFranquia)) {
+            try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
 
-                pstm.setString(1, novoLoginDonoFranquia);
-                pstm.setString(2, franquia.getPessoa().getCpf());
-                pstm.setString(3, franquia.getPessoa().getTipoUsuario());
+                connection.setAutoCommit(false);
 
-                pstm.execute();
+                try (PreparedStatement pstmAtualizaLoginDonoFranquia = connection.prepareStatement(atualizaLoginDonoFranquia);
+                        PreparedStatement pstmAtualizaDataAlteracaoPessoaDonoFranquia
+                        = connection.prepareStatement(atualizaDataAlteracaoPessoaDonoFranquia)) {
 
-            } catch (SQLException erro) {
+                    pstmAtualizaLoginDonoFranquia.setString(1, novoLoginDonoFranquia);
+                    pstmAtualizaLoginDonoFranquia.setString(2, franquia.getPessoa().getCpf());
+                    pstmAtualizaLoginDonoFranquia.setString(3, franquia.getPessoa().getTipoUsuario());
 
-                atualizado = false;
-                System.out.println("\n Nao foi possivel Atualizar O Login Do Dono de Franquia no banco de dados!\n"
-                        + erro.getMessage());
+                    pstmAtualizaLoginDonoFranquia.execute();
+
+                    pstmAtualizaDataAlteracaoPessoaDonoFranquia.setTimestamp(1,
+                            Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+
+                    pstmAtualizaDataAlteracaoPessoaDonoFranquia.setString(2, franquia.getPessoa().getCpf());
+                    pstmAtualizaDataAlteracaoPessoaDonoFranquia.setString(3, franquia.getPessoa().getTipoUsuario());
+
+                    pstmAtualizaDataAlteracaoPessoaDonoFranquia.execute();
+
+                    connection.commit();
+
+                } catch (SQLException erro) {
+
+                    connection.rollback();
+                    atualizado = false;
+                    System.out.println("\n Nao foi possivel Atualizar O Login Do Dono de Franquia no banco de dados!\n"
+                            + erro.getMessage());
+                }
+
+            } catch (Exception e) {
             }
 
         } else {
@@ -490,19 +512,41 @@ public class FranquiaDAO {
 
         String atualizaSenhaDonoFranquia = "update tipousuario set senhatipousuario = ? where cpfpessoa = ? and tipousuario = ?";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                PreparedStatement pstm = connection.prepareStatement(atualizaSenhaDonoFranquia)) {
+        String atualizaDataAlteracaoPessoaDonoFranquia = "update tipousuario set datamodificacao = ? "
+                + "where cpfpessoa = ? and tipousuario = ?";
 
-            pstm.setString(1, novaSenhaDonoFranquia);
-            pstm.setString(2, franquia.getPessoa().getCpf());
-            pstm.setString(3, franquia.getPessoa().getTipoUsuario());
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
 
-            pstm.execute();
+            connection.setAutoCommit(false);
 
-        } catch (SQLException erro) {
+            try (PreparedStatement pstmAtualizaSenhaDonoFranquia = connection.prepareStatement(atualizaSenhaDonoFranquia);
+                    PreparedStatement pstmAtualizaDataAlteracaoPessoaDonoFranquia
+                    = connection.prepareStatement(atualizaDataAlteracaoPessoaDonoFranquia)) {
 
-            atualizado = false;
-            System.out.println("\n Nao foi possivel Atualizar a Senha Dono Da Franquia no banco de dados!\n" + erro.getMessage());
+                pstmAtualizaSenhaDonoFranquia.setString(1, novaSenhaDonoFranquia);
+                pstmAtualizaSenhaDonoFranquia.setString(2, franquia.getPessoa().getCpf());
+                pstmAtualizaSenhaDonoFranquia.setString(3, franquia.getPessoa().getTipoUsuario());
+
+                pstmAtualizaSenhaDonoFranquia.execute();
+
+                pstmAtualizaDataAlteracaoPessoaDonoFranquia.setTimestamp(1,
+                        Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+
+                pstmAtualizaDataAlteracaoPessoaDonoFranquia.setString(2, franquia.getPessoa().getCpf());
+                pstmAtualizaDataAlteracaoPessoaDonoFranquia.setString(3, franquia.getPessoa().getTipoUsuario());
+
+                pstmAtualizaDataAlteracaoPessoaDonoFranquia.execute();
+
+                connection.commit();
+
+            } catch (SQLException erro) {
+
+                connection.rollback();
+                atualizado = false;
+                System.out.println("\n Nao foi possivel Atualizar a Senha Dono Da Franquia no banco de dados!\n" + erro.getMessage());
+            }
+
+        } catch (Exception e) {
         }
 
         return atualizado != false;
@@ -515,22 +559,44 @@ public class FranquiaDAO {
 
         String atualizaLoginDonoFranquia = "update tipousuario set telefonepessoa = ? where cpfpessoa = ? and tipousuario = ?";
 
+        String atualizaDataAlteracaoPessoaDonoFranquia = "update tipousuario set datamodificacao = ? "
+                + "where cpfpessoa = ? and tipousuario = ?";
+
         if (!verificaSeTelefoneDonoFranquiaEstaSendoUsado(novoTelefoneDonoFranquia) == true) {
 
-            try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                    PreparedStatement pstm = connection.prepareStatement(atualizaLoginDonoFranquia)) {
+            try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
 
-                pstm.setString(1, novoTelefoneDonoFranquia);
-                pstm.setString(2, franquia.getPessoa().getCpf());
-                pstm.setString(3, franquia.getPessoa().getTipoUsuario());
+                connection.setAutoCommit(false);
 
-                pstm.execute();
+                try (PreparedStatement pstmAtualizaLoginDonoFranquia = connection.prepareStatement(atualizaLoginDonoFranquia);
+                        PreparedStatement pstmAtualizaDataAlteracaoPessoaDonoFranquia
+                        = connection.prepareStatement(atualizaDataAlteracaoPessoaDonoFranquia)) {
 
-            } catch (SQLException erro) {
+                    pstmAtualizaLoginDonoFranquia.setString(1, novoTelefoneDonoFranquia);
+                    pstmAtualizaLoginDonoFranquia.setString(2, franquia.getPessoa().getCpf());
+                    pstmAtualizaLoginDonoFranquia.setString(3, franquia.getPessoa().getTipoUsuario());
 
-                atualizado = false;
-                System.out.println("\n Nao foi possivel Atualizar O Telefone Do Dono de Franquia no banco de dados!\n"
-                        + erro.getMessage());
+                    pstmAtualizaLoginDonoFranquia.execute();
+
+                    pstmAtualizaDataAlteracaoPessoaDonoFranquia.setTimestamp(1,
+                            Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+
+                    pstmAtualizaDataAlteracaoPessoaDonoFranquia.setString(2, franquia.getPessoa().getCpf());
+                    pstmAtualizaDataAlteracaoPessoaDonoFranquia.setString(3, franquia.getPessoa().getTipoUsuario());
+
+                    pstmAtualizaDataAlteracaoPessoaDonoFranquia.execute();
+
+                    connection.commit();
+
+                } catch (SQLException erro) {
+
+                    connection.rollback();
+                    atualizado = false;
+                    System.out.println("\n Nao foi possivel Atualizar O Telefone Do Dono de Franquia no banco de dados!\n"
+                            + erro.getMessage());
+                }
+
+            } catch (Exception e) {
             }
 
         } else {
