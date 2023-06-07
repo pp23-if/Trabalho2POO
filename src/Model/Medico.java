@@ -128,16 +128,16 @@ public class Medico {
                     + "Telefone: " + this.getPessoa().getTelefonePessoa() + "," + " "
                     + "ID - Medico: " + this.idMedico + "," + " "
                     + "Crm: " + this.crm + "," + " "  + "\n"
-                    + "Especialidade: " + this.especialidade + "," + " ";
-                    //+ "Data e Hora de Criacao: " + fd.format(this.dataCriacao) + "," + " ";
+                    + "Especialidade: " + this.especialidade + "," + " "
+                    + "Data e Hora de Criacao: " + fd.format(this.dataCriacao) + "," + " ";
         } else {
             return "Medico(a): " + this.getPessoa().getNomePessoa() + "," + " "
                     + "Telefone: " + this.getPessoa().getTelefonePessoa() + "," + " " 
                     + "ID - Medico: " + this.idMedico + "," + " "
                     + "Crm: " + this.crm + "," + " " + "\n"
-                    + "Especialidade: " + this.especialidade + "," + " ";
-                    //+ "Data e Hora de Criacao: " + fd.format(this.dataCriacao) + "," + " "
-                    //+ "Data e Hora de Modificacao: " + fd.format(this.dataModificacao) + "," + " ";
+                    + "Especialidade: " + this.especialidade + "," + " "
+                    + "Data e Hora de Criacao: " + fd.format(this.dataCriacao) + "," + " "
+                    + "Data e Hora de Modificacao: " + fd.format(this.dataModificacao) + "," + " ";
         }
 
     }

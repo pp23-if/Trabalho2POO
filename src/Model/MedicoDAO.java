@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
@@ -276,12 +276,7 @@ public class MedicoDAO {
                 pstmInserePessoaMedico.setString(4, pessoa.getTipoUsuario());
                 pstmInserePessoaMedico.setString(5, pessoa.getTelefonePessoa());
 
-                LocalDateTime dc = pessoa.getDataCriacao();
-                DateTimeFormatter fd = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
-                fd.format(dc);
-                String dataCriacao = dc.format(fd);
-                
-                pstmInserePessoaMedico.setString(6,dataCriacao);
+                pstmInserePessoaMedico.setTimestamp(6, Timestamp.valueOf(pessoa.getDataCriacao()));
 
                 pstmInserePessoaMedico.execute();
                 
@@ -289,13 +284,7 @@ public class MedicoDAO {
                 pstmInsereMedico.setString(1, pessoa.getCpf());
                 pstmInsereMedico.setString(2, medico.getCrm());
                 pstmInsereMedico.setString(3, medico.getEspecialidade());
-               
-                LocalDateTime dcm = medico.getDataCriacao();
-                DateTimeFormatter fdm = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
-                fd.format(dcm);
-                String dataCriacaoMedico = dcm.format(fdm);
-                
-                pstmInsereMedico.setString(4, dataCriacaoMedico);
+                pstmInsereMedico.setTimestamp(4, Timestamp.valueOf(medico.getDataCriacao()));
                   
                 pstmInsereMedico.execute();
 
@@ -322,7 +311,7 @@ public class MedicoDAO {
 
         listaMedico.clear();
         
-        String buscaMedico = "select idmedico, cpfmedico, crm, especialidade from  medico;";
+        String buscaMedico = "select idmedico, cpfmedico, crm, especialidade, datacriacao, datamodificacao from  medico";
 
         try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
                 PreparedStatement pstm = connection.prepareStatement(buscaMedico);
@@ -340,21 +329,17 @@ public class MedicoDAO {
                 medico.setEspecialidade(rs.getString("especialidade"));
                 medico.setCrm(rs.getString("crm"));
                 
+                Timestamp medicoDataCriacao = rs.getTimestamp("datacriacao");
+                medico.setDataCriacao(medicoDataCriacao.toLocalDateTime());
                 
-
-//                String dc = rs.getString("datacriacao");
-//                LocalDateTime dataCriacao = null;
-//                if (dataCriacao != null) {
-//                    DateTimeFormatter fd = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-//                    dataCriacao.parse(dc, fd);
-//                }
-//
-//                String dm = rs.getString("datamodificacao");
-//                LocalDateTime dataModificacao = null;
-//                DateTimeFormatter fdm = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-//                dataModificacao.parse(dm, fdm);
-//                pessoa.setDataCriacao(dataCriacao);
-//                pessoa.setDataModificacao(dataModificacao);
+                Timestamp medicoDataModificacao = rs.getTimestamp("datamodificacao");
+                
+                if(medicoDataModificacao != null)
+                {
+                  medico.setDataModificacao(medicoDataModificacao.toLocalDateTime());   
+                }
+                
+                
                 listaMedico.add(medico);
 
             }
