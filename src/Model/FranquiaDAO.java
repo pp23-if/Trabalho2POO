@@ -307,7 +307,7 @@ public class FranquiaDAO {
 
                 Timestamp dataModificacaoFranquia = rs.getTimestamp("datamodificacao");
                 if (dataModificacaoFranquia != null) {
-                    franquia.setDataCriacao(dataModificacaoFranquia.toLocalDateTime());
+                    franquia.setDataModificacao(dataModificacaoFranquia.toLocalDateTime());
                 }
 
                 listaFranquia.add(franquia);
@@ -320,7 +320,7 @@ public class FranquiaDAO {
 
     }
 
-    public boolean AtualizaNomeFranquiaNoBancoDeDados(String novoNomeFranquia, Franquia franquia, 
+    public boolean AtualizaNomeFranquiaNoBancoDeDados(String novoNomeFranquia, Franquia franquia,
             CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
@@ -336,18 +336,18 @@ public class FranquiaDAO {
                 connection.setAutoCommit(false);
 
                 try (PreparedStatement pstmAtualizaNomeFranquia = connection.prepareStatement(atualizaNomeFranquia);
-                     PreparedStatement pstmAtualizaDataAlteracaoFranquia = connection.prepareStatement(atualizaDataAlteracaoFranquia)) {
+                        PreparedStatement pstmAtualizaDataAlteracaoFranquia = connection.prepareStatement(atualizaDataAlteracaoFranquia)) {
 
                     pstmAtualizaNomeFranquia.setString(1, novoNomeFranquia);
                     pstmAtualizaNomeFranquia.setString(2, franquia.getCnpj());
 
                     pstmAtualizaNomeFranquia.execute();
-                    
+
                     pstmAtualizaDataAlteracaoFranquia.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
                     pstmAtualizaDataAlteracaoFranquia.setString(2, franquia.getCnpj());
-                    
+
                     pstmAtualizaDataAlteracaoFranquia.execute();
-                    
+
                     connection.commit();
 
                 } catch (SQLException erro) {
@@ -368,53 +368,90 @@ public class FranquiaDAO {
 
     }
 
-    public boolean AtualizaCidadeFranquiaNoBancoDeDados(String novaCidadeFranquia, Franquia franquia) {
+    public boolean AtualizaCidadeFranquiaNoBancoDeDados(String novaCidadeFranquia, Franquia franquia,
+            CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
 
         String atualizaCidadeFranquia = "update franquia set cidade = ? where cnpj = ?";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                PreparedStatement pstm = connection.prepareStatement(atualizaCidadeFranquia)) {
+        String atualizaDataAlteracaoFranquia = "update franquia set datamodificacao = ? where cnpj = ?";
 
-            pstm.setString(1, novaCidadeFranquia);
-            pstm.setString(2, franquia.getCnpj());
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
 
-            pstm.execute();
+            connection.setAutoCommit(false);
 
-        } catch (SQLException erro) {
+            try (PreparedStatement pstmAtualizaCidadeFranquia = connection.prepareStatement(atualizaCidadeFranquia);
+                    PreparedStatement pstmAtualizaDataAlteracaoFranquia = connection.prepareStatement(atualizaDataAlteracaoFranquia)) {
 
-            atualizado = false;
-            System.out.println("\n Nao foi possivel Atualizar A Cidade Da Franquia no banco de dados!\n" + erro.getMessage());
+                pstmAtualizaCidadeFranquia.setString(1, novaCidadeFranquia);
+                pstmAtualizaCidadeFranquia.setString(2, franquia.getCnpj());
+
+                pstmAtualizaCidadeFranquia.execute();
+
+                pstmAtualizaDataAlteracaoFranquia.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+                pstmAtualizaDataAlteracaoFranquia.setString(2, franquia.getCnpj());
+
+                pstmAtualizaDataAlteracaoFranquia.execute();
+
+                connection.commit();
+
+            } catch (SQLException erro) {
+
+                connection.rollback();
+                atualizado = false;
+                System.out.println("\n Nao foi possivel Atualizar A Cidade Da Franquia no banco de dados!\n" + erro.getMessage());
+            }
+
+        } catch (Exception e) {
         }
 
         return atualizado != false;
     }
 
-    public boolean AtualizaEnderecoFranquiaNoBancoDeDados(String novoEnderecoFranquia, Franquia franquia) {
+    public boolean AtualizaEnderecoFranquiaNoBancoDeDados(String novoEnderecoFranquia, Franquia franquia,
+            CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
 
         String atualizaEnderecoFranquia = "update franquia set endereco = ? where cnpj = ?";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                PreparedStatement pstm = connection.prepareStatement(atualizaEnderecoFranquia)) {
+        String atualizaDataAlteracaoFranquia = "update franquia set datamodificacao = ? where cnpj = ?";
 
-            pstm.setString(1, novoEnderecoFranquia);
-            pstm.setString(2, franquia.getCnpj());
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
 
-            pstm.execute();
+            connection.setAutoCommit(false);
 
-        } catch (SQLException erro) {
+            try (PreparedStatement pstmAtualizaEnderecoFranquia = connection.prepareStatement(atualizaEnderecoFranquia);
+                    PreparedStatement pstmAtualizaDataAlteracaoFranquia = connection.prepareStatement(atualizaDataAlteracaoFranquia)) {
 
-            atualizado = false;
-            System.out.println("\n Nao foi possivel Atualizar O Endereco Da Franquia no banco de dados!\n" + erro.getMessage());
+                pstmAtualizaEnderecoFranquia.setString(1, novoEnderecoFranquia);
+                pstmAtualizaEnderecoFranquia.setString(2, franquia.getCnpj());
+
+                pstmAtualizaEnderecoFranquia.execute();
+
+                pstmAtualizaDataAlteracaoFranquia.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+                pstmAtualizaDataAlteracaoFranquia.setString(2, franquia.getCnpj());
+
+                pstmAtualizaDataAlteracaoFranquia.execute();
+
+                connection.commit();
+
+            } catch (SQLException erro) {
+
+                connection.rollback();
+                atualizado = false;
+                System.out.println("\n Nao foi possivel Atualizar O Endereco Da Franquia no banco de dados!\n" + erro.getMessage());
+            }
+
+        } catch (Exception e) {
         }
 
         return atualizado != false;
     }
 
-    public boolean AtualizaLoginDonoFranquiaNoBancoDeDados(String novoLoginDonoFranquia, Franquia franquia) {
+    public boolean AtualizaLoginDonoFranquiaNoBancoDeDados(String novoLoginDonoFranquia, Franquia franquia,
+            CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
 
@@ -446,7 +483,8 @@ public class FranquiaDAO {
 
     }
 
-    public boolean AtualizaSenhaDonoFranquiaNoBancoDeDados(String novaSenhaDonoFranquia, Franquia franquia) {
+    public boolean AtualizaSenhaDonoFranquiaNoBancoDeDados(String novaSenhaDonoFranquia, Franquia franquia,
+            CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
 
@@ -470,7 +508,8 @@ public class FranquiaDAO {
         return atualizado != false;
     }
 
-    public boolean AtualizaTelefoneDonoFranquiaNoBancoDeDados(String novoTelefoneDonoFranquia, Franquia franquia) {
+    public boolean AtualizaTelefoneDonoFranquiaNoBancoDeDados(String novoTelefoneDonoFranquia, Franquia franquia,
+            CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
 
