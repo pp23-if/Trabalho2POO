@@ -144,17 +144,17 @@ public class UnidadeFranquia {
                     + "Cpf: " + this.getPessoa().getCpf() + "," + " "
                     + "Franquia: " + this.franquia.getNomeFranquia() + "\n"
                     + "Cidade: " + this.cidadeUnidadeFranquia + "," + " "
-                    + "Endereco: " + this.enderecoUnidadeFranquia + "," + " ";
-                   // + "Data e Hora de Criacao: " + fd.format(this.dataCriacao) + "," + " ";
+                    + "Endereco: " + this.enderecoUnidadeFranquia + "," + " "
+                    + "Data e Hora de Criacao: " + fd.format(this.dataCriacao) + "," + " ";
         } else {
             return "ID - UnidadeFranquia: " + this.idUnidadeFranquia + "," + " "
                     + "Dono Da Unidade: " + this.getPessoa().getNomePessoa() + "," + " "
                     + "Cpf: " + this.getPessoa().getCpf() + "," + " "
                     + "Franquia: " + this.franquia.getNomeFranquia() + "\n"
                     + "Cidade: " + this.cidadeUnidadeFranquia + "," + " "
-                    + "Endereco: " + this.enderecoUnidadeFranquia + "," + " ";
-                    /*+ "Data e Hora de Criacao: " + fd.format(this.dataCriacao) + "," + " "
-                    + "Data e Hora de Modificacao: " + fd.format(this.dataModificacao) + "," + " ";*/
+                    + "Endereco: " + this.enderecoUnidadeFranquia + "," + " "
+                    + "Data e Hora de Criacao: " + fd.format(this.dataCriacao) + "," + " "
+                    + "Data e Hora de Modificacao: " + fd.format(this.dataModificacao) + "," + " ";
         }
     }
 

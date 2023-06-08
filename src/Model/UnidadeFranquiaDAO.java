@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
@@ -238,13 +238,7 @@ public class UnidadeFranquiaDAO {
                 pstmInsereDonoDeUnidadeDeFranquia.setString(3, pessoa.getSenhaPessoa());
                 pstmInsereDonoDeUnidadeDeFranquia.setString(4, pessoa.getTipoUsuario());
                 pstmInsereDonoDeUnidadeDeFranquia.setString(5, pessoa.getTelefonePessoa());
-
-                LocalDateTime dc = pessoa.getDataCriacao();
-                DateTimeFormatter fd = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
-                fd.format(dc);
-                String dataCriacao = dc.format(fd);
-                
-                pstmInsereDonoDeUnidadeDeFranquia.setString(6,dataCriacao);
+                pstmInsereDonoDeUnidadeDeFranquia.setTimestamp(6, Timestamp.valueOf(pessoa.getDataCriacao()));
 
                 pstmInsereDonoDeUnidadeDeFranquia.execute();
                 
@@ -253,13 +247,7 @@ public class UnidadeFranquiaDAO {
                 pstmInsereUnidadeDeFranquia.setString(2, unidadeFranquia.getCidadeUnidadeFranquia());
                 pstmInsereUnidadeDeFranquia.setString(3, unidadeFranquia.getEnderecoUnidadeFranquia());
                 pstmInsereUnidadeDeFranquia.setString(4, pessoa.getCpf());
-               
-                LocalDateTime ufdc = unidadeFranquia.getDataCriacao();
-                DateTimeFormatter fdm = DateTimeFormatter.ofPattern("YYYY-MM-DD HH:MM:SS");
-                fd.format(ufdc);
-                String dataCriacaoUnidadefranquia = ufdc.format(fdm);
-                
-                pstmInsereUnidadeDeFranquia.setString(5, dataCriacaoUnidadefranquia);
+                pstmInsereUnidadeDeFranquia.setTimestamp(5, Timestamp.valueOf(unidadeFranquia.getDataCriacao()));
                   
                 pstmInsereUnidadeDeFranquia.execute();
 
@@ -269,7 +257,7 @@ public class UnidadeFranquiaDAO {
 
                 connection.rollback();
                 adicionado = false;
-                System.out.println("\n Nao foi possivel inserir o Medico no banco de dados!\n" + erro.getMessage());
+                System.out.println("\n Nao foi possivel inserir a unidade de franquia no banco de dados!\n" + erro.getMessage());
 
             }
 
@@ -287,7 +275,8 @@ public class UnidadeFranquiaDAO {
 
         listaUnidadeFranquia.clear();
         
-        String buscaUnidadeFranquia = "select idunidadefranquia, cnpjfranquia, cidade, endereco, cpfdonounidade"
+        String buscaUnidadeFranquia = "select idunidadefranquia, cnpjfranquia, cidade, endereco, "
+                + "cpfdonounidade, datacriacao, datamodificacao"
                 + " from unidadefranquia;";
 
         try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
@@ -310,22 +299,19 @@ public class UnidadeFranquiaDAO {
                 unidadeFranquia.setIdUnidadeFranquia(rs.getInt("idunidadefranquia"));
                 unidadeFranquia.setCidadeUnidadeFranquia(rs.getString("cidade"));
                 unidadeFranquia.setEnderecoUnidadeFranquia(rs.getString("endereco"));
-               
                 
-
-//                String dc = rs.getString("datacriacao");
-//                LocalDateTime dataCriacao = null;
-//                if (dataCriacao != null) {
-//                    DateTimeFormatter fd = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-//                    dataCriacao.parse(dc, fd);
-//                }
-//
-//                String dm = rs.getString("datamodificacao");
-//                LocalDateTime dataModificacao = null;
-//                DateTimeFormatter fdm = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-//                dataModificacao.parse(dm, fdm);
-//                pessoa.setDataCriacao(dataCriacao);
-//                pessoa.setDataModificacao(dataModificacao);
+                Timestamp dataCriacaoUnidadeFranquia = rs.getTimestamp("datacriacao");
+                unidadeFranquia.setDataCriacao(dataCriacaoUnidadeFranquia.toLocalDateTime());
+                
+                
+                Timestamp dataModificacaoUnidadeFranquia = rs.getTimestamp("datamodificacao");
+                
+                if(dataModificacaoUnidadeFranquia != null)
+                {
+                  unidadeFranquia.setDataModificacao(dataModificacaoUnidadeFranquia.toLocalDateTime());   
+                }
+                
+               
                 listaUnidadeFranquia.add(unidadeFranquia);
 
             }
