@@ -92,7 +92,7 @@ public class UnidadeFranquiaControladora {
                     novaCidadeUnidadeFranquia = vd.validaString(novaCidadeUnidadeFranquia);
 
                     if (unidadeFranquiaDAO.AtualizaCidadeUnidadeFranquiaNoBancoDeDados(novaCidadeUnidadeFranquia, 
-                            unidadeFranquia) == true) {
+                            unidadeFranquia, calendarioSistema) == true) {
                         System.out.println("\nCidade Da Unidade De Franquia Atualizada Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar A Cidade Da Unidade De Franquia.");
@@ -105,7 +105,7 @@ public class UnidadeFranquiaControladora {
                     novoEnderecoUnidadeFranquia = vd.validaString(novoEnderecoUnidadeFranquia);
 
                     if (unidadeFranquiaDAO.AtualizaEnderecoUnidadeFranquiaNoBancoDeDados(novoEnderecoUnidadeFranquia,
-                            unidadeFranquia) == true) {
+                            unidadeFranquia, calendarioSistema) == true) {
                         System.out.println("\nEndereco Da Unidade De Franquia Atualizada Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar O Endereco Da Unidade De Franquia.");
