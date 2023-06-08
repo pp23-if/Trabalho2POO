@@ -117,8 +117,8 @@ public class UnidadeFranquiaControladora {
                     String novoLoginDonoUnidadeFranquia = scanner.nextLine();
                     novoLoginDonoUnidadeFranquia = vd.validaString(novoLoginDonoUnidadeFranquia);
 
-                    if (unidadeFranquiaDAO.atualizaLoginDonoDeUnidadeDeFranquia(unidadeFranquia,
-                            novoLoginDonoUnidadeFranquia, calendarioSistema) == true) {
+                    if (unidadeFranquiaDAO.AtualizaLoginDonoUnidadeFranquiaNoBancoDeDados(novoLoginDonoUnidadeFranquia,
+                            unidadeFranquia,calendarioSistema) == true) {
                         System.out.println("\nLogin Dono Unidade De Franquia Atualizada Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar O Login Dono Da Unidade De Franquia.");
@@ -130,8 +130,8 @@ public class UnidadeFranquiaControladora {
                     String novaSenhaDonoUnidadeFranquia = scanner.nextLine();
                     novaSenhaDonoUnidadeFranquia = vd.validaString(novaSenhaDonoUnidadeFranquia);
 
-                    if (unidadeFranquiaDAO.atualizaSenhaDonoDeUnidadeDeFranquia(unidadeFranquia,
-                            novaSenhaDonoUnidadeFranquia, calendarioSistema) == true) {
+                    if (unidadeFranquiaDAO.AtualizaSenhaDonoUnidadeFranquiaNoBancoDeDados(novaSenhaDonoUnidadeFranquia, 
+                            unidadeFranquia, calendarioSistema) == true) {
                         System.out.println("\nSenha Dono Unidade De Franquia Atualizada Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar A Senha Dono Da Unidade De Franquia.");
@@ -143,8 +143,8 @@ public class UnidadeFranquiaControladora {
                     String novoTelefoneDonoUnidadeFranquia = scanner.nextLine();
                     novoTelefoneDonoUnidadeFranquia = vd.validaString(novoTelefoneDonoUnidadeFranquia);
 
-                    if (unidadeFranquiaDAO.atualizaTelefoneDonoDeUnidadeDeFranquia(unidadeFranquia,
-                            novoTelefoneDonoUnidadeFranquia, calendarioSistema) == true) {
+                    if (unidadeFranquiaDAO.AtualizaTelefoneDonoUnidadeFranquiaNoBancoDeDados(novoTelefoneDonoUnidadeFranquia, 
+                            unidadeFranquia, calendarioSistema) == true) {
                         System.out.println("\nTelefone Dono Unidade De Franquia Atualizada Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar O Telefone Dono Da Unidade De Franquia.");
