@@ -91,10 +91,10 @@ public class MedicoControladora {
                     String novologinMedico = scanner.nextLine();
                     novologinMedico = vd.validaString(novologinMedico);
 
-                    if (medicoDAO.atualizaLoginMedico(medico, novologinMedico, calendarioSistema) == true) {
+                    if (medicoDAO.AtualizaLoginMedicoNoBancoDeDados(novologinMedico, medico, calendarioSistema) == true) {
                         System.out.println("\nO Login De Medico Foi Atualizado Com Sucesso!");
                     } else {
-                        System.out.println("\nO Login De Medico Informado, Ja Se Encontra Cadastrado.");
+                        System.out.println("\nNao Foi Possivel Atualizar O Login de Medico.");
                     }
                     break;
                 }
@@ -103,7 +103,7 @@ public class MedicoControladora {
                     String novaSenhaMedico = scanner.nextLine();
                     novaSenhaMedico = vd.validaString(novaSenhaMedico);
 
-                    if (medicoDAO.atualizaSenhaMedico(medico, novaSenhaMedico, calendarioSistema) == true) {
+                    if (medicoDAO.AtualizaSenhaMedicoNoBancoDeDados(novaSenhaMedico, medico, calendarioSistema) == true) {
                         System.out.println("\nA Senha De Medico Foi Atualizada Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar a Senha de Medico.");
@@ -116,7 +116,7 @@ public class MedicoControladora {
                     String novoTelefoneMedico = scanner.nextLine();
                     novoTelefoneMedico = vd.validaString(novoTelefoneMedico);
 
-                    if (medicoDAO.atualizaTelefoneMedico(medico, novoTelefoneMedico, calendarioSistema) == true) {
+                    if (medicoDAO.AtualizaTelefoneMedicoNoBancoDeDados(novoTelefoneMedico, medico, calendarioSistema) == true) {
                         System.out.println("\nO Telefone De Medico Foi Atualizado Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar o Telefone de Medico.");

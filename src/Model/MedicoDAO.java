@@ -83,7 +83,7 @@ public class MedicoDAO {
         return null;
     }
 
-    public boolean atualizaLoginMedico(Medico m, String novoLogin, CalendarioSistema calendarioSistema) {
+    /*public boolean atualizaLoginMedico(Medico m, String novoLogin, CalendarioSistema calendarioSistema) {
 
         if (!verificaSeloginEstaSendoUsado(novoLogin) == true) {
             for (Medico medico : listaMedico) {
@@ -98,7 +98,7 @@ public class MedicoDAO {
         }
 
         return false;
-    }
+    }*/
 
     public boolean atualizaSenhaMedico(Medico m, String novaSenha, CalendarioSistema calendarioSistema) {
 
