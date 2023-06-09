@@ -551,6 +551,7 @@ public class FranquiaDAO {
         return atualizado != false;
     }
 
+    
     public boolean AtualizaTelefoneDonoFranquiaNoBancoDeDados(String novoTelefoneDonoFranquia, Franquia franquia,
             CalendarioSistema calendarioSistema) {
 

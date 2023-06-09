@@ -322,8 +322,8 @@ public class MedicoDAO {
                 Medico medico = new Medico();
 
                 String cpfPessoa = rs.getString("cpfmedico");
-                Pessoa pessoa = pessoaDAO.buscaPessoaMedicoPorCpf(cpfPessoa);
-                medico.setPessoa(pessoa);
+                Pessoa pessoaMedico = pessoaDAO.buscaPessoaMedicoPorCpf(cpfPessoa);
+                medico.setPessoa(pessoaMedico);
                 
                 medico.setIdMedico(rs.getInt("idmedico"));
                 medico.setEspecialidade(rs.getString("especialidade"));
@@ -349,4 +349,113 @@ public class MedicoDAO {
         }
 
     }
+    
+    
+    public boolean AtualizaLoginMedicoNoBancoDeDados(String novoLoginMedico, Medico medico,
+            CalendarioSistema calendarioSistema) {
+
+        boolean atualizado = true;
+
+        String atualizaLoginMedico = "update tipousuario set logintipousuario = ? where cpfpessoa = ? and tipousuario = ?";
+
+        String atualizaDataAlteracaoPessoaMedico = "update tipousuario set datamodificacao = ? "
+                + "where cpfpessoa = ? and tipousuario = ?";
+
+        if (!verificaSeloginEstaSendoUsado(novoLoginMedico) == true) {
+
+            try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+
+                connection.setAutoCommit(false);
+
+                try (PreparedStatement pstmAtualizaLoginMedico = connection.prepareStatement(atualizaLoginMedico);
+                        PreparedStatement pstmAtualizaDataAlteracaoPessoaMedico
+                        = connection.prepareStatement(atualizaDataAlteracaoPessoaMedico)) {
+
+                    pstmAtualizaLoginMedico.setString(1, novoLoginMedico);
+                    pstmAtualizaLoginMedico.setString(2, medico.getPessoa().getCpf());
+                    pstmAtualizaLoginMedico.setString(3, medico.getPessoa().getTipoUsuario());
+
+                    pstmAtualizaLoginMedico.execute();
+
+                    pstmAtualizaDataAlteracaoPessoaMedico.setTimestamp(1,
+                            Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+
+                    pstmAtualizaDataAlteracaoPessoaMedico.setString(2, medico.getPessoa().getCpf());
+                    pstmAtualizaDataAlteracaoPessoaMedico.setString(3, medico.getPessoa().getTipoUsuario());
+
+                    pstmAtualizaDataAlteracaoPessoaMedico.execute();
+
+                    connection.commit();
+
+                } catch (SQLException erro) {
+
+                    connection.rollback();
+                    atualizado = false;
+                    System.out.println("\n Nao foi possivel Atualizar O Login Do Medico no banco de dados!\n"
+                            + erro.getMessage());
+                }
+
+            } catch (Exception e) {
+            }
+
+        } else {
+            atualizado = false;
+        }
+
+        return atualizado != false;
+
+    }
+    
+    
+    
+    public boolean AtualizaSenhaMedicoNoBancoDeDados(String novaSenhaMedico, Medico medico,
+            CalendarioSistema calendarioSistema) {
+
+        boolean atualizado = true;
+
+        String atualizaSenhaMedico = "update tipousuario set senhatipousuario = ? where cpfpessoa = ? and tipousuario = ?";
+
+        String atualizaDataAlteracaoPessoaMedico = "update tipousuario set datamodificacao = ? "
+                + "where cpfpessoa = ? and tipousuario = ?";
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement pstmAtualizaSenhaMedico = connection.prepareStatement(atualizaSenhaMedico);
+                    PreparedStatement pstmAtualizaDataAlteracaoPessoaMedico
+                    = connection.prepareStatement(atualizaDataAlteracaoPessoaMedico)) {
+
+                pstmAtualizaSenhaMedico.setString(1, novaSenhaMedico);
+                pstmAtualizaSenhaMedico.setString(2, medico.getPessoa().getCpf());
+                pstmAtualizaSenhaMedico.setString(3, medico.getPessoa().getTipoUsuario());
+
+                pstmAtualizaSenhaMedico.execute();
+
+                pstmAtualizaDataAlteracaoPessoaMedico.setTimestamp(1,
+                        Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+
+                pstmAtualizaDataAlteracaoPessoaMedico.setString(2, medico.getPessoa().getCpf());
+                pstmAtualizaDataAlteracaoPessoaMedico.setString(3, medico.getPessoa().getTipoUsuario());
+
+                pstmAtualizaDataAlteracaoPessoaMedico.execute();
+
+                connection.commit();
+
+            } catch (SQLException erro) {
+
+                connection.rollback();
+                atualizado = false;
+                System.out.println("\n Nao foi possivel Atualizar a Senha Do Medico no banco de dados!\n" + erro.getMessage());
+            }
+
+        } catch (Exception e) {
+        }
+
+        return atualizado != false;
+    }
+    
+    
+    
+    
 }
