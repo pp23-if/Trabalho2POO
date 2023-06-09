@@ -1,5 +1,11 @@
 package Model;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedList;
@@ -257,6 +263,50 @@ public class ConsultaDAO {
         valorParteConsulta = valorConsultas * 0.30;
         
         return valorParteConsulta;
+    }
+    
+    
+     public boolean insereConsultaNoBancoDeDados(Consulta consulta) {
+
+        boolean adicionado = true;
+
+        String insereConsulta = "insert into consulta (diaconsulta, horaconsulta, estadoconsulta, crm,"
+                + "cpfpessoa, valorconsulta, idunidadefranquia, datacriacao) values (?,?,?,?,?,?,?,?)";
+
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement pstmInsereConsulta = connection.prepareStatement(insereConsulta)) {
+
+               pstmInsereConsulta.setDate(1, Date.valueOf(consulta.getDiaConsulta()));
+               pstmInsereConsulta.setTime(2, Time.valueOf(consulta.getHoraConsulta()));
+               pstmInsereConsulta.setString(3, consulta.getEstadoConsulta());
+               pstmInsereConsulta.setString(4, consulta.getMedico().getCrm());
+               pstmInsereConsulta.setString(5, consulta.getPessoa().getCpf());
+               pstmInsereConsulta.setDouble(6, consulta.getValor());
+               pstmInsereConsulta.setInt(7, consulta.getUnidadeFranquia().getIdUnidadeFranquia());
+               pstmInsereConsulta.setTimestamp(8, Timestamp.valueOf(consulta.getDataCriacao()));
+               
+               pstmInsereConsulta.execute();
+               
+               connection.commit();
+
+            } catch (SQLException erro) {
+
+                connection.rollback();
+                adicionado = false;
+                System.out.println("\n Nao foi possivel inserir a Consulta no banco de dados!\n" + erro.getMessage());
+
+            }
+
+        } catch (SQLException erro) {
+
+        }
+
+        return adicionado != false;
+
     }
 
 }

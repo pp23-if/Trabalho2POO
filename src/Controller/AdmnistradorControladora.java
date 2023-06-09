@@ -191,7 +191,7 @@ public class AdmnistradorControladora {
                                         medicoEncontrado, pessoaEncontrada, unidadeEncontrada,
                                         valorConsulta, "Agendada", calendarioSistema.getDataHoraSistema());
 
-                                if (consultaDAO.adicionaConsulta(novaConsulta) == true) {
+                                if (consultaDAO.insereConsultaNoBancoDeDados(novaConsulta) == true) {
                                     System.out.println("\nConsulta marcada com sucesso.");
                                 } else {
                                     System.out.println("\nNao foi possivel marcar Consulta");
