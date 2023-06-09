@@ -457,5 +457,60 @@ public class MedicoDAO {
     
     
     
+    public boolean AtualizaTelefoneMedicoNoBancoDeDados(String novoTelefoneMedico, Medico medico,
+            CalendarioSistema calendarioSistema) {
+
+        boolean atualizado = true;
+
+        String atualizaTelefoneMedico = "update tipousuario set telefonepessoa = ? where cpfpessoa = ? and tipousuario = ?";
+
+        String atualizaDataAlteracaoPessoaMedico = "update tipousuario set datamodificacao = ? "
+                + "where cpfpessoa = ? and tipousuario = ?";
+
+        if (!verificaSeTelefoneEstaSendoUsado(novoTelefoneMedico) == true) {
+
+            try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+
+                connection.setAutoCommit(false);
+
+                try (PreparedStatement pstmAtualizaTelefoneMedico = connection.prepareStatement(atualizaTelefoneMedico);
+                        PreparedStatement pstmAtualizaDataAlteracaoPessoaMedico
+                        = connection.prepareStatement(atualizaDataAlteracaoPessoaMedico)) {
+
+                    pstmAtualizaTelefoneMedico.setString(1, novoTelefoneMedico);
+                    pstmAtualizaTelefoneMedico.setString(2, medico.getPessoa().getCpf());
+                    pstmAtualizaTelefoneMedico.setString(3, medico.getPessoa().getTipoUsuario());
+
+                    pstmAtualizaTelefoneMedico.execute();
+
+                    pstmAtualizaDataAlteracaoPessoaMedico.setTimestamp(1,
+                            Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+
+                    pstmAtualizaDataAlteracaoPessoaMedico.setString(2, medico.getPessoa().getCpf());
+                    pstmAtualizaDataAlteracaoPessoaMedico.setString(3, medico.getPessoa().getTipoUsuario());
+
+                    pstmAtualizaDataAlteracaoPessoaMedico.execute();
+
+                    connection.commit();
+
+                } catch (SQLException erro) {
+
+                    connection.rollback();
+                    atualizado = false;
+                    System.out.println("\n Nao foi possivel Atualizar O Telefone Do Medico no banco de dados!\n"
+                            + erro.getMessage());
+                }
+
+            } catch (Exception e) {
+            }
+
+        } else {
+            atualizado = false;
+        }
+
+        return atualizado != false;
+
+    }
+    
     
 }
