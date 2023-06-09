@@ -13,6 +13,7 @@ public class AtualizaAplicacao {
         medicoDAO.BuscaMedicoNoBancoDeDados(pessoaDAO);
         franquiaDAO.BuscaFranquiaNoBancoDeDados(pessoaDAO);
         unidadeFranquiaDAO.BuscaUnidadeFranquiaNoBancoDeDados(pessoaDAO, franquiaDAO);
+        admnistradorDAO.BuscaAdmnistradorNoBancoDeDados(pessoaDAO, franquiaDAO);
     }
     
 }

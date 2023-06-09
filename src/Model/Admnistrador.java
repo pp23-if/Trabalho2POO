@@ -14,6 +14,10 @@ public class Admnistrador {
 
     public Admnistrador() {
     }
+
+    public void setIdAdmnistrador(int idAdmnistrador) {
+        this.idAdmnistrador = idAdmnistrador;
+    }
     
 
     public int getIdAdmnistrador() {

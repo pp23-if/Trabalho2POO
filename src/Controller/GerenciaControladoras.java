@@ -88,8 +88,8 @@ public class GerenciaControladoras {
                     unidadeFranquiaDAO.MostraTodasUnidadesDeFranquia();
                     
                     
-                    /*System.out.println("\nMostrando Todos os ADMNISTRADORES Cadastradas: " + "\n");
-                    admnistradorDAO.buscaTodosAdmnistradores();*/
+                    System.out.println("\nMostrando Todos os ADMNISTRADORES Cadastrados: " + "\n");
+                    admnistradorDAO.buscaTodosAdmnistradores();
                     
                   
                     break;

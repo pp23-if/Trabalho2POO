@@ -1,5 +1,10 @@
 package Model;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -85,4 +90,52 @@ public class AdmnistradorDAO {
         }
         return false;
     }
+    
+    
+    public void BuscaAdmnistradorNoBancoDeDados(PessoaDAO pessoaDAO, FranquiaDAO franquiaDAO) {
+
+        listaAdmnistrador.clear();
+
+        String buscaAdmnistrador = "select * from admnistrador;";
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                PreparedStatement pstm = connection.prepareStatement(buscaAdmnistrador);
+                ResultSet rs = pstm.executeQuery(buscaAdmnistrador)) {
+
+            while (rs.next()) {
+
+                Admnistrador admnistrador = new Admnistrador();
+                
+                admnistrador.setIdAdmnistrador(rs.getInt("idadmnistrador"));
+                
+                String cpfAdmnistrador = rs.getString("cpfpessoa");
+                Pessoa pessoaAdmnistrador = pessoaDAO.buscaPessoaAdmnistradorPorCpf(cpfAdmnistrador);
+                
+                String cnpjFranquia = rs.getString("cnpjfranquia");
+                Franquia franquia = franquiaDAO.buscaFranquiaPorCnpj(cnpjFranquia);
+                
+                admnistrador.setPessoa(pessoaAdmnistrador);
+                admnistrador.setFranquia(franquia);
+                
+                Timestamp dataCriacaoAdmnistrador = rs.getTimestamp("datacriacao");
+                admnistrador.setDataCriacao(dataCriacaoAdmnistrador.toLocalDateTime());
+                
+                Timestamp dataModficacaoAdmnistrador = rs.getTimestamp("datamodificacao");
+                
+                if(dataModficacaoAdmnistrador != null)
+                {
+                   admnistrador.setDataModificacao(dataModficacaoAdmnistrador.toLocalDateTime()); 
+                }
+                
+                
+                listaAdmnistrador.add(admnistrador);
+
+            }
+
+        } catch (SQLException erro) {
+            System.out.println("\n Nao foi possivel Buscar os dados dos Admnistradores no banco de dados!\n" + erro.getMessage());
+        }
+
+    }
+    
 }

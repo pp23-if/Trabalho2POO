@@ -341,6 +341,20 @@ public class PessoaDAO {
 
     }
 
+    
+      public Pessoa buscaPessoaAdmnistradorPorCpf(String CpfAdmnistrador) {
+        for (Pessoa pessoa : listaPessoa) {
+
+            if (pessoa != null && pessoa.getCpf().equals(CpfAdmnistrador)
+                    && pessoa.getTipoUsuario().equals("Admnistrador")) {
+
+                return pessoa;
+            }
+        }
+        return null;
+
+    }
+    
     public Pessoa filtraPessoasCandidatasAMedico() {
 
         for (Pessoa pessoa : listaPessoa) {
