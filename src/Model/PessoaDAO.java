@@ -354,6 +354,19 @@ public class PessoaDAO {
         return null;
 
     }
+      
+      public Pessoa buscaPessoaPacientePorCpf(String CpfPaciente) {
+        for (Pessoa pessoa : listaPessoa) {
+
+            if (pessoa != null && pessoa.getCpf().equals(CpfPaciente)
+                    && pessoa.getTipoUsuario().equals("Paciente")) {
+
+                return pessoa;
+            }
+        }
+        return null;
+
+    }
     
     public Pessoa filtraPessoasCandidatasAMedico() {
 

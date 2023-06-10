@@ -26,6 +26,11 @@ public class Consulta {
         return idConsulta;
     }
 
+    public void setIdConsulta(int idConsulta) {
+        this.idConsulta = idConsulta;
+    }
+
+    
     public LocalDate getDiaConsulta() {
         return diaConsulta;
     }

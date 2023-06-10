@@ -83,6 +83,19 @@ public class MedicoDAO {
         return null;
     }
 
+    public Medico buscaMedicoPorCrm (String crm)
+    {
+        for (Medico medico : listaMedico) {
+            
+            if(medico != null && medico.getCrm().equals(crm))
+            {
+                return medico;
+            }
+        }
+        return null;
+        
+    }
+    
     /*public boolean atualizaLoginMedico(Medico m, String novoLogin, CalendarioSistema calendarioSistema) {
 
         if (!verificaSeloginEstaSendoUsado(novoLogin) == true) {

@@ -3,6 +3,7 @@ package Model;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -308,5 +309,68 @@ public class ConsultaDAO {
         return adicionado != false;
 
     }
+     
+     
+     
+     public void BuscaConsultaNoBancoDeDados(PessoaDAO pessoaDAO, MedicoDAO medicoDAO, UnidadeFranquiaDAO unidadeFranquiaDAO) {
+
+        listaConsulta.clear();
+
+        String buscaConsulta = "select * from consulta;";
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                PreparedStatement pstm = connection.prepareStatement(buscaConsulta);
+                ResultSet rs = pstm.executeQuery(buscaConsulta)) {
+
+            while (rs.next()) {
+
+                Consulta consulta = new Consulta();
+                
+                consulta.setIdConsulta(rs.getInt("idconsulta"));
+                
+                Date diaConsulta = rs.getDate("diaconsulta");
+                consulta.setDiaConsulta(diaConsulta.toLocalDate());
+                
+                Time horaConsulta = rs.getTime("horaconsulta");
+                consulta.setHoraConsulta(horaConsulta.toLocalTime());
+                
+                consulta.setEstadoConsulta(rs.getString("estadoconsulta"));
+                
+                String crm = rs.getString("crm");
+                Medico medicoConsulta = medicoDAO.buscaMedicoPorCrm(crm);
+                
+                String cpfConsulta = rs.getString("cpfpessoa");
+                Pessoa pessoaConsulta = pessoaDAO.buscaPessoaPacientePorCpf(cpfConsulta);
+                
+                consulta.setMedico(medicoConsulta);
+                consulta.setPessoa(pessoaConsulta);
+                consulta.setValor(rs.getDouble("valorconsulta"));
+                
+                int unidadeFranquiaConsulta = rs.getInt("idunidadefranquia");
+                UnidadeFranquia unidadeFranquia = unidadeFranquiaDAO.buscaUnidadeFranquiaPorId(unidadeFranquiaConsulta);
+                
+                consulta.setUnidadeFranquia(unidadeFranquia);
+                
+                Timestamp dataCriacaoConsulta = rs.getTimestamp("datacriacao");
+                consulta.setDataCriacao(dataCriacaoConsulta.toLocalDateTime());
+                
+                Timestamp dataModficacaoConsulta = rs.getTimestamp("datamodificacao");
+                
+                if(dataModficacaoConsulta != null)
+                {
+                   consulta.setDataModificacao(dataModficacaoConsulta.toLocalDateTime()); 
+                }
+                
+                
+                listaConsulta.add(consulta);
+
+            }
+
+        } catch (SQLException erro) {
+            System.out.println("\n Nao foi possivel Buscar os dados das Consultas no banco de dados!\n" + erro.getMessage());
+        }
+
+    }
+     
 
 }
