@@ -271,14 +271,14 @@ public class AdmnistradorControladora {
                     System.out.println("\nDia e Hora Informados Indisponiveis.");
                 } else {
 
-                    if (consultaDAO.recebeConsultaERemarca(diaConsulta, horaConsulta,
+                    if (consultaDAO.remarcaConsultaNoBancoDeDados(diaConsulta, horaConsulta, 
                             consultaEncontrada, calendarioSistema) == true) {
 
                         System.out.println("\nConsulta Remarcada Com Sucesso.");
 
                     } else {
 
-                        System.out.println("\nNao Foi Possivel Remarcar a Consulta, Conulta Realizada Ou Cancelada.");
+                        System.out.println("\nNao Foi Possivel Remarcar a Consulta.");
                     }
                 }
 

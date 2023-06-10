@@ -100,7 +100,7 @@ public class ConsultaDAO {
         return false;
     }
 
-    public boolean recebeConsultaERemarca(LocalDate novoDiaConsulta,
+    /*public boolean recebeConsultaERemarca(LocalDate novoDiaConsulta,
             LocalTime novaHoraConsulta, Consulta consulta, CalendarioSistema calendarioSistema) {
         if (consulta != null && consulta.getEstadoConsulta().equals("Agendada")) {
             consulta.setDiaConsulta(novoDiaConsulta);
@@ -109,7 +109,7 @@ public class ConsultaDAO {
             return true;
         }
         return false;
-    }
+    }*/
 
     public Consulta buscaConsultaPorFranquia(Franquia franquia) {
         for (Consulta consulta : listaConsulta) {
@@ -412,6 +412,59 @@ public class ConsultaDAO {
         }
 
         return cancelado != false;
+    }
+
+     
+     
+      public boolean remarcaConsultaNoBancoDeDados(LocalDate novoDiaConsulta, LocalTime novaHoraConsulta, 
+              Consulta consulta, CalendarioSistema calendarioSistema) {
+
+        boolean remarcado = true;
+
+        String remarcaDiaConsulta = "update consulta set diaconsulta = ? where idconsulta = ?";
+        
+        String remarcaHoraConsulta = "update consulta set horaconsulta = ? where idconsulta = ?";
+        
+        String atualizaDataAlteracaoConsulta = "update consulta set datamodificacao = ? where idconsulta = ?";
+
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement pstmRemarcaDiaConsulta = connection.prepareStatement(remarcaDiaConsulta);
+                 PreparedStatement pstmRemarcaHoraConsulta = connection.prepareStatement(remarcaHoraConsulta);  
+                  PreparedStatement pstmAtualizaDataAlteracaoConsulta = connection.prepareStatement(atualizaDataAlteracaoConsulta)) {
+
+                 pstmRemarcaDiaConsulta.setDate(1, Date.valueOf(novoDiaConsulta));
+                 pstmRemarcaDiaConsulta.setInt(2, consulta.getIdConsulta());
+                 
+                 pstmRemarcaDiaConsulta.execute();
+                 
+                 
+                 pstmRemarcaHoraConsulta.setTime(1, Time.valueOf(novaHoraConsulta));
+                 pstmRemarcaHoraConsulta.setInt(2, consulta.getIdConsulta());
+                 
+                 pstmRemarcaHoraConsulta.execute();
+                 
+                 pstmAtualizaDataAlteracaoConsulta.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+                 pstmAtualizaDataAlteracaoConsulta.setInt(2, consulta.getIdConsulta());
+                
+                pstmAtualizaDataAlteracaoConsulta.execute();
+
+                connection.commit();
+
+            } catch (SQLException erro) {
+
+                connection.rollback();
+                remarcado = false;
+                System.out.println("\n Nao foi possivel remarcar a Consulta no banco de dados!\n" + erro.getMessage());
+            }
+
+        } catch (Exception e) {
+        }
+
+        return remarcado != false;
     }
 
      
