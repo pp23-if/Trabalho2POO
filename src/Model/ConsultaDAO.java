@@ -133,38 +133,45 @@ public class ConsultaDAO {
         return null;
     }
 
-    public boolean atenderConsulta(Medico medico, InfoConsultaDAO infoConsultaDAO, CalendarioSistema calendarioSistema,
-            FinanceiroAdmDAO financeiroAdmDAO) {
+    public boolean recebeConsultaParaSerAtendida(Medico medico, CalendarioSistema calendarioSistema, FinanceiroAdmDAO financeiroAdmDAO) {
+        
         for (Consulta consulta : listaConsulta) {
             if (consulta != null
                     && consulta.getMedico().equals(medico)
                     && consulta.getEstadoConsulta().equals("Agendada")
                     && consulta.getDiaConsulta().isEqual(calendarioSistema.getDiaDoSistema())) {
 
-                consulta.setEstadoConsulta("Realizada");
-                consulta.setDataModificacao(calendarioSistema.getDataHoraSistema());
+                /*consulta.setEstadoConsulta("Realizada");
+                consulta.setDataModificacao(calendarioSistema.getDataHoraSistema());*/
 
-                infoConsultaDAO.recebeConsultaRealizada(consulta, calendarioSistema);
-                financeiroAdmDAO.geraMovimentacaoFinanceiraConsulta(consulta, calendarioSistema);
+                //infoConsultaDAO.recebeConsultaRealizada(consulta, calendarioSistema);
+                //financeiroAdmDAO.geraMovimentacaoFinanceiraConsulta(consulta, calendarioSistema);
 
-                return true;
+                if(realizaConsultaNoBancoDeDados(consulta, calendarioSistema) == true)
+                {
+                   return true;   
+                }
+                
             }
         }
         return false;
     }
 
-    public Consulta buscaConsultasDoDia(CalendarioSistema calendarioSistema, Medico medico) {
+    public boolean buscaConsultasDoDia(CalendarioSistema calendarioSistema, Medico medico) {
 
+        boolean existeConsulta = false;
+        
         for (Consulta consulta : listaConsulta) {
 
             if (consulta != null
                     && consulta.getMedico().equals(medico)
                     && consulta.getEstadoConsulta().equals("Agendada")
                     && consulta.getDiaConsulta().isEqual(calendarioSistema.getDiaDoSistema())) {
+                existeConsulta = true;
                 System.out.println(consulta + "\n");
             }
         }
-        return null;
+        return existeConsulta;
     }
 
     public Consulta buscaConsultasQueTemMedicoSolicitanteEPacienteEscolhido(Pessoa pessoa, Medico medico) {
@@ -468,4 +475,56 @@ public class ConsultaDAO {
     }
 
      
+      private boolean realizaConsultaNoBancoDeDados(Consulta consulta, CalendarioSistema calendarioSistema) {
+
+        boolean realizado = true;
+
+        String realizaConsulta = "update consulta set estadoconsulta = ? where idconsulta = ?";
+        
+        String insereInfoConsulta = "insert into infoconsulta (idconsulta, descricaoconsulta, datacriacao) "
+                + "values (?,?,?)";
+        
+        String atualizaDataAlteracaoConsulta = "update consulta set datamodificacao = ? where idconsulta = ?";
+
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement pstmRealizaConsulta = connection.prepareStatement(realizaConsulta);
+                 PreparedStatement pstmInsereInfoConsulta = connection.prepareStatement(insereInfoConsulta);
+                  PreparedStatement pstmAtualizaDataAlteracaoConsulta = connection.prepareStatement(atualizaDataAlteracaoConsulta)) {
+
+                pstmRealizaConsulta.setString(1, "Realizada");
+                pstmRealizaConsulta.setInt(2, consulta.getIdConsulta());
+                
+                pstmRealizaConsulta.execute();
+                
+                pstmInsereInfoConsulta.setInt(1, consulta.getIdConsulta());
+                pstmInsereInfoConsulta.setString(2, "");
+                pstmInsereInfoConsulta.setTimestamp(3, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+                
+                pstmInsereInfoConsulta.execute();
+                
+                
+                pstmAtualizaDataAlteracaoConsulta.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+                pstmAtualizaDataAlteracaoConsulta.setInt(2, consulta.getIdConsulta());
+                
+                pstmAtualizaDataAlteracaoConsulta.execute();
+
+                connection.commit();
+
+            } catch (SQLException erro) {
+
+                connection.rollback();
+                realizado = false;
+                System.out.println("\n Nao foi possivel Realizar a Consulta no banco de dados!\n" + erro.getMessage());
+            }
+
+        } catch (Exception e) {
+        }
+
+        return realizado != false;
+    }
+      
 }

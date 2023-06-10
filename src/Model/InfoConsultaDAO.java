@@ -59,9 +59,11 @@ public class InfoConsultaDAO {
         return false;
     }
     
-    public void recebeConsultaRealizada(Consulta consulta, CalendarioSistema calendarioSistema)
+    /*public void recebeConsultaRealizada(Consulta consulta, CalendarioSistema calendarioSistema)
     {
         InfoConsulta infoConsulta = new InfoConsulta(consulta, "", calendarioSistema.getDataHoraSistema());
         adicionaInfoConsulta(infoConsulta);
-    }
+    }*/
+    
+    
 }

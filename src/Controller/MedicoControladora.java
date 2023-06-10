@@ -13,6 +13,7 @@ import Model.Pessoa;
 import Model.PessoaDAO;
 import Model.Procedimento;
 import Model.ProcedimentoDAO;
+import Model.UnidadeFranquiaDAO;
 import View.MenuTitulosMedico;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -27,17 +28,17 @@ public class MedicoControladora {
     public MedicoControladora(Medico medico, MedicoDAO medicoDAO, ValidacaoEntradaDados vd,
             ConsultaDAO consultaDAO, InfoConsultaDAO infoConsultaDAO,
             ProcedimentoDAO procedimentoDAO, PessoaDAO pessoaDAO, CalendarioSistema calendarioSistema,
-            FinanceiroAdmDAO financeiroAdmDAO, FinanceiroMedicoDAO financeiroMedicoDAO) {
+            FinanceiroAdmDAO financeiroAdmDAO, FinanceiroMedicoDAO financeiroMedicoDAO, UnidadeFranquiaDAO unidadeFranquiaDAO) {
 
         menuOpcoesMedico(medico, medicoDAO, vd, consultaDAO, infoConsultaDAO, procedimentoDAO,
-                pessoaDAO, calendarioSistema, financeiroAdmDAO, financeiroMedicoDAO);
+                pessoaDAO, calendarioSistema, financeiroAdmDAO, financeiroMedicoDAO, unidadeFranquiaDAO);
 
     }
 
     private void menuOpcoesMedico(Medico medico, MedicoDAO medicoDAO,
             ValidacaoEntradaDados vd, ConsultaDAO consultaDAO, InfoConsultaDAO infoConsultaDAO,
             ProcedimentoDAO procedimentoDAO, PessoaDAO pessoaDAO, CalendarioSistema calendarioSistema,
-            FinanceiroAdmDAO financeiroAdmDAO, FinanceiroMedicoDAO financeiroMedicoDAO) {
+            FinanceiroAdmDAO financeiroAdmDAO, FinanceiroMedicoDAO financeiroMedicoDAO, UnidadeFranquiaDAO unidadeFranquiaDAO) {
 
         int opcao;
 
@@ -55,7 +56,7 @@ public class MedicoControladora {
                 }
                 case 3: {
                     menuOpcoesConsultaMedico(medico, consultaDAO, infoConsultaDAO, vd,
-                            calendarioSistema, financeiroAdmDAO);
+                            calendarioSistema, financeiroAdmDAO, medicoDAO, pessoaDAO, unidadeFranquiaDAO);
                     break;
                 }
                 case 4: {
@@ -131,7 +132,7 @@ public class MedicoControladora {
 
     private void menuOpcoesConsultaMedico(Medico medico, ConsultaDAO consultaDAO,
             InfoConsultaDAO infoConsultaDAO, ValidacaoEntradaDados vd, CalendarioSistema calendarioSistema,
-            FinanceiroAdmDAO financeiroAdmDAO) {
+            FinanceiroAdmDAO financeiroAdmDAO, MedicoDAO medicoDAO, PessoaDAO pessoaDAO, UnidadeFranquiaDAO unidadeFranquiaDAO) {
 
         int opcao;
 
@@ -140,15 +141,23 @@ public class MedicoControladora {
 
             switch (opcao) {
                 case 1: {
-
+                    
+                    consultaDAO.BuscaConsultaNoBancoDeDados(pessoaDAO, medicoDAO, unidadeFranquiaDAO);
+                    
                     System.out.println("\n");
-                    consultaDAO.buscaConsultasDoDia(calendarioSistema, medico);
-
-                    if (consultaDAO.atenderConsulta(medico, infoConsultaDAO, calendarioSistema, financeiroAdmDAO) == true) {
-                        System.out.println("\nConsulta atendida com sucesso.");
-                    } else {
-                        System.out.println("\nNao existe mais consultas marcadas.");
+                    if (consultaDAO.buscaConsultasDoDia(calendarioSistema, medico) == true) {
+                        
+                        if (consultaDAO.recebeConsultaParaSerAtendida(medico, calendarioSistema, financeiroAdmDAO) == true) {
+                            System.out.println("\nConsulta atendida com sucesso.");
+                        } else {
+                            System.out.println("\nNao Foi Possivel Atender a Consulta.");
+                        }
                     }
+                    else
+                    {
+                      System.out.println("\nNao existe mais consultas marcadas.");  
+                    }
+
                     break;
                 }
                 case 2: {
@@ -341,23 +350,23 @@ public class MedicoControladora {
             LocalTime horaProcedimento = LocalTime.parse(Hora);
 
             if (procedimentoDAO.verificaDataProcedimento(calendarioSistema, diaProcedimento) == true) {
-                
+
                 System.out.println("\nData Informada Invalida.");
-                
+
             } else {
                 if (procedimentoDAO.verificaDisponibilidadeDataEHoraProcedimentoMedico(diaProcedimento, horaProcedimento,
                         medico) == true) {
-                    
+
                     System.out.println("\nDia e hora Informados, Indisponiveis.");
-                    
+
                 } else {
                     if (procedimentoDAO.recebeProcedimentoERemarca(diaProcedimento,
                             horaProcedimento, procedimentoEncontrado, calendarioSistema) == true) {
-                        
+
                         System.out.println("\nProcedimento Remarcado Com Sucesso!");
-                        
+
                     } else {
-                        
+
                         System.out.println("\nNao Foi Possivel Remarcar O Procedimento.");
                     }
                 }
