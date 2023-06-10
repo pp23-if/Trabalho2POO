@@ -67,14 +67,14 @@ public class ConsultaDAO {
         return null;
     }
 
-    public boolean receConsultaECancela(Consulta consulta, CalendarioSistema calendarioSistema) {
+    /*public boolean receConsultaECancela(Consulta consulta, CalendarioSistema calendarioSistema) {
         if (consulta != null && consulta.getEstadoConsulta().equals("Agendada")) {
             consulta.setEstadoConsulta("Cancelada");
             consulta.setDataModificacao(calendarioSistema.getDataHoraSistema());
             return true;
         }
         return false;
-    }
+    }*/
 
     public boolean verificaDisponibilidadeDiaEHoraConsultaMedico(LocalDate novoDiaConsulta,
             LocalTime novaHoraConsulta, Medico medico) {
@@ -373,4 +373,46 @@ public class ConsultaDAO {
     }
      
 
+     public boolean cancelaConsultaNoBancoDeDados(Consulta consulta, CalendarioSistema calendarioSistema) {
+
+        boolean cancelado = true;
+
+        String cancelaConsulta = "update consulta set estadoconsulta = ? where idconsulta = ?";
+        
+        String atualizaDataAlteracaoConsulta = "update consulta set datamodificacao = ? where idconsulta = ?";
+
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement pstmCancelaConsulta = connection.prepareStatement(cancelaConsulta);
+                  PreparedStatement pstmAtualizaDataAlteracaoConsulta = connection.prepareStatement(atualizaDataAlteracaoConsulta)) {
+
+                pstmCancelaConsulta.setString(1, "Cancelada");
+                pstmCancelaConsulta.setInt(2, consulta.getIdConsulta());
+                
+                pstmCancelaConsulta.execute();
+                
+                pstmAtualizaDataAlteracaoConsulta.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+                pstmAtualizaDataAlteracaoConsulta.setInt(2, consulta.getIdConsulta());
+                
+                pstmAtualizaDataAlteracaoConsulta.execute();
+
+                connection.commit();
+
+            } catch (SQLException erro) {
+
+                connection.rollback();
+                cancelado = false;
+                System.out.println("\n Nao foi possivel Cancelar a Consulta no banco de dados!\n" + erro.getMessage());
+            }
+
+        } catch (Exception e) {
+        }
+
+        return cancelado != false;
+    }
+
+     
 }

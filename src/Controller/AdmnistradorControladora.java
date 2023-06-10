@@ -224,7 +224,7 @@ public class AdmnistradorControladora {
         if (consultaEncontra == null) {
             System.out.println("\nConsulta nao Encontrada");
         } else {
-            if (consultaDAO.receConsultaECancela(consultaEncontra, calendarioSistema) == true) {
+            if (consultaDAO.cancelaConsultaNoBancoDeDados(consultaEncontra, calendarioSistema) == true) {
                 System.out.println("\nConsulta cancelada com sucesso.");
 
             } else {
