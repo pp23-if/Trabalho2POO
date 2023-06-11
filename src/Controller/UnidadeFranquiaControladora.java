@@ -67,11 +67,11 @@ public class UnidadeFranquiaControladora {
                     break;
                 }
                 case 7: {
-                     geraRelatoriosUnidadeFranquia(financeiroAdmDAO, financeiroMedicoDAO, unidadeFranquia,
+                    geraRelatoriosUnidadeFranquia(financeiroAdmDAO, financeiroMedicoDAO, unidadeFranquia,
                             vd, consultaDAO, procedimentoDAO, medicoDAO, calendarioSistema);
                     break;
                 }
-              
+
             }
 
         } while (opcao != 0);
@@ -91,7 +91,7 @@ public class UnidadeFranquiaControladora {
                     String novaCidadeUnidadeFranquia = scanner.nextLine();
                     novaCidadeUnidadeFranquia = vd.validaString(novaCidadeUnidadeFranquia);
 
-                    if (unidadeFranquiaDAO.AtualizaCidadeUnidadeFranquiaNoBancoDeDados(novaCidadeUnidadeFranquia, 
+                    if (unidadeFranquiaDAO.AtualizaCidadeUnidadeFranquiaNoBancoDeDados(novaCidadeUnidadeFranquia,
                             unidadeFranquia, calendarioSistema) == true) {
                         System.out.println("\nCidade Da Unidade De Franquia Atualizada Com Sucesso!");
                     } else {
@@ -118,7 +118,7 @@ public class UnidadeFranquiaControladora {
                     novoLoginDonoUnidadeFranquia = vd.validaString(novoLoginDonoUnidadeFranquia);
 
                     if (unidadeFranquiaDAO.AtualizaLoginDonoUnidadeFranquiaNoBancoDeDados(novoLoginDonoUnidadeFranquia,
-                            unidadeFranquia,calendarioSistema) == true) {
+                            unidadeFranquia, calendarioSistema) == true) {
                         System.out.println("\nLogin Dono Unidade De Franquia Atualizada Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar O Login Dono Da Unidade De Franquia.");
@@ -130,7 +130,7 @@ public class UnidadeFranquiaControladora {
                     String novaSenhaDonoUnidadeFranquia = scanner.nextLine();
                     novaSenhaDonoUnidadeFranquia = vd.validaString(novaSenhaDonoUnidadeFranquia);
 
-                    if (unidadeFranquiaDAO.AtualizaSenhaDonoUnidadeFranquiaNoBancoDeDados(novaSenhaDonoUnidadeFranquia, 
+                    if (unidadeFranquiaDAO.AtualizaSenhaDonoUnidadeFranquiaNoBancoDeDados(novaSenhaDonoUnidadeFranquia,
                             unidadeFranquia, calendarioSistema) == true) {
                         System.out.println("\nSenha Dono Unidade De Franquia Atualizada Com Sucesso!");
                     } else {
@@ -143,7 +143,7 @@ public class UnidadeFranquiaControladora {
                     String novoTelefoneDonoUnidadeFranquia = scanner.nextLine();
                     novoTelefoneDonoUnidadeFranquia = vd.validaString(novoTelefoneDonoUnidadeFranquia);
 
-                    if (unidadeFranquiaDAO.AtualizaTelefoneDonoUnidadeFranquiaNoBancoDeDados(novoTelefoneDonoUnidadeFranquia, 
+                    if (unidadeFranquiaDAO.AtualizaTelefoneDonoUnidadeFranquiaNoBancoDeDados(novoTelefoneDonoUnidadeFranquia,
                             unidadeFranquia, calendarioSistema) == true) {
                         System.out.println("\nTelefone Dono Unidade De Franquia Atualizada Com Sucesso!");
                     } else {
@@ -160,7 +160,7 @@ public class UnidadeFranquiaControladora {
 
     private void cadastraMedicos(MedicoDAO medicoDAO, PessoaDAO pessoaDAO, ValidacaoEntradaDados vd,
             CalendarioSistema calendarioSistema) {
-        
+
         System.out.println("\n");
         pessoaDAO.filtraPessoasCandidatasAMedico();
 
@@ -205,19 +205,17 @@ public class UnidadeFranquiaControladora {
                                 pessoaEncontrada.getTelefonePessoa(),
                                 LoginMedico, senhaMedico, "Medico", calendarioSistema.getDataHoraSistema());
 
-                        if (pessoaDAO.adicionaPessoa(pessoaMedico) == true) {
+                        Medico medico = new Medico();
+                        medico.setCrm(crm);
+                        medico.setEspecialidade(medicoEspecialidade);
+                        medico.setDataCriacao(calendarioSistema.getDataHoraSistema());
 
-                            Medico medico = new Medico(crm, pessoaMedico, medicoEspecialidade,
-                                    calendarioSistema.getDataHoraSistema());
-
-                            if (medicoDAO.adicionaMedico(medico) == true) {
-                                System.out.println("\nMedico Cadastrado Com Sucesso!");
-                            } else {
-                                System.out.println("\nNao Foi Possivel Cadastrar o Medico.");
-                            }
+                        if (medicoDAO.insereMedicoNoBancoDeDados(pessoaMedico, medico) == true) {
+                            System.out.println("\nMedico Cadastrado Com Sucesso!");
                         } else {
-                            System.out.println("\n Erro ao Cadastrar medico.");
+                            System.out.println("\nNao Foi Possivel Cadastrar o Medico.");
                         }
+
                     }
 
                 }
@@ -303,7 +301,7 @@ public class UnidadeFranquiaControladora {
                 parteUnidadeProcedimento = procedimentoDAO.calculaParteDescontoProcedimentos(valorBrutoProcedimento);
                 System.out.println("\nParte Da Unidade De Franquia Sobre Procedimentos: " + parteUnidadeProcedimento);
 
-                valoresMedicos = financeiroMedicoDAO.calculaValorLiquidoAReceberMedico(valorBrutoConsulta, valorBrutoProcedimento, 
+                valoresMedicos = financeiroMedicoDAO.calculaValorLiquidoAReceberMedico(valorBrutoConsulta, valorBrutoProcedimento,
                         parteUnidadeConsulta, parteUnidadeProcedimento);
                 System.out.println("\nValores Pagos Ao Medico - (Consultas + Procedimentos): " + valoresMedicos);
             }
@@ -328,8 +326,7 @@ public class UnidadeFranquiaControladora {
         double valorBrutoConsulta;
         double valorBrutoProcedimento;
         double valoresMedicos;
-        
-        
+
         System.out.println("\nInforme O Numero Do Mes Que Deseja Ver Relatorio: ");
         int numeroMes = Integer.parseInt(scanner.nextLine());
         numeroMes = vd.validarINT(numeroMes);
@@ -356,25 +353,24 @@ public class UnidadeFranquiaControladora {
                 System.out.println("\n---- Relacao Valores Mensais Recebidos Pelo Medico - Unidade Franquia ---");
                 System.out.println("\nMedico: " + medicoEncontrado);
                 System.out.println("\nUnidade: " + unidadeFranquia);
-                
-                valorBrutoConsulta = consultaDAO.calculaValorConsultasPorUnidadeFranquiaMes(medicoEncontrado, 
+
+                valorBrutoConsulta = consultaDAO.calculaValorConsultasPorUnidadeFranquiaMes(medicoEncontrado,
                         unidadeFranquia, numeroMes);
                 System.out.println("\nValor Bruto Das Consultas: " + valorBrutoConsulta + " " + "Mes: " + numeroMes);
-                
-                valorBrutoProcedimento = procedimentoDAO.calculaValorProcedimentosPorUnidadeFranquiaMes(medicoEncontrado, 
+
+                valorBrutoProcedimento = procedimentoDAO.calculaValorProcedimentosPorUnidadeFranquiaMes(medicoEncontrado,
                         unidadeFranquia, numeroMes);
                 System.out.println("\nValor Bruto Dos Procedimentos: " + valorBrutoProcedimento + " " + "Mes: " + numeroMes);
-                
+
                 parteUnidadeConsulta = consultaDAO.calculaParteDescontoConsultas(valorBrutoConsulta);
                 System.out.println("\nParte Da Unidade De Franquia Sobre Consultas: " + parteUnidadeConsulta + " " + "Mes: " + numeroMes);
 
                 parteUnidadeProcedimento = procedimentoDAO.calculaParteDescontoProcedimentos(valorBrutoProcedimento);
                 System.out.println("\nParte Da Unidade De Franquia Sobre Procedimentos: " + parteUnidadeProcedimento + " " + "Mes: " + numeroMes);
-                
-                
-                 valoresMedicos = financeiroMedicoDAO.calculaValorLiquidoAReceberMedico(valorBrutoConsulta, valorBrutoProcedimento, 
+
+                valoresMedicos = financeiroMedicoDAO.calculaValorLiquidoAReceberMedico(valorBrutoConsulta, valorBrutoProcedimento,
                         parteUnidadeConsulta, parteUnidadeProcedimento);
-                 
+
                 System.out.println("\nValores Recebidos - (Consultas + Procedimentos): " + valoresMedicos + " " + "Mes: " + numeroMes);
             }
 
