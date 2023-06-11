@@ -54,7 +54,7 @@ public class InfoConsultaDAO {
         return null;
     }
 
-    public boolean atualizaDescricaoInfoConsulta(InfoConsulta infoConsulta, String descricao, 
+   /* public boolean atualizaDescricaoInfoConsulta(InfoConsulta infoConsulta, String descricao, 
             CalendarioSistema calendarioSistema)
     {
         if(infoConsulta != null)
@@ -64,7 +64,7 @@ public class InfoConsultaDAO {
             return true;
         }
         return false;
-    }
+    }*/
     
     /*public void recebeConsultaRealizada(Consulta consulta, CalendarioSistema calendarioSistema)
     {
@@ -115,4 +115,49 @@ public class InfoConsultaDAO {
         }
  
      }
+     
+     
+     public boolean atualizaDescricaoInfoConsultaNoBancoDeDados(InfoConsulta infoConsulta, String descricao,
+             CalendarioSistema calendarioSistema) {
+
+        boolean cancelado = true;
+
+        String atualizaDescricaoInfoConsulta = "update infoconsulta set descricaoconsulta = ? where idinfoconsulta = ?";
+        
+        String atualizaDataAlteracaoInfoConsulta = "update infoconsulta set datamodificacao = ? where idinfoconsulta = ?";
+
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement pstmAtualizaDescricaoInfoConsulta = connection.prepareStatement(atualizaDescricaoInfoConsulta);
+                 PreparedStatement pstmAtualizaDataAlteracaoInfoConsulta = 
+                         connection.prepareStatement(atualizaDataAlteracaoInfoConsulta)) {
+
+               pstmAtualizaDescricaoInfoConsulta.setString(1, descricao);
+               pstmAtualizaDescricaoInfoConsulta.setInt(2, infoConsulta.getIdInfoConsulta());
+               
+               pstmAtualizaDescricaoInfoConsulta.execute();
+               
+               pstmAtualizaDataAlteracaoInfoConsulta.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+               pstmAtualizaDataAlteracaoInfoConsulta.setInt(2, infoConsulta.getIdInfoConsulta());
+               
+               pstmAtualizaDataAlteracaoInfoConsulta.execute();
+
+                connection.commit();
+
+            } catch (SQLException erro) {
+
+                connection.rollback();
+                cancelado = false;
+                System.out.println("\n Nao foi possivel Alterar Info Consulta no banco de dados!\n" + erro.getMessage());
+            }
+
+        } catch (Exception e) {
+        }
+
+        return cancelado != false;
+    }
+     
 }

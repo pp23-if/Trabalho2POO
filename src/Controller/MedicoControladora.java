@@ -139,10 +139,11 @@ public class MedicoControladora {
         do {
             opcao = telaMedico.menuGerenciamentoConsultas();
 
+            consultaDAO.BuscaConsultaNoBancoDeDados(pessoaDAO, medicoDAO, unidadeFranquiaDAO);
+            infoConsultaDAO.BuscaInfoConsultaNoBancoDeDados(consultaDAO);
+            
             switch (opcao) {
                 case 1: {
-                    
-                    consultaDAO.BuscaConsultaNoBancoDeDados(pessoaDAO, medicoDAO, unidadeFranquiaDAO);
                     
                     System.out.println("\n");
                     if (consultaDAO.buscaConsultasDoDia(calendarioSistema, medico) == true) {
@@ -197,7 +198,7 @@ public class MedicoControladora {
             System.out.println("\nInforme A Descricao Da Info Consulta: ");
             String descricao = scanner.nextLine();
 
-            if (infoConsultaDAO.atualizaDescricaoInfoConsulta(infoConsulta, descricao, calendarioSistema) == true) {
+            if (infoConsultaDAO.atualizaDescricaoInfoConsultaNoBancoDeDados(infoConsulta, descricao, calendarioSistema) == true) {
                 System.out.println("\nDescricao Da Info Consulta Atualizada Com Sucesso!");
             } else {
                 System.out.println("\nNao Foi Possivel Atualizar A Descricao Da Info Consulta.");
