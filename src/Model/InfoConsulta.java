@@ -15,6 +15,11 @@ public class InfoConsulta {
     public InfoConsulta() {
     }
 
+    public void setIdInfoConsulta(int idInfoConsulta) {
+        this.idInfoConsulta = idInfoConsulta;
+    }
+
+    
     public int getIdInfoConsulta() {
         return idInfoConsulta;
     }
