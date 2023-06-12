@@ -397,4 +397,105 @@ public class ProcedimentoDAO {
 
     }
     
+     
+     
+     public boolean cancelaProcedimentoNoBancoDeDados(Procedimento procedimento, CalendarioSistema calendarioSistema) {
+
+        boolean cancelado = true;
+
+        String cancelaProcedimento = "update procedimento set estadoprocedimento = ? where idprocedimento = ?";
+        
+        String atualizaDataAlteracaoProcedimento = "update procedimento set datamodificacao = ? where idprocedimento = ?";
+
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement pstmCancelaProcedimento = connection.prepareStatement(cancelaProcedimento);
+                 PreparedStatement pstmAtualizaDataAlteracaoProcedimento = 
+                         connection.prepareStatement(atualizaDataAlteracaoProcedimento)) {
+
+                pstmCancelaProcedimento.setString(1, "Cancelado");
+                pstmCancelaProcedimento.setInt(2, procedimento.getIdProcedimento());
+                
+                pstmCancelaProcedimento.execute();
+                
+                pstmAtualizaDataAlteracaoProcedimento.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+                pstmAtualizaDataAlteracaoProcedimento.setInt(2, procedimento.getIdProcedimento());
+                
+                pstmAtualizaDataAlteracaoProcedimento.execute();
+
+                connection.commit();
+
+            } catch (SQLException erro) {
+
+                connection.rollback();
+                cancelado = false;
+                System.out.println("\n Nao foi possivel Cancelar O Procedimento no banco de dados!\n" + erro.getMessage());
+            }
+
+        } catch (Exception e) {
+        }
+
+        return cancelado != false;
+    }
+     
+     
+     
+     public boolean remarcaProcedimentoNoBancoDeDados(LocalDate novoDiaProcedimento, LocalTime novaHoraProcedimento, 
+              Procedimento procedimento, CalendarioSistema calendarioSistema) {
+
+        boolean remarcado = true;
+
+        String remarcaDiaProcedimento = "update procedimento set diaprocedimento  = ? where idprocedimento = ?";
+        
+        String remarcaHoraProcedimento = "update procedimento set horaprocedimento = ? where idprocedimento = ?";
+        
+        String atualizaDataAlteracaoProcedimento = "update procedimento set datamodificacao = ? where idprocedimento = ?";
+
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement pstmRemarcaDiaProcedimento = connection.prepareStatement(remarcaDiaProcedimento);
+                 PreparedStatement pstmRemarcaHoraProcedimento = connection.prepareStatement(remarcaHoraProcedimento);  
+                  PreparedStatement pstmAtualizaDataAlteracaoProcedimento = 
+                          connection.prepareStatement(atualizaDataAlteracaoProcedimento)) {
+
+                pstmRemarcaDiaProcedimento.setDate(1, Date.valueOf(novoDiaProcedimento));
+                pstmRemarcaDiaProcedimento.setInt(2, procedimento.getIdProcedimento());
+                
+                pstmRemarcaDiaProcedimento.execute();
+                
+                
+                pstmRemarcaHoraProcedimento.setTime(1, Time.valueOf(novaHoraProcedimento));
+                pstmRemarcaHoraProcedimento.setInt(2, procedimento.getIdProcedimento());
+                
+                pstmRemarcaHoraProcedimento.execute();
+                
+                
+                pstmAtualizaDataAlteracaoProcedimento.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+                pstmAtualizaDataAlteracaoProcedimento.setInt(2, procedimento.getIdProcedimento());
+                
+                pstmAtualizaDataAlteracaoProcedimento.execute();
+                
+                connection.commit();
+
+            } catch (SQLException erro) {
+
+                connection.rollback();
+                remarcado = false;
+                System.out.println("\n Nao foi possivel remarcar O Procedimento no banco de dados!\n" + erro.getMessage());
+            }
+
+        } catch (Exception e) {
+        }
+
+        return remarcado != false;
+    }
+
+     
+     
 }

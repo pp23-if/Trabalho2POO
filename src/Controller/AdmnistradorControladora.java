@@ -445,7 +445,7 @@ public class AdmnistradorControladora {
         if (procedimentoEncontrado == null) {
             System.out.println("\nProcedimento Nao Encontrado.");
         } else {
-            if (procedimentoDAO.recebeProcedimentoECancela(procedimentoEncontrado, calendarioSistema) == true) {
+            if (procedimentoDAO.cancelaProcedimentoNoBancoDeDados(procedimentoEncontrado, calendarioSistema) == true) {
                 System.out.println("\nProcedimento Cancelado Com Sucesso!");
             } else {
                 System.out.println("\nNao Foi Possivel Cancelar O Procedimento.");
@@ -487,8 +487,8 @@ public class AdmnistradorControladora {
                     System.out.println("\nDia e hora Informados, Indisponiveis.");
 
                 } else {
-                    if (procedimentoDAO.recebeProcedimentoERemarca(diaProcedimento,
-                            horaProcedimento, procedimentoEncontrado, calendarioSistema) == true) {
+                    if (procedimentoDAO.remarcaProcedimentoNoBancoDeDados(diaProcedimento, horaProcedimento, 
+                            procedimentoEncontrado, calendarioSistema) == true) {
 
                         System.out.println("\nProcedimento Remarcado Com Sucesso!");
 

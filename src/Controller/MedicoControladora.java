@@ -16,6 +16,7 @@ import Model.ProcedimentoDAO;
 import Model.UnidadeFranquiaDAO;
 import View.MenuTitulosMedico;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -284,10 +285,19 @@ public class MedicoControladora {
 
                 } else {
 
-                    Procedimento procedimento = new Procedimento(nomeProcedimento, consultaEncontrada, diaProcedimento,
-                            horaProcedimento, "Agendado", 1500, "", calendarioSistema.getDataHoraSistema());
+                    
+                    Procedimento procedimento = new Procedimento();
+                    procedimento.setNomeProcedimento(nomeProcedimento);
+                    procedimento.setDiaProcedimento(diaProcedimento);
+                    procedimento.setHoraProcedimento(horaProcedimento);
+                    procedimento.setHoraProcedimento(horaProcedimento);
+                    procedimento.setEstadoProcedimento("Agendado");
+                    procedimento.setValorProcedimento(1500);
+                    procedimento.setLaudo("");
+                    procedimento.setDataCriacao(calendarioSistema.getDataHoraSistema());
+                    
 
-                    if (procedimentoDAO.adicionaProcedimento(procedimento) == true) {
+                    if (procedimentoDAO.insereProcedimentoNoBancoDeDados(consultaEncontrada, procedimento) == true) {
 
                         System.out.println("\nProcedimento Marcado Com Sucesso!");
 
