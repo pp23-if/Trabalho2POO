@@ -1,6 +1,13 @@
 package Model;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
@@ -275,4 +282,50 @@ public class ProcedimentoDAO {
         
         return valorParteProcedimento;
     }
+    
+    
+    public boolean insereProcedimentoNoBancoDeDados(Consulta consulta, Procedimento procedimento) {
+
+        boolean adicionado = true;
+
+        String insereProcedimento = "insert into procedimento (nomeprocedimento, idconsulta, diaprocedimento, "
+                + "horaprocedimento, estadoprocedimento, valorprocedimento, laudo, datacriacao) values (?,?,?,?,?,?,?,?)";
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement pstmInsereProcedimento = connection.prepareStatement(insereProcedimento)) {
+
+               
+               pstmInsereProcedimento.setString(1, procedimento.getNomeProcedimento());
+               pstmInsereProcedimento.setInt(2, consulta.getIdConsulta());
+               pstmInsereProcedimento.setDate(3, Date.valueOf(procedimento.getDiaProcedimento()));
+               pstmInsereProcedimento.setTime(4, Time.valueOf(procedimento.getHoraProcedimento()));
+               pstmInsereProcedimento.setString(5, procedimento.getEstadoProcedimento());
+               pstmInsereProcedimento.setDouble(6, procedimento.getValorProcedimento());
+               pstmInsereProcedimento.setString(7, procedimento.getLaudo());
+               pstmInsereProcedimento.setTimestamp(8, Timestamp.valueOf(procedimento.getDataCriacao()));
+               
+               pstmInsereProcedimento.execute();
+               
+               
+               connection.commit();
+
+            } catch (SQLException erro) {
+
+                connection.rollback();
+                adicionado = false;
+                System.out.println("\n Nao foi possivel inserir o Procedimento no banco de dados!\n" + erro.getMessage());
+
+            }
+
+        } catch (SQLException erro) {
+
+        }
+
+        return adicionado != false;
+
+    }
+    
 }

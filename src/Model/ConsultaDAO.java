@@ -132,6 +132,20 @@ public class ConsultaDAO {
         }
         return null;
     }
+    
+    public Consulta buscaConsultaPorIndice ()
+    {
+        int indice = listaConsulta.size();
+        
+        
+        Consulta consultaEncontrada = listaConsulta.get(indice-1);
+        
+        if(consultaEncontrada != null)
+        {
+            return consultaEncontrada;
+        }
+        return null;
+    }
 
     public boolean recebeConsultaParaSerAtendida(Medico medico, CalendarioSistema calendarioSistema, FinanceiroAdmDAO financeiroAdmDAO) {
         
@@ -322,7 +336,7 @@ public class ConsultaDAO {
      public void BuscaConsultaNoBancoDeDados(PessoaDAO pessoaDAO, MedicoDAO medicoDAO, UnidadeFranquiaDAO unidadeFranquiaDAO) {
 
         listaConsulta.clear();
-
+    
         String buscaConsulta = "select * from consulta;";
 
         try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();

@@ -21,6 +21,11 @@ public class Procedimento {
 
     public Procedimento() {
     }
+
+    public void setIdProcedimento(int idProcedimento) {
+        this.idProcedimento = idProcedimento;
+    }
+    
     
     public int getIdProcedimento() {
         return idProcedimento;

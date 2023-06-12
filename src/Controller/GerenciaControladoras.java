@@ -91,6 +91,10 @@ public class GerenciaControladoras {
                     System.out.println("\nMostrando Todos os ADMNISTRADORES Cadastrados: " + "\n");
                     admnistradorDAO.buscaTodosAdmnistradores();
                     
+                    System.out.println("\nMostrando Todos As Consultas Cadastradas: " + "\n");
+                    consultaDAO.mostraTodasConsultas();
+                    
+                    
                   
                     break;
                 }
