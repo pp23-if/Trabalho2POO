@@ -94,8 +94,10 @@ public class GerenciaControladoras {
                     System.out.println("\nMostrando Todos As Consultas Cadastradas: " + "\n");
                     consultaDAO.mostraTodasConsultas();
                     
-                    
+                    System.out.println("\nMostrando Todos Os Procedimentos Cadastrados: " + "\n");
+                    procedimentoDAO.mostraTodosProcedimentos();
                   
+                    
                     break;
                 }
 

@@ -3,11 +3,11 @@ package Model;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
@@ -60,6 +60,21 @@ public class ProcedimentoDAO {
 //        }
         
     }
+    
+    
+    
+    public void mostraTodosProcedimentos ()
+    {
+        for (Procedimento procedimento : listaProcedimento) {
+            
+            if(procedimento != null)
+            {
+                System.out.println(procedimento + "\n");
+            }
+            
+        }
+    }
+    
 
     public boolean adicionaProcedimento(Procedimento procedimento) {
         return listaProcedimento.add(procedimento) == true;
@@ -325,6 +340,60 @@ public class ProcedimentoDAO {
         }
 
         return adicionado != false;
+
+    }
+    
+    
+     public void BuscaProcedimentosNoBancoDeDados(ConsultaDAO consultaDAO) {
+
+        listaProcedimento.clear();
+    
+        String buscaProcedimento = "select * from procedimento;";
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                PreparedStatement pstm = connection.prepareStatement(buscaProcedimento);
+                ResultSet rs = pstm.executeQuery(buscaProcedimento)) {
+
+            while (rs.next()) {
+
+               Procedimento procedimento = new Procedimento();
+                
+               procedimento.setIdProcedimento(rs.getInt("idprocedimento"));
+               procedimento.setNomeProcedimento(rs.getString("nomeprocedimento"));
+               
+               int idConsulta = rs.getInt("idconsulta");
+               Consulta consulta = consultaDAO.buscaConsultaPorId(idConsulta);
+               
+               procedimento.setConsulta(consulta);
+               
+               Date diaProcedimento = rs.getDate("diaprocedimento");
+               procedimento.setDiaProcedimento(diaProcedimento.toLocalDate());
+               
+               Time horaProcedimento = rs.getTime("horaprocedimento");
+               procedimento.setHoraProcedimento(horaProcedimento.toLocalTime());
+               
+               procedimento.setEstadoProcedimento(rs.getString("estadoprocedimento"));
+               procedimento.setValorProcedimento(rs.getDouble("valorprocedimento"));
+               procedimento.setLaudo(rs.getString("laudo"));
+               
+               Timestamp dataCriacaoProcedimento = rs.getTimestamp("datacriacao");
+               procedimento.setDataCriacao(dataCriacaoProcedimento.toLocalDateTime());
+                       
+               Timestamp dataModificacaoProcedimento = rs.getTimestamp("datamodificacao");
+               
+               if(dataModificacaoProcedimento != null)
+               {
+                 procedimento.setDataModificacao(dataModificacaoProcedimento.toLocalDateTime());
+               }
+               
+                
+                listaProcedimento.add(procedimento);
+
+            }
+
+        } catch (SQLException erro) {
+            System.out.println("\n Nao foi possivel Buscar os dados dos Procedimentos no banco de dados!\n" + erro.getMessage());
+        }
 
     }
     
