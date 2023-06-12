@@ -123,14 +123,14 @@ public class ProcedimentoDAO {
         return null;
     }
 
-    public boolean recebeProcedimentoECancela(Procedimento procedimento, CalendarioSistema calendarioSistema) {
+    /*public boolean recebeProcedimentoECancela(Procedimento procedimento, CalendarioSistema calendarioSistema) {
         if (procedimento != null && procedimento.getEstadoProcedimento().equals("Agendado")) {
             procedimento.setEstadoProcedimento("Cancelado");
             procedimento.setDataModificacao(calendarioSistema.getDataHoraSistema());
             return true;
         }
         return false;
-    }
+    }*/
 
     public boolean verificaDisponibilidadeDataEHoraProcedimentoMedico(LocalDate diaProcedimento, LocalTime horaProcedimento,
             Medico medico) {
@@ -157,7 +157,7 @@ public class ProcedimentoDAO {
     }
     
     
-    public boolean recebeProcedimentoERemarca(LocalDate novoDiaProcedimento,
+    /*public boolean recebeProcedimentoERemarca(LocalDate novoDiaProcedimento,
             LocalTime novaHoraProcedimento, Procedimento procedimento, CalendarioSistema calendarioSistema) {
         if (procedimento != null && procedimento.getEstadoProcedimento().equals("Agendado")) {
             procedimento.setDiaProcedimento(novoDiaProcedimento);
@@ -167,7 +167,7 @@ public class ProcedimentoDAO {
         }
         return false;
 
-    }
+    }*/
 
     public Procedimento buscaProcedimentosQueTemMedicoSolicitanteEPacienteEscolhido(Pessoa pessoa, Medico medico) {
         for (Procedimento procedimento : listaProcedimento) {
