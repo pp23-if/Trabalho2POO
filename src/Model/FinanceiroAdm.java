@@ -16,8 +16,11 @@ public class FinanceiroAdm {
 
     public FinanceiroAdm() {
     }
-    
 
+    public void setIdFinanceiroAdm(int idFinanceiroAdm) {
+        this.idFinanceiroAdm = idFinanceiroAdm;
+    }
+    
     public int getIdFinanceiroAdm() {
         return idFinanceiroAdm;
     }
@@ -49,7 +52,7 @@ public class FinanceiroAdm {
     public String getDescritivoMovimento() {
         return descritivoMovimento;
     }
-
+    
     public void setDescritivoMovimento(String descritivoMovimento) {
         this.descritivoMovimento = descritivoMovimento;
     }

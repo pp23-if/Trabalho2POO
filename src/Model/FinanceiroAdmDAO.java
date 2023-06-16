@@ -1,5 +1,11 @@
 package Model;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLDataException;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -171,6 +177,55 @@ public class FinanceiroAdmDAO {
             {
                 System.out.println(financeiroAdm  + "\n");
             }
+        }
+    }
+      
+    public void buscaFinanceiroADMNoBancoDeDados(UnidadeFranquiaDAO unidadeFranquiaDAO){
+        
+        listaFinanceiroAdm.clear();
+        
+        String buscaFinanceiroADM = "select * from financeiroadm";
+        
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                PreparedStatement pstm = connection.prepareStatement(buscaFinanceiroADM);
+                ResultSet rs = pstm.executeQuery(buscaFinanceiroADM)){
+            
+            
+            while(rs.next()){
+                
+                FinanceiroAdm financeiroAdm = new FinanceiroAdm();
+                
+                financeiroAdm.setIdFinanceiroAdm(rs.getInt("idfinanceiroadm"));
+                
+                int idUnidadeFranquia = rs.getInt("idunidadefranquia");
+                
+                UnidadeFranquia unidadeFranquia = unidadeFranquiaDAO.buscaUnidadeFranquiaPorId(idUnidadeFranquia);
+                
+                financeiroAdm.setUnidadeFranquia(unidadeFranquia);
+                
+                financeiroAdm.setTipoMovimento(rs.getString("tipomovimento"));
+                
+                financeiroAdm.setValor(rs.getDouble("valorfinanceiroadm"));
+                
+                financeiroAdm.setDescritivoMovimento(rs.getString("descritivomovimento"));
+                
+                Timestamp dataCriacaoFinanceiroADM = rs.getTimestamp("datacriacao");
+                financeiroAdm.setDataCriacao(dataCriacaoFinanceiroADM.toLocalDateTime());
+                
+                Timestamp dataModificaoFinamceiroADM = rs.getTimestamp("datamodificacao");
+                
+                if(dataModificaoFinamceiroADM != null)
+                {
+                    
+                    financeiroAdm.setDataModificacao(dataModificaoFinamceiroADM.toLocalDateTime());
+                    
+                }
+                
+                listaFinanceiroAdm.add(financeiroAdm);
+            }
+            
+        } catch (SQLException erro) {
+            
         }
     }
     

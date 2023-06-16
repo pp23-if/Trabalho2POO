@@ -96,6 +96,9 @@ public class GerenciaControladoras {
                     
                     System.out.println("\nMostrando Todos Os Procedimentos Cadastrados: " + "\n");
                     procedimentoDAO.mostraTodosProcedimentos();
+                    
+                    System.out.println("\nMostrando todos os Financeiros ADM: " + "\n");
+                    financeiroAdmDAO.mostraTodosMovimentosFinanceiros();
                   
                     
                     break;
