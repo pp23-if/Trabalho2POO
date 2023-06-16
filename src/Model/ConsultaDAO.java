@@ -498,6 +498,10 @@ public class ConsultaDAO {
         String insereInfoConsulta = "insert into infoconsulta (idconsulta, descricaoconsulta, datacriacao) "
                 + "values (?,?,?)";
         
+        
+        String insereFinanceiroADM = "insert into financeiroadm (tipomovimento, valorfinanceiroadm,"
+                + "idunidadefranquia, descritivomovimento, datacriacao) values (?,?,?,?,?)";
+        
         String atualizaDataAlteracaoConsulta = "update consulta set datamodificacao = ? where idconsulta = ?";
 
 
@@ -507,7 +511,8 @@ public class ConsultaDAO {
 
             try (PreparedStatement pstmRealizaConsulta = connection.prepareStatement(realizaConsulta);
                  PreparedStatement pstmInsereInfoConsulta = connection.prepareStatement(insereInfoConsulta);
-                  PreparedStatement pstmAtualizaDataAlteracaoConsulta = connection.prepareStatement(atualizaDataAlteracaoConsulta)) {
+                  PreparedStatement pstmAtualizaDataAlteracaoConsulta = connection.prepareStatement(atualizaDataAlteracaoConsulta); 
+                     PreparedStatement pstmInsereFinanceiroADM = connection.prepareStatement(insereFinanceiroADM)) {
 
                 pstmRealizaConsulta.setString(1, "Realizada");
                 pstmRealizaConsulta.setInt(2, consulta.getIdConsulta());
@@ -525,7 +530,19 @@ public class ConsultaDAO {
                 pstmAtualizaDataAlteracaoConsulta.setInt(2, consulta.getIdConsulta());
                 
                 pstmAtualizaDataAlteracaoConsulta.execute();
-
+                
+                pstmInsereFinanceiroADM.setString(1, "Entrada");
+                pstmInsereFinanceiroADM.setDouble(2, consulta.getValor());
+                pstmInsereFinanceiroADM.setInt(3, consulta.getUnidadeFranquia().getIdUnidadeFranquia());
+                pstmInsereFinanceiroADM.setString(4, "Consulta");
+                pstmInsereFinanceiroADM.setTimestamp(5, Timestamp.valueOf(consulta.getDataCriacao()));
+                
+                
+                pstmInsereFinanceiroADM.execute();
+                
+               
+                
+                
                 connection.commit();
 
             } catch (SQLException erro) {
