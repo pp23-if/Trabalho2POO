@@ -15,12 +15,11 @@ import java.util.List;
 
 public class ProcedimentoDAO {
 
-    private List <Procedimento> listaProcedimento = new LinkedList();
+    private List<Procedimento> listaProcedimento = new LinkedList();
 
     public ProcedimentoDAO(PessoaDAO pessoaDAO, MedicoDAO medicoDAO, UnidadeFranquiaDAO unidadeFranquiaDAO,
             CalendarioSistema calendarioSistema, ConsultaDAO consultaDAO) {
-        
-        
+
 //        UnidadeFranquia unidadeEncontrada = unidadeFranquiaDAO.buscaUnidadeFranquiaPorId(2);
 //        
 //        if(unidadeEncontrada != null)
@@ -58,29 +57,22 @@ public class ProcedimentoDAO {
 //                }
 //            }
 //        }
-        
     }
-    
-    
-    
-    public void mostraTodosProcedimentos ()
-    {
+
+    public void mostraTodosProcedimentos() {
         for (Procedimento procedimento : listaProcedimento) {
-            
-            if(procedimento != null)
-            {
+
+            if (procedimento != null) {
                 System.out.println(procedimento + "\n");
             }
-            
+
         }
     }
-    
 
     public boolean adicionaProcedimento(Procedimento procedimento) {
         return listaProcedimento.add(procedimento) == true;
 
     }
-
 
     public Procedimento buscaProcedimentoPorPaciente(Pessoa pessoa) {
         for (Procedimento procedimento : listaProcedimento) {
@@ -131,10 +123,9 @@ public class ProcedimentoDAO {
         }
         return false;
     }*/
-
     public boolean verificaDisponibilidadeDataEHoraProcedimentoMedico(LocalDate diaProcedimento, LocalTime horaProcedimento,
             Medico medico) {
-        
+
         for (Procedimento procedimento : listaProcedimento) {
 
             if (procedimento != null && procedimento.getDiaProcedimento().equals(diaProcedimento)
@@ -147,16 +138,13 @@ public class ProcedimentoDAO {
         return false;
     }
 
-    public boolean verificaDataProcedimento(CalendarioSistema calendarioSistema, LocalDate novoDiaProcedimento)
-    {
-        if(novoDiaProcedimento.isBefore(calendarioSistema.getDiaDoSistema()))
-        {
-          return true;  
+    public boolean verificaDataProcedimento(CalendarioSistema calendarioSistema, LocalDate novoDiaProcedimento) {
+        if (novoDiaProcedimento.isBefore(calendarioSistema.getDiaDoSistema())) {
+            return true;
         }
         return false;
     }
-    
-    
+
     /*public boolean recebeProcedimentoERemarca(LocalDate novoDiaProcedimento,
             LocalTime novaHoraProcedimento, Procedimento procedimento, CalendarioSistema calendarioSistema) {
         if (procedimento != null && procedimento.getEstadoProcedimento().equals("Agendado")) {
@@ -168,7 +156,6 @@ public class ProcedimentoDAO {
         return false;
 
     }*/
-
     public Procedimento buscaProcedimentosQueTemMedicoSolicitanteEPacienteEscolhido(Pessoa pessoa, Medico medico) {
         for (Procedimento procedimento : listaProcedimento) {
 
@@ -228,7 +215,7 @@ public class ProcedimentoDAO {
     }
 
     public double calculaValorProcedimentosDoMes(Medico medico, CalendarioSistema calendarioSistema, Franquia franquia) {
-        
+
         double totalProcedimentos = 0;
 
         int mesSitemaComparavel = calendarioSistema.getDiaDoSistema().minusDays(1).getMonthValue();
@@ -240,18 +227,17 @@ public class ProcedimentoDAO {
                     && procedimento.getEstadoProcedimento().equals("Realizado")
                     && procedimento.getConsulta().getUnidadeFranquia().getFranquia().equals(franquia)
                     && procedimento.getDiaProcedimento().getMonthValue() == mesSitemaComparavel) {
-                
+
                 totalProcedimentos += procedimento.getValorProcedimento();
             }
 
         }
-        
+
         return totalProcedimentos;
     }
-    
-    
-     public double calculaValorProcedimentosPorUnidadeFranquia(Medico medico, UnidadeFranquia unidadeFranquia) {
-        
+
+    public double calculaValorProcedimentosPorUnidadeFranquia(Medico medico, UnidadeFranquia unidadeFranquia) {
+
         double totalProcedimentos = 0;
 
         for (Procedimento procedimento : listaProcedimento) {
@@ -260,17 +246,17 @@ public class ProcedimentoDAO {
                     && procedimento.getConsulta().getMedico().equals(medico)
                     && procedimento.getEstadoProcedimento().equals("Realizado")
                     && procedimento.getConsulta().getUnidadeFranquia().equals(unidadeFranquia)) {
-                
+
                 totalProcedimentos += procedimento.getValorProcedimento();
             }
 
         }
-        
+
         return totalProcedimentos;
     }
-    
-     public double calculaValorProcedimentosPorUnidadeFranquiaMes(Medico medico, UnidadeFranquia unidadeFranquia, int numeroMes) {
-        
+
+    public double calculaValorProcedimentosPorUnidadeFranquiaMes(Medico medico, UnidadeFranquia unidadeFranquia, int numeroMes) {
+
         double totalProcedimentos = 0;
 
         for (Procedimento procedimento : listaProcedimento) {
@@ -280,25 +266,23 @@ public class ProcedimentoDAO {
                     && procedimento.getEstadoProcedimento().equals("Realizado")
                     && procedimento.getConsulta().getUnidadeFranquia().equals(unidadeFranquia)
                     && procedimento.getDiaProcedimento().getMonthValue() == numeroMes) {
-                
+
                 totalProcedimentos += procedimento.getValorProcedimento();
             }
 
         }
-        
+
         return totalProcedimentos;
     }
-    
-    public double calculaParteDescontoProcedimentos(double valorProcedimentos)
-    {
+
+    public double calculaParteDescontoProcedimentos(double valorProcedimentos) {
         double valorParteProcedimento;
-        
+
         valorParteProcedimento = valorProcedimentos * 0.50;
-        
+
         return valorParteProcedimento;
     }
-    
-    
+
     public boolean insereProcedimentoNoBancoDeDados(Consulta consulta, Procedimento procedimento) {
 
         boolean adicionado = true;
@@ -312,20 +296,18 @@ public class ProcedimentoDAO {
 
             try (PreparedStatement pstmInsereProcedimento = connection.prepareStatement(insereProcedimento)) {
 
-               
-               pstmInsereProcedimento.setString(1, procedimento.getNomeProcedimento());
-               pstmInsereProcedimento.setInt(2, consulta.getIdConsulta());
-               pstmInsereProcedimento.setDate(3, Date.valueOf(procedimento.getDiaProcedimento()));
-               pstmInsereProcedimento.setTime(4, Time.valueOf(procedimento.getHoraProcedimento()));
-               pstmInsereProcedimento.setString(5, procedimento.getEstadoProcedimento());
-               pstmInsereProcedimento.setDouble(6, procedimento.getValorProcedimento());
-               pstmInsereProcedimento.setString(7, procedimento.getLaudo());
-               pstmInsereProcedimento.setTimestamp(8, Timestamp.valueOf(procedimento.getDataCriacao()));
-               
-               pstmInsereProcedimento.execute();
-               
-               
-               connection.commit();
+                pstmInsereProcedimento.setString(1, procedimento.getNomeProcedimento());
+                pstmInsereProcedimento.setInt(2, consulta.getIdConsulta());
+                pstmInsereProcedimento.setDate(3, Date.valueOf(procedimento.getDiaProcedimento()));
+                pstmInsereProcedimento.setTime(4, Time.valueOf(procedimento.getHoraProcedimento()));
+                pstmInsereProcedimento.setString(5, procedimento.getEstadoProcedimento());
+                pstmInsereProcedimento.setDouble(6, procedimento.getValorProcedimento());
+                pstmInsereProcedimento.setString(7, procedimento.getLaudo());
+                pstmInsereProcedimento.setTimestamp(8, Timestamp.valueOf(procedimento.getDataCriacao()));
+
+                pstmInsereProcedimento.execute();
+
+                connection.commit();
 
             } catch (SQLException erro) {
 
@@ -342,51 +324,46 @@ public class ProcedimentoDAO {
         return adicionado != false;
 
     }
-    
-    
-     public void BuscaProcedimentosNoBancoDeDados(ConsultaDAO consultaDAO) {
+
+    public void BuscaProcedimentosNoBancoDeDados(ConsultaDAO consultaDAO) {
 
         listaProcedimento.clear();
-    
+
         String buscaProcedimento = "select * from procedimento;";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                PreparedStatement pstm = connection.prepareStatement(buscaProcedimento);
-                ResultSet rs = pstm.executeQuery(buscaProcedimento)) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); PreparedStatement pstm = connection.prepareStatement(buscaProcedimento); ResultSet rs = pstm.executeQuery(buscaProcedimento)) {
 
             while (rs.next()) {
 
-               Procedimento procedimento = new Procedimento();
-                
-               procedimento.setIdProcedimento(rs.getInt("idprocedimento"));
-               procedimento.setNomeProcedimento(rs.getString("nomeprocedimento"));
-               
-               int idConsulta = rs.getInt("idconsulta");
-               Consulta consulta = consultaDAO.buscaConsultaPorId(idConsulta);
-               
-               procedimento.setConsulta(consulta);
-               
-               Date diaProcedimento = rs.getDate("diaprocedimento");
-               procedimento.setDiaProcedimento(diaProcedimento.toLocalDate());
-               
-               Time horaProcedimento = rs.getTime("horaprocedimento");
-               procedimento.setHoraProcedimento(horaProcedimento.toLocalTime());
-               
-               procedimento.setEstadoProcedimento(rs.getString("estadoprocedimento"));
-               procedimento.setValorProcedimento(rs.getDouble("valorprocedimento"));
-               procedimento.setLaudo(rs.getString("laudo"));
-               
-               Timestamp dataCriacaoProcedimento = rs.getTimestamp("datacriacao");
-               procedimento.setDataCriacao(dataCriacaoProcedimento.toLocalDateTime());
-                       
-               Timestamp dataModificacaoProcedimento = rs.getTimestamp("datamodificacao");
-               
-               if(dataModificacaoProcedimento != null)
-               {
-                 procedimento.setDataModificacao(dataModificacaoProcedimento.toLocalDateTime());
-               }
-               
-                
+                Procedimento procedimento = new Procedimento();
+
+                procedimento.setIdProcedimento(rs.getInt("idprocedimento"));
+                procedimento.setNomeProcedimento(rs.getString("nomeprocedimento"));
+
+                int idConsulta = rs.getInt("idconsulta");
+                Consulta consulta = consultaDAO.buscaConsultaPorId(idConsulta);
+
+                procedimento.setConsulta(consulta);
+
+                Date diaProcedimento = rs.getDate("diaprocedimento");
+                procedimento.setDiaProcedimento(diaProcedimento.toLocalDate());
+
+                Time horaProcedimento = rs.getTime("horaprocedimento");
+                procedimento.setHoraProcedimento(horaProcedimento.toLocalTime());
+
+                procedimento.setEstadoProcedimento(rs.getString("estadoprocedimento"));
+                procedimento.setValorProcedimento(rs.getDouble("valorprocedimento"));
+                procedimento.setLaudo(rs.getString("laudo"));
+
+                Timestamp dataCriacaoProcedimento = rs.getTimestamp("datacriacao");
+                procedimento.setDataCriacao(dataCriacaoProcedimento.toLocalDateTime());
+
+                Timestamp dataModificacaoProcedimento = rs.getTimestamp("datamodificacao");
+
+                if (dataModificacaoProcedimento != null) {
+                    procedimento.setDataModificacao(dataModificacaoProcedimento.toLocalDateTime());
+                }
+
                 listaProcedimento.add(procedimento);
 
             }
@@ -396,34 +373,30 @@ public class ProcedimentoDAO {
         }
 
     }
-    
-     
-     
-     public boolean cancelaProcedimentoNoBancoDeDados(Procedimento procedimento, CalendarioSistema calendarioSistema) {
+
+    public boolean cancelaProcedimentoNoBancoDeDados(Procedimento procedimento, CalendarioSistema calendarioSistema) {
 
         boolean cancelado = true;
 
         String cancelaProcedimento = "update procedimento set estadoprocedimento = ? where idprocedimento = ?";
-        
-        String atualizaDataAlteracaoProcedimento = "update procedimento set datamodificacao = ? where idprocedimento = ?";
 
+        String atualizaDataAlteracaoProcedimento = "update procedimento set datamodificacao = ? where idprocedimento = ?";
 
         try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmCancelaProcedimento = connection.prepareStatement(cancelaProcedimento);
-                 PreparedStatement pstmAtualizaDataAlteracaoProcedimento = 
-                         connection.prepareStatement(atualizaDataAlteracaoProcedimento)) {
+            try (PreparedStatement pstmCancelaProcedimento = connection.prepareStatement(cancelaProcedimento); PreparedStatement pstmAtualizaDataAlteracaoProcedimento
+                    = connection.prepareStatement(atualizaDataAlteracaoProcedimento)) {
 
                 pstmCancelaProcedimento.setString(1, "Cancelado");
                 pstmCancelaProcedimento.setInt(2, procedimento.getIdProcedimento());
-                
+
                 pstmCancelaProcedimento.execute();
-                
+
                 pstmAtualizaDataAlteracaoProcedimento.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
                 pstmAtualizaDataAlteracaoProcedimento.setInt(2, procedimento.getIdProcedimento());
-                
+
                 pstmAtualizaDataAlteracaoProcedimento.execute();
 
                 connection.commit();
@@ -440,47 +413,42 @@ public class ProcedimentoDAO {
 
         return cancelado != false;
     }
-     
-     
-     
-     public boolean remarcaProcedimentoNoBancoDeDados(LocalDate novoDiaProcedimento, LocalTime novaHoraProcedimento, 
-              Procedimento procedimento, CalendarioSistema calendarioSistema) {
 
+    
+    public boolean remarcaProcedimentoNoBancoDeDados(LocalDate novoDiaProcedimento, LocalTime novaHoraProcedimento,
+            Procedimento procedimento, CalendarioSistema calendarioSistema) {
+
+        
         boolean remarcado = true;
 
         String remarcaDiaProcedimento = "update procedimento set diaprocedimento  = ? where idprocedimento = ?";
-        
-        String remarcaHoraProcedimento = "update procedimento set horaprocedimento = ? where idprocedimento = ?";
-        
-        String atualizaDataAlteracaoProcedimento = "update procedimento set datamodificacao = ? where idprocedimento = ?";
 
+        String remarcaHoraProcedimento = "update procedimento set horaprocedimento = ? where idprocedimento = ?";
+
+        String atualizaDataAlteracaoProcedimento = "update procedimento set datamodificacao = ? where idprocedimento = ?";
 
         try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmRemarcaDiaProcedimento = connection.prepareStatement(remarcaDiaProcedimento);
-                 PreparedStatement pstmRemarcaHoraProcedimento = connection.prepareStatement(remarcaHoraProcedimento);  
-                  PreparedStatement pstmAtualizaDataAlteracaoProcedimento = 
-                          connection.prepareStatement(atualizaDataAlteracaoProcedimento)) {
+            try (PreparedStatement pstmRemarcaDiaProcedimento = connection.prepareStatement(remarcaDiaProcedimento); PreparedStatement pstmRemarcaHoraProcedimento = connection.prepareStatement(remarcaHoraProcedimento); PreparedStatement pstmAtualizaDataAlteracaoProcedimento
+                    = connection.prepareStatement(atualizaDataAlteracaoProcedimento)) {
 
                 pstmRemarcaDiaProcedimento.setDate(1, Date.valueOf(novoDiaProcedimento));
                 pstmRemarcaDiaProcedimento.setInt(2, procedimento.getIdProcedimento());
-                
+
                 pstmRemarcaDiaProcedimento.execute();
-                
-                
+
                 pstmRemarcaHoraProcedimento.setTime(1, Time.valueOf(novaHoraProcedimento));
                 pstmRemarcaHoraProcedimento.setInt(2, procedimento.getIdProcedimento());
-                
+
                 pstmRemarcaHoraProcedimento.execute();
-                
-                
+
                 pstmAtualizaDataAlteracaoProcedimento.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
                 pstmAtualizaDataAlteracaoProcedimento.setInt(2, procedimento.getIdProcedimento());
-                
+
                 pstmAtualizaDataAlteracaoProcedimento.execute();
-                
+
                 connection.commit();
 
             } catch (SQLException erro) {
@@ -496,6 +464,70 @@ public class ProcedimentoDAO {
         return remarcado != false;
     }
 
-     
-     
+    public boolean realizaProcedimentoNoBancoDeDados(Procedimento procedimento, 
+            CalendarioSistema calendarioSistema, String laudo) {
+
+        boolean realizado = true;
+
+        String atualizaEstadoProcedimento = "update procedimento set estadoprocedimento = ? where idprocedimento "
+                + " = ? ";
+        
+        String atualizaLaudoProcedimento = "update procedimento set laudo = ? where idprocedimento "
+                + " = ? ";
+        
+        String atualizaDataModificacaoProcedimento = "update procedimento set datamodificacao = ? where idprocedimento "
+                + " = ? ";
+        
+        String insereFinanceiroADM = "insert into financeiroadm (tipomovimento, valorfinanceiroadm,"
+                + "idunidadefranquia, descritivomovimento, datacriacao) values (?,?,?,?,?)";
+
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement pstmAtualizaEstadoProcedimento = connection.prepareStatement(atualizaEstadoProcedimento);
+                    PreparedStatement pstmAtualizaLaudoProcedimento = connection.prepareStatement(atualizaLaudoProcedimento);
+                    PreparedStatement pstmAtualizaDataModificacaoProcedimento = connection.prepareStatement(atualizaDataModificacaoProcedimento);
+                    PreparedStatement pstmInsereFinanceiroADM = connection.prepareStatement(insereFinanceiroADM)) {
+
+                pstmAtualizaEstadoProcedimento.setString(1, "Realizado");
+                pstmAtualizaEstadoProcedimento.setInt(2, procedimento.getIdProcedimento());
+                
+                pstmAtualizaEstadoProcedimento.execute();
+                
+                pstmAtualizaLaudoProcedimento.setString(1, laudo);
+                pstmAtualizaLaudoProcedimento.setInt(2, procedimento.getIdProcedimento());
+                
+                pstmAtualizaLaudoProcedimento.execute();
+                
+                pstmAtualizaDataModificacaoProcedimento.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+                pstmAtualizaDataModificacaoProcedimento.setInt(2, procedimento.getIdProcedimento());
+                
+                pstmAtualizaDataModificacaoProcedimento.execute();
+                
+                
+                pstmInsereFinanceiroADM.setString(1, "Entrada");
+                pstmInsereFinanceiroADM.setDouble(2, procedimento.getValorProcedimento());
+                pstmInsereFinanceiroADM.setInt(3, procedimento.getConsulta().getUnidadeFranquia().getIdUnidadeFranquia());
+                pstmInsereFinanceiroADM.setString(4, "Procedimento");
+                pstmInsereFinanceiroADM.setTimestamp(5, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+
+                pstmInsereFinanceiroADM.execute();
+
+                connection.commit();
+
+            } catch (SQLException erro) {
+
+                connection.rollback();
+                realizado = false;
+                System.out.println("\n Nao foi possivel Realizar a Consulta no banco de dados!\n" + erro.getMessage());
+            }
+
+        } catch (Exception e) {
+        }
+
+        return realizado != false;
+    }
+
 }

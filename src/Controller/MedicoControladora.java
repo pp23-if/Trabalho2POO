@@ -221,7 +221,8 @@ public class MedicoControladora {
                     break;
                 }
                 case 2: {
-                    realizarProcedimento(procedimentoDAO, medico, vd, calendarioSistema, financeiroAdmDAO);
+                    realizarProcedimento(procedimentoDAO, medico, vd, calendarioSistema, 
+                            financeiroAdmDAO, consultaDAO);
                     break;
                 }
                 case 3: {
@@ -386,8 +387,12 @@ public class MedicoControladora {
     }
 
     private void realizarProcedimento(ProcedimentoDAO procedimentoDAO, Medico medico,
-            ValidacaoEntradaDados vd, CalendarioSistema calendarioSistema, FinanceiroAdmDAO financeiroAdmDAO) {
+            ValidacaoEntradaDados vd, CalendarioSistema calendarioSistema, 
+            FinanceiroAdmDAO financeiroAdmDAO, ConsultaDAO consultaDAO) {
+        
+        procedimentoDAO.BuscaProcedimentosNoBancoDeDados(consultaDAO);
         System.out.println("\n");
+        
         Procedimento procedimentoEncontrado = procedimentoDAO.buscaProcedimentoNaoRealizado(medico, calendarioSistema);
 
         if (procedimentoEncontrado == null) {
@@ -399,8 +404,7 @@ public class MedicoControladora {
             String laudoProcedimento = scanner.nextLine();
             laudoProcedimento = vd.validaString(laudoProcedimento);
 
-            if (procedimentoDAO.realizarProcedimento(procedimentoEncontrado, laudoProcedimento,
-                    calendarioSistema, financeiroAdmDAO) == true) {
+            if (procedimentoDAO.realizaProcedimentoNoBancoDeDados(procedimentoEncontrado, calendarioSistema, laudoProcedimento) == true) {
                 System.out.println("\nProcedimento Realizado Com Sucesso!");
             } else {
                 System.out.println("\nNao Foi Possivel Realizar O Procedimento.");
