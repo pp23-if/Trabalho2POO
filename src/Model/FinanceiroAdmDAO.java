@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLDataException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,17 +45,17 @@ public class FinanceiroAdmDAO {
         return null;
     }
 
-    public void geraMovimentacaoFinanceiraConsulta(Consulta consulta, CalendarioSistema calendarioSistema) {
-        FinanceiroAdm entradaConsultas = new FinanceiroAdm("Entrada", consulta.getValor(),
-                consulta.getUnidadeFranquia(), "Consulta", calendarioSistema.getDataHoraSistema());
-        adicionaFinanceiroAdm(entradaConsultas);
-    }
-
-    public void geraMovimentacaoFinanceiraProcedimento(Procedimento procedimento, CalendarioSistema calendarioSistema) {
-        FinanceiroAdm entradaProcedimentos = new FinanceiroAdm("Entrada", procedimento.getValorProcedimento(),
-                procedimento.getConsulta().getUnidadeFranquia(), "Procedimento", calendarioSistema.getDataHoraSistema());
-        adicionaFinanceiroAdm(entradaProcedimentos);
-    }
+//    public void geraMovimentacaoFinanceiraConsulta(Consulta consulta, CalendarioSistema calendarioSistema) {
+//        FinanceiroAdm entradaConsultas = new FinanceiroAdm("Entrada", consulta.getValor(),
+//                consulta.getUnidadeFranquia(), "Consulta", calendarioSistema.getDataHoraSistema());
+//        adicionaFinanceiroAdm(entradaConsultas);
+//    }
+//
+//    public void geraMovimentacaoFinanceiraProcedimento(Procedimento procedimento, CalendarioSistema calendarioSistema) {
+//        FinanceiroAdm entradaProcedimentos = new FinanceiroAdm("Entrada", procedimento.getValorProcedimento(),
+//                procedimento.getConsulta().getUnidadeFranquia(), "Procedimento", calendarioSistema.getDataHoraSistema());
+//        adicionaFinanceiroAdm(entradaProcedimentos);
+//    }
     
     public void geraMovimentacaoFinanceiraPagamentosFranquia(UnidadeFranquia unidadeFranquia, 
             double valorPagamento, CalendarioSistema calendarioSistema)
@@ -227,6 +228,41 @@ public class FinanceiroAdmDAO {
         } catch (SQLException erro) {
             
         }
+    }
+    
+    public boolean inserePagamentoAvulsoNoBancoDeDados(FinanceiroAdm financeiroAdm){
+        
+        boolean pago = true;
+        
+        String pagamentoAvulso = "insert into financeiroadm (tipomovimento, valorfinanceiroadm, "
+                + "idunidadefranquia, descritivomovimento, datacriacao) values (?,?,?,?,?)";
+        
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()){
+            
+            connection.setAutoCommit(false);
+            
+            try (PreparedStatement pstmPagamentoAvulso = connection.prepareStatement(pagamentoAvulso)){
+                
+                pstmPagamentoAvulso.setString(1, financeiroAdm.getTipoMovimento());
+                pstmPagamentoAvulso.setDouble(2, financeiroAdm.getValor());
+                pstmPagamentoAvulso.setInt(3, financeiroAdm.getUnidadeFranquia().getIdUnidadeFranquia());
+                pstmPagamentoAvulso.setString(4, financeiroAdm.getDescritivoMovimento());
+                pstmPagamentoAvulso.setTimestamp(5, Timestamp.valueOf(financeiroAdm.getDataCriacao()));
+                
+                pstmPagamentoAvulso.execute();
+                
+                connection.commit();
+                
+            } catch (SQLException e) {
+                System.out.println("\nNao foi Possivel Inserir O Pagamento no Bamco de Dados\n" + e.getMessage());
+                pago = false;
+                connection.rollback();
+            }
+            
+        } catch (SQLException erro) {
+            
+        }
+        return pago != false;
     }
     
 }

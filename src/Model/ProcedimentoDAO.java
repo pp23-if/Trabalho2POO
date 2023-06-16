@@ -182,18 +182,18 @@ public class ProcedimentoDAO {
         return null;
     }
 
-    public boolean realizarProcedimento(Procedimento procedimento, String laudo,
-            CalendarioSistema calendarioSistema, FinanceiroAdmDAO financeiroAdmDAO) {
-        if (procedimento != null) {
-            procedimento.setEstadoProcedimento("Realizado");
-            procedimento.setLaudo(laudo);
-            procedimento.setDataModificacao(calendarioSistema.getDataHoraSistema());
-
-            financeiroAdmDAO.geraMovimentacaoFinanceiraProcedimento(procedimento, calendarioSistema);
-            return true;
-        }
-        return false;
-    }
+//    public boolean realizarProcedimento(Procedimento procedimento, String laudo,
+//            CalendarioSistema calendarioSistema, FinanceiroAdmDAO financeiroAdmDAO) {
+//        if (procedimento != null) {
+//            procedimento.setEstadoProcedimento("Realizado");
+//            procedimento.setLaudo(laudo);
+//            procedimento.setDataModificacao(calendarioSistema.getDataHoraSistema());
+//
+//            financeiroAdmDAO.geraMovimentacaoFinanceiraProcedimento(procedimento, calendarioSistema);
+//            return true;
+//        }
+//        return false;
+//    }
 
     public boolean cancelaProcedimentosNaoRealizadosNoDia(CalendarioSistema calendarioSistema) {
 
@@ -331,7 +331,9 @@ public class ProcedimentoDAO {
 
         String buscaProcedimento = "select * from procedimento;";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); PreparedStatement pstm = connection.prepareStatement(buscaProcedimento); ResultSet rs = pstm.executeQuery(buscaProcedimento)) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); 
+                PreparedStatement pstm = connection.prepareStatement(buscaProcedimento);
+                ResultSet rs = pstm.executeQuery(buscaProcedimento)) {
 
             while (rs.next()) {
 
@@ -386,7 +388,8 @@ public class ProcedimentoDAO {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmCancelaProcedimento = connection.prepareStatement(cancelaProcedimento); PreparedStatement pstmAtualizaDataAlteracaoProcedimento
+            try (PreparedStatement pstmCancelaProcedimento = connection.prepareStatement(cancelaProcedimento);
+                    PreparedStatement pstmAtualizaDataAlteracaoProcedimento
                     = connection.prepareStatement(atualizaDataAlteracaoProcedimento)) {
 
                 pstmCancelaProcedimento.setString(1, "Cancelado");
@@ -431,7 +434,9 @@ public class ProcedimentoDAO {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmRemarcaDiaProcedimento = connection.prepareStatement(remarcaDiaProcedimento); PreparedStatement pstmRemarcaHoraProcedimento = connection.prepareStatement(remarcaHoraProcedimento); PreparedStatement pstmAtualizaDataAlteracaoProcedimento
+            try (PreparedStatement pstmRemarcaDiaProcedimento = connection.prepareStatement(remarcaDiaProcedimento);
+                    PreparedStatement pstmRemarcaHoraProcedimento = connection.prepareStatement(remarcaHoraProcedimento); 
+                    PreparedStatement pstmAtualizaDataAlteracaoProcedimento
                     = connection.prepareStatement(atualizaDataAlteracaoProcedimento)) {
 
                 pstmRemarcaDiaProcedimento.setDate(1, Date.valueOf(novoDiaProcedimento));

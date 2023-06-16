@@ -715,7 +715,7 @@ public class AdmnistradorControladora {
             FinanceiroAdm financeiroAdm = new FinanceiroAdm("Saida", valorPagamento, unidadeSelecionada,
                     descritivoMovimento, calendarioSistema.getDataHoraSistema());
 
-            if (financeiroAdmDAO.adicionaFinanceiroAdm(financeiroAdm) == true) {
+            if (financeiroAdmDAO.inserePagamentoAvulsoNoBancoDeDados(financeiroAdm) == true) {
                 System.out.println("\nPagamento Realizado Com Sucesso!");
             } else {
                 System.out.println("\nNao Foi Possivel Realizar O Pagamento.");
