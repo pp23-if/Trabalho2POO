@@ -168,7 +168,9 @@ public class FinanceiroAdmDAO {
 
         String buscaFinanceiroADM = "select * from financeiroadm";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); PreparedStatement pstm = connection.prepareStatement(buscaFinanceiroADM); ResultSet rs = pstm.executeQuery(buscaFinanceiroADM)) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); 
+                PreparedStatement pstm = connection.prepareStatement(buscaFinanceiroADM); 
+                ResultSet rs = pstm.executeQuery(buscaFinanceiroADM)) {
 
             while (rs.next()) {
 

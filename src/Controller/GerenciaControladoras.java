@@ -100,6 +100,8 @@ public class GerenciaControladoras {
                     System.out.println("\nMostrando todos os Financeiros ADM: " + "\n");
                     financeiroAdmDAO.mostraTodosMovimentosFinanceiros();
                   
+                    System.out.println("\nMostrando todos os Financeiros Medicos: " + "\n");
+                    financeiroMedicoDAO.mostraTodosFinanceiroMedico();
                     
                     break;
                 }

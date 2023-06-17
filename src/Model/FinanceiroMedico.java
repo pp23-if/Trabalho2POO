@@ -17,6 +17,10 @@ public class FinanceiroMedico {
     public FinanceiroMedico() {
     }
 
+    public void setIdFinanceiroMedico(int idFinanceiroMedico) {
+        this.idFinanceiroMedico = idFinanceiroMedico;
+    }
+
     public int getIdFinanceiroMedico() {
         return idFinanceiroMedico;
     }

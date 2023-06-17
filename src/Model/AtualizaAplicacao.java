@@ -18,6 +18,7 @@ public class AtualizaAplicacao {
         infoConsultaDAO.BuscaInfoConsultaNoBancoDeDados(consultaDAO);
         procedimentoDAO.BuscaProcedimentosNoBancoDeDados(consultaDAO);
         financeiroAdmDAO.buscaFinanceiroADMNoBancoDeDados(unidadeFranquiaDAO);
+        financeiroMedicoDAO.buscaFinanceiroMedicoNoBancoDeDados(medicoDAO, franquiaDAO);
     }
     
 }
