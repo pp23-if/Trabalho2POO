@@ -649,6 +649,8 @@ public class AdmnistradorControladora {
             int idUnidadeFranquia = Integer.parseInt(scanner.nextLine());
             idUnidadeFranquia = vd.validarINT(idUnidadeFranquia);
 
+            financeiroAdmDAO.buscaFinanceiroADMNoBancoDeDados(unidadeFranquiaDAO);
+
             UnidadeFranquia unidadeSelecionada = unidadeFranquiaDAO.buscaUnidadeFranquiaPorId(idUnidadeFranquia);
 
             if (unidadeSelecionada == null) {
@@ -719,7 +721,7 @@ public class AdmnistradorControladora {
             FinanceiroAdm financeiroAdm = new FinanceiroAdm("Saida", valorPagamento, unidadeSelecionada,
                     descritivoMovimento, calendarioSistema.getDataHoraSistema());
 
-            if (financeiroAdmDAO.inserePagamentoAvulsoNoBancoDeDados(financeiroAdm) == true) {
+            if (financeiroAdmDAO.inserePagamentoAvulsoEPagamentoFranquiaNoBancoDeDados(financeiroAdm) == true) {
                 System.out.println("\nPagamento Realizado Com Sucesso!");
             } else {
                 System.out.println("\nNao Foi Possivel Realizar O Pagamento.");
