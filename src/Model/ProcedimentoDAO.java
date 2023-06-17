@@ -194,7 +194,6 @@ public class ProcedimentoDAO {
 //        }
 //        return false;
 //    }
-
     public boolean cancelaProcedimentosNaoRealizadosNoDia(CalendarioSistema calendarioSistema) {
 
         boolean canceladas = false;
@@ -204,13 +203,15 @@ public class ProcedimentoDAO {
                     && calendarioSistema.getDiaDoSistema().isAfter(procedimento.getDiaProcedimento())) {
                 procedimento.setEstadoProcedimento("Cancelado");
                 procedimento.setDataModificacao(calendarioSistema.getDataHoraSistema());
-                canceladas = true;
+
+                if (cancelaProcedimentoNoBancoDeDados(procedimento, calendarioSistema) == true) {
+                    canceladas = true;
+                }
+
             }
-            if (canceladas == true) {
-                return true;
-            }
+
         }
-        return false;
+        return canceladas == true;
 
     }
 
@@ -331,9 +332,7 @@ public class ProcedimentoDAO {
 
         String buscaProcedimento = "select * from procedimento;";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); 
-                PreparedStatement pstm = connection.prepareStatement(buscaProcedimento);
-                ResultSet rs = pstm.executeQuery(buscaProcedimento)) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); PreparedStatement pstm = connection.prepareStatement(buscaProcedimento); ResultSet rs = pstm.executeQuery(buscaProcedimento)) {
 
             while (rs.next()) {
 
@@ -388,8 +387,7 @@ public class ProcedimentoDAO {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmCancelaProcedimento = connection.prepareStatement(cancelaProcedimento);
-                    PreparedStatement pstmAtualizaDataAlteracaoProcedimento
+            try (PreparedStatement pstmCancelaProcedimento = connection.prepareStatement(cancelaProcedimento); PreparedStatement pstmAtualizaDataAlteracaoProcedimento
                     = connection.prepareStatement(atualizaDataAlteracaoProcedimento)) {
 
                 pstmCancelaProcedimento.setString(1, "Cancelado");
@@ -417,11 +415,9 @@ public class ProcedimentoDAO {
         return cancelado != false;
     }
 
-    
     public boolean remarcaProcedimentoNoBancoDeDados(LocalDate novoDiaProcedimento, LocalTime novaHoraProcedimento,
             Procedimento procedimento, CalendarioSistema calendarioSistema) {
 
-        
         boolean remarcado = true;
 
         String remarcaDiaProcedimento = "update procedimento set diaprocedimento  = ? where idprocedimento = ?";
@@ -434,9 +430,7 @@ public class ProcedimentoDAO {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmRemarcaDiaProcedimento = connection.prepareStatement(remarcaDiaProcedimento);
-                    PreparedStatement pstmRemarcaHoraProcedimento = connection.prepareStatement(remarcaHoraProcedimento); 
-                    PreparedStatement pstmAtualizaDataAlteracaoProcedimento
+            try (PreparedStatement pstmRemarcaDiaProcedimento = connection.prepareStatement(remarcaDiaProcedimento); PreparedStatement pstmRemarcaHoraProcedimento = connection.prepareStatement(remarcaHoraProcedimento); PreparedStatement pstmAtualizaDataAlteracaoProcedimento
                     = connection.prepareStatement(atualizaDataAlteracaoProcedimento)) {
 
                 pstmRemarcaDiaProcedimento.setDate(1, Date.valueOf(novoDiaProcedimento));
@@ -469,49 +463,44 @@ public class ProcedimentoDAO {
         return remarcado != false;
     }
 
-    public boolean realizaProcedimentoNoBancoDeDados(Procedimento procedimento, 
+    public boolean realizaProcedimentoNoBancoDeDados(Procedimento procedimento,
             CalendarioSistema calendarioSistema, String laudo) {
 
         boolean realizado = true;
 
         String atualizaEstadoProcedimento = "update procedimento set estadoprocedimento = ? where idprocedimento "
                 + " = ? ";
-        
+
         String atualizaLaudoProcedimento = "update procedimento set laudo = ? where idprocedimento "
                 + " = ? ";
-        
+
         String atualizaDataModificacaoProcedimento = "update procedimento set datamodificacao = ? where idprocedimento "
                 + " = ? ";
-        
+
         String insereFinanceiroADM = "insert into financeiroadm (tipomovimento, valorfinanceiroadm,"
                 + "idunidadefranquia, descritivomovimento, datacriacao) values (?,?,?,?,?)";
-
 
         try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmAtualizaEstadoProcedimento = connection.prepareStatement(atualizaEstadoProcedimento);
-                    PreparedStatement pstmAtualizaLaudoProcedimento = connection.prepareStatement(atualizaLaudoProcedimento);
-                    PreparedStatement pstmAtualizaDataModificacaoProcedimento = connection.prepareStatement(atualizaDataModificacaoProcedimento);
-                    PreparedStatement pstmInsereFinanceiroADM = connection.prepareStatement(insereFinanceiroADM)) {
+            try (PreparedStatement pstmAtualizaEstadoProcedimento = connection.prepareStatement(atualizaEstadoProcedimento); PreparedStatement pstmAtualizaLaudoProcedimento = connection.prepareStatement(atualizaLaudoProcedimento); PreparedStatement pstmAtualizaDataModificacaoProcedimento = connection.prepareStatement(atualizaDataModificacaoProcedimento); PreparedStatement pstmInsereFinanceiroADM = connection.prepareStatement(insereFinanceiroADM)) {
 
                 pstmAtualizaEstadoProcedimento.setString(1, "Realizado");
                 pstmAtualizaEstadoProcedimento.setInt(2, procedimento.getIdProcedimento());
-                
+
                 pstmAtualizaEstadoProcedimento.execute();
-                
+
                 pstmAtualizaLaudoProcedimento.setString(1, laudo);
                 pstmAtualizaLaudoProcedimento.setInt(2, procedimento.getIdProcedimento());
-                
+
                 pstmAtualizaLaudoProcedimento.execute();
-                
+
                 pstmAtualizaDataModificacaoProcedimento.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
                 pstmAtualizaDataModificacaoProcedimento.setInt(2, procedimento.getIdProcedimento());
-                
+
                 pstmAtualizaDataModificacaoProcedimento.execute();
-                
-                
+
                 pstmInsereFinanceiroADM.setString(1, "Entrada");
                 pstmInsereFinanceiroADM.setDouble(2, procedimento.getValorProcedimento());
                 pstmInsereFinanceiroADM.setInt(3, procedimento.getConsulta().getUnidadeFranquia().getIdUnidadeFranquia());

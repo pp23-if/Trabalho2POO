@@ -70,7 +70,8 @@ public class AdmnistradorControladora {
                 }
                 case 4: {
                     menuOpcoesFinanceiro(financeiroAdmDAO, calendarioSistema,
-                            consultaDAO, procedimentoDAO, admnistrador, unidadeFranquiaDAO, vd, financeiroMedicoDAO, medicoDAO);
+                            consultaDAO, procedimentoDAO, admnistrador, unidadeFranquiaDAO, vd,
+                            financeiroMedicoDAO, medicoDAO, pessoaDAO);
                     break;
                 }
 
@@ -395,7 +396,7 @@ public class AdmnistradorControladora {
 
                             if (consultaDAO.insereConsultaNoBancoDeDados(consulta) == true) {
                                 consultaDAO.BuscaConsultaNoBancoDeDados(pessoaDAO, medicoDAO, unidadeFranquiaDAO);
-                                
+
                                 Consulta consultaRecemInserida = consultaDAO.buscaConsultaPorIndice();
 
                                 Procedimento procedimento = new Procedimento();
@@ -415,7 +416,7 @@ public class AdmnistradorControladora {
 
                                     System.out.println("\nNao Foi Possivel Marcar O Procediemnto.");
                                 }
-                                
+
                             } else {
                                 System.out.println("\nErro Ao Marcar O Procedimento.");
                             }
@@ -487,7 +488,7 @@ public class AdmnistradorControladora {
                     System.out.println("\nDia e hora Informados, Indisponiveis.");
 
                 } else {
-                    if (procedimentoDAO.remarcaProcedimentoNoBancoDeDados(diaProcedimento, horaProcedimento, 
+                    if (procedimentoDAO.remarcaProcedimentoNoBancoDeDados(diaProcedimento, horaProcedimento,
                             procedimentoEncontrado, calendarioSistema) == true) {
 
                         System.out.println("\nProcedimento Remarcado Com Sucesso!");
@@ -506,7 +507,7 @@ public class AdmnistradorControladora {
     private void menuOpcoesFinanceiro(FinanceiroAdmDAO financeiroAdmDAO,
             CalendarioSistema calendarioSistema, ConsultaDAO consultaDAO,
             ProcedimentoDAO procedimentoDAO, Admnistrador admnistrador, UnidadeFranquiaDAO unidadeFranquiaDAO,
-            ValidacaoEntradaDados vd, FinanceiroMedicoDAO financeiroMedicoDAO, MedicoDAO medicoDAO) {
+            ValidacaoEntradaDados vd, FinanceiroMedicoDAO financeiroMedicoDAO, MedicoDAO medicoDAO, PessoaDAO pessoaDAO) {
 
         int opcao;
 
@@ -523,6 +524,9 @@ public class AdmnistradorControladora {
 
                     if (calendarioSistema.passaDias(dias) == true) {
                         System.out.println("\nDia Encerrado com sucesso.");
+
+                        consultaDAO.BuscaConsultaNoBancoDeDados(pessoaDAO, medicoDAO, unidadeFranquiaDAO);
+                        procedimentoDAO.BuscaProcedimentosNoBancoDeDados(consultaDAO);
 
                         cancelaConsultasNaoAtendidasNoDia(consultaDAO, calendarioSistema);
                         cancelaProcedimentosNaoAtendidosNoDia(procedimentoDAO, calendarioSistema);
