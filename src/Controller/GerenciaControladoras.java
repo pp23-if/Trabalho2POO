@@ -225,7 +225,8 @@ public class GerenciaControladoras {
                         = new AdmnistradorControladora(pessoaDAO, admnistradorDAO, 
                                 unidadeFranquiaDAO, consultaDAO, vd, 
                                 admnistradorEncontrado, medicoDAO, 
-                                procedimentoDAO, calendarioSistema, financeiroAdmDAO, financeiroMedicoDAO);
+                                procedimentoDAO, calendarioSistema,
+                                financeiroAdmDAO, financeiroMedicoDAO, franquiaDAO);
             }
 
         } else {

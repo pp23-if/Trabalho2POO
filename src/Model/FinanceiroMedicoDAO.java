@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -139,14 +140,49 @@ public class FinanceiroMedicoDAO {
         }
     }
 
+    public boolean insereFinanceiroMedicoNoBancoDeDados(FinanceiroMedico financeiroMedico) {
+
+        boolean inserido = true;
+
+        String insereFinanceiroMedico = "insert into financeiromedico (valorfinanceiromedico,"
+                + "crm, estado, cnpjfranquia, datacriacao) values (?,?,?,?,?)";
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+
+            connection.setAutoCommit(false);
+
+            try (PreparedStatement pstmInsereFinanceiroMedico = connection.prepareStatement(insereFinanceiroMedico)) {
+                
+                pstmInsereFinanceiroMedico.setDouble(1, financeiroMedico.getValor());
+                pstmInsereFinanceiroMedico.setString(2, financeiroMedico.getMedico().getCrm());
+                pstmInsereFinanceiroMedico.setString(3, "Agendado");
+                pstmInsereFinanceiroMedico.setString(4, financeiroMedico.getFranquia().getCnpj());
+                pstmInsereFinanceiroMedico.setTimestamp(5, Timestamp.valueOf(financeiroMedico.getDataCriacao()));
+                
+                pstmInsereFinanceiroMedico.execute();
+                
+                connection.commit();
+
+            } catch (SQLException erro) {
+                connection.rollback();
+                inserido = false;
+                System.out.println("\nNao foi possivel inserir finamceiro medico no banco de dados" + erro.getMessage());
+
+            }
+
+        } catch (SQLException erro) {
+            inserido = false;
+        }
+        return inserido != false;
+
+    }
+
     public void buscaFinanceiroMedicoNoBancoDeDados(MedicoDAO medicoDAO, FranquiaDAO franquiaDAO) {
-        
+
         listaFinanceiroMedico.clear();
         String buscaFinanceiroMedico = "select * from financeiromedico";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); 
-                PreparedStatement pstm = connection.prepareStatement(buscaFinanceiroMedico);
-                ResultSet rs = pstm.executeQuery(buscaFinanceiroMedico)) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); PreparedStatement pstm = connection.prepareStatement(buscaFinanceiroMedico); ResultSet rs = pstm.executeQuery(buscaFinanceiroMedico)) {
 
             while (rs.next()) {
 
@@ -181,5 +217,58 @@ public class FinanceiroMedicoDAO {
 
         }
 
+    }
+    
+    public boolean realizaPagamentoFinanceroMedicoNoBancoDeDados(FinanceiroMedico financeiroMedico,
+            CalendarioSistema calendarioSistema){
+        
+        boolean pago = true;
+        
+        String realizaPagamentoFinanceroMedico = "update financeiromedico set "
+                + "estado = ? where idfinanceiromedico = ?";
+        
+        String atualizaDataModificacaoFinanceiroMedico = "update financeiromedico set "
+                + "datamodificacao = ? where idfinanceiromedico = ?";
+        
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()){
+            
+            connection.setAutoCommit(false);
+            
+            try (PreparedStatement pstmRealizaPagamentoFinanceroMedico = 
+                    connection.prepareStatement(realizaPagamentoFinanceroMedico); 
+                    PreparedStatement pstmAtualizaDataModificacaoFinanceiroMedico =
+                            connection.prepareStatement(atualizaDataModificacaoFinanceiroMedico)){
+                
+                pstmRealizaPagamentoFinanceroMedico.setString(1, "Pago");
+                pstmRealizaPagamentoFinanceroMedico.setInt(2, financeiroMedico.getIdFinanceiroMedico());
+                
+                pstmRealizaPagamentoFinanceroMedico.execute();
+                        
+                
+                pstmAtualizaDataModificacaoFinanceiroMedico.setTimestamp(1, 
+                        Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+                pstmAtualizaDataModificacaoFinanceiroMedico.setInt(2, financeiroMedico.getIdFinanceiroMedico());
+                
+                pstmAtualizaDataModificacaoFinanceiroMedico.execute();
+                
+                
+                connection.commit();
+                
+                
+                
+            } catch (SQLException erro) {
+                connection.rollback();
+                pago = false;
+                System.out.println("\nNao foi possivel atualizar o financeiro medico no banco"
+                        + " de dados " + erro.getMessage());
+            }
+            
+            
+        } catch (SQLException erro) {
+            pago = false;
+            
+        }
+       
+        return pago != false;
     }
 }

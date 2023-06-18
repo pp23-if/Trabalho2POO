@@ -523,5 +523,8 @@ public class ProcedimentoDAO {
 
         return realizado != false;
     }
+    
+    
+            
 
 }

@@ -9,6 +9,7 @@ import Model.FinanceiroAdm;
 import Model.FinanceiroAdmDAO;
 import Model.FinanceiroMedico;
 import Model.FinanceiroMedicoDAO;
+import Model.FranquiaDAO;
 import Model.Medico;
 import Model.MedicoDAO;
 import Model.Pessoa;
@@ -32,11 +33,12 @@ public class AdmnistradorControladora {
     public AdmnistradorControladora(PessoaDAO pessoaDAO, AdmnistradorDAO admnistradorDAO,
             UnidadeFranquiaDAO unidadeFranquiaDAO, ConsultaDAO consultaDAO, ValidacaoEntradaDados vd,
             Admnistrador admnistrador, MedicoDAO medicoDAO, ProcedimentoDAO procedimentoDAO,
-            CalendarioSistema calendarioSistema, FinanceiroAdmDAO financeiroAdmDAO, FinanceiroMedicoDAO financeiroMedicoDAO) {
+            CalendarioSistema calendarioSistema, FinanceiroAdmDAO financeiroAdmDAO, 
+            FinanceiroMedicoDAO financeiroMedicoDAO, FranquiaDAO franquiaDAO) {
 
         menuOpcoesAdmnistrador(pessoaDAO, admnistradorDAO,
                 unidadeFranquiaDAO, consultaDAO, vd, admnistrador, medicoDAO, procedimentoDAO, calendarioSistema,
-                financeiroAdmDAO, financeiroMedicoDAO);
+                financeiroAdmDAO, financeiroMedicoDAO, franquiaDAO);
 
     }
 
@@ -44,7 +46,7 @@ public class AdmnistradorControladora {
             AdmnistradorDAO admnistradorDAO, UnidadeFranquiaDAO unidadeFranquiaDAO,
             ConsultaDAO consultaDAO, ValidacaoEntradaDados vd, Admnistrador admnistrador,
             MedicoDAO medicoDAO, ProcedimentoDAO procedimentoDAO, CalendarioSistema calendarioSistema,
-            FinanceiroAdmDAO financeiroAdmDAO, FinanceiroMedicoDAO financeiroMedicoDAO) {
+            FinanceiroAdmDAO financeiroAdmDAO, FinanceiroMedicoDAO financeiroMedicoDAO, FranquiaDAO franquiaDAO) {
 
         int opcao;
 
@@ -71,7 +73,7 @@ public class AdmnistradorControladora {
                 case 4: {
                     menuOpcoesFinanceiro(financeiroAdmDAO, calendarioSistema,
                             consultaDAO, procedimentoDAO, admnistrador, unidadeFranquiaDAO, vd,
-                            financeiroMedicoDAO, medicoDAO, pessoaDAO);
+                            financeiroMedicoDAO, medicoDAO, pessoaDAO, franquiaDAO);
                     break;
                 }
 
@@ -507,7 +509,8 @@ public class AdmnistradorControladora {
     private void menuOpcoesFinanceiro(FinanceiroAdmDAO financeiroAdmDAO,
             CalendarioSistema calendarioSistema, ConsultaDAO consultaDAO,
             ProcedimentoDAO procedimentoDAO, Admnistrador admnistrador, UnidadeFranquiaDAO unidadeFranquiaDAO,
-            ValidacaoEntradaDados vd, FinanceiroMedicoDAO financeiroMedicoDAO, MedicoDAO medicoDAO, PessoaDAO pessoaDAO) {
+            ValidacaoEntradaDados vd, FinanceiroMedicoDAO financeiroMedicoDAO, 
+            MedicoDAO medicoDAO, PessoaDAO pessoaDAO, FranquiaDAO franquiaDAO) {
 
         int opcao;
 
@@ -539,7 +542,7 @@ public class AdmnistradorControladora {
                 }
                 case 2: {
                     pagamentosAdm(financeiroAdmDAO, calendarioSistema, consultaDAO,
-                            procedimentoDAO, admnistrador, unidadeFranquiaDAO, vd, financeiroMedicoDAO, medicoDAO);
+                            procedimentoDAO, admnistrador, unidadeFranquiaDAO, vd, financeiroMedicoDAO, medicoDAO, franquiaDAO);
                     break;
                 }
                 case 3: {
@@ -587,7 +590,7 @@ public class AdmnistradorControladora {
     private void pagamentosAdm(FinanceiroAdmDAO financeiroAdmDAO,
             CalendarioSistema calendarioSistema, ConsultaDAO consultaDAO,
             ProcedimentoDAO procedimentoDAO, Admnistrador admnistrador, UnidadeFranquiaDAO unidadeFranquiaDAO,
-            ValidacaoEntradaDados vd, FinanceiroMedicoDAO financeiroMedicoDAO, MedicoDAO medicoDAO) {
+            ValidacaoEntradaDados vd, FinanceiroMedicoDAO financeiroMedicoDAO, MedicoDAO medicoDAO, FranquiaDAO franquiaDAO) {
 
         int opcao;
 
@@ -602,9 +605,9 @@ public class AdmnistradorControladora {
                                 admnistrador, vd) == true) {
 
                             if (CalculaValoresMedicos(calendarioSistema, consultaDAO, procedimentoDAO,
-                                    financeiroMedicoDAO, medicoDAO, vd, admnistrador) == true) {
+                                    financeiroMedicoDAO, medicoDAO, vd, admnistrador, franquiaDAO) == true) {
 
-                                pagarMedicos(admnistrador, financeiroMedicoDAO, calendarioSistema, vd);
+                                pagarMedicos(admnistrador, financeiroMedicoDAO, calendarioSistema, vd, medicoDAO, franquiaDAO);
                             }
                         }
 
@@ -731,7 +734,7 @@ public class AdmnistradorControladora {
 
     private boolean CalculaValoresMedicos(CalendarioSistema calendarioSistema, ConsultaDAO consultaDAO,
             ProcedimentoDAO procedimentoDAO, FinanceiroMedicoDAO financeiroMedicoDAO,
-            MedicoDAO medicoDAO, ValidacaoEntradaDados vd, Admnistrador admnistrador) {
+            MedicoDAO medicoDAO, ValidacaoEntradaDados vd, Admnistrador admnistrador, FranquiaDAO franquiaDAO) {
 
         double valorConsultas;
         double valorProcedimentos;
@@ -758,6 +761,9 @@ public class AdmnistradorControladora {
             if (medicoEncontrado == null) {
                 System.out.println("\nO Medico Informado Nao Foi Encontrado!!!");
             } else {
+                
+                financeiroMedicoDAO.buscaFinanceiroMedicoNoBancoDeDados(medicoDAO, franquiaDAO);
+                
                 if (financeiroMedicoDAO.verificaCalculosValoresMedico(medicoEncontrado, calendarioSistema,
                         admnistrador.getFranquia()) == true) {
                     System.out.println("\n--------- Os Calculos Do Medico Informado Ja Foram Feitos esse mes. -----");
@@ -785,7 +791,7 @@ public class AdmnistradorControladora {
                     FinanceiroMedico financeiroMedico = new FinanceiroMedico(valorLiquidomedico, medicoEncontrado,
                             "Agendado", admnistrador.getFranquia(), calendarioSistema.getDataHoraSistema());
 
-                    if (financeiroMedicoDAO.adicionaFinanceiroMedico(financeiroMedico) == true) {
+                    if (financeiroMedicoDAO.insereFinanceiroMedicoNoBancoDeDados(financeiroMedico)== true) {
                         System.out.println("\nCalculos Gerados Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Gerar Os Calculos.");
@@ -809,14 +815,16 @@ public class AdmnistradorControladora {
     }
 
     private void pagarMedicos(Admnistrador admnistrador, FinanceiroMedicoDAO financeiroMedicoDAO,
-            CalendarioSistema calendarioSistema, ValidacaoEntradaDados vd) {
+            CalendarioSistema calendarioSistema, ValidacaoEntradaDados vd, MedicoDAO medicoDAO, FranquiaDAO franquiaDAO) {
 
         int opcao;
 
         System.out.println("\n=========== Pagar Os Medicos! =============");
 
         do {
-
+              
+            financeiroMedicoDAO.buscaFinanceiroMedicoNoBancoDeDados(medicoDAO, franquiaDAO);
+            
             System.out.println("\n");
             if (financeiroMedicoDAO.buscaPagamentosMedicosPorFranquiaEhMes(admnistrador.getFranquia(),
                     calendarioSistema) == false) {
@@ -834,7 +842,8 @@ public class AdmnistradorControladora {
                 if (financeiroMedicoEncontrado == null) {
                     System.out.println("\nFinanceiro Medico Nao Encontrado!");
                 } else {
-                    if (financeiroMedicoDAO.pagarMedico(financeiroMedicoEncontrado, calendarioSistema) == true) {
+                    if (financeiroMedicoDAO.realizaPagamentoFinanceroMedicoNoBancoDeDados(financeiroMedicoEncontrado, 
+                            calendarioSistema)== true) {
                         System.out.println("\nPagamento Realizado Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Realizar O Pagamento.");
