@@ -8,7 +8,6 @@ import Model.Pessoa;
 import Model.PessoaDAO;
 import Model.ProcedimentoDAO;
 import View.MenuTitulosPaciente;
-import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class PacienteControladora {
@@ -31,6 +30,9 @@ public class PacienteControladora {
         int opcao;
 
         do {
+
+            pessoaDAO.BuscaPessoaNoBancoDeDados();
+
             opcao = telaPaciente.menuPaciente();
 
             switch (opcao) {
@@ -69,6 +71,9 @@ public class PacienteControladora {
         int opcao;
 
         do {
+
+            pessoaDAO.BuscaPessoaNoBancoDeDados();
+
             opcao = telaPaciente.menuAlteraDadosPaciente();
 
             switch (opcao) {
@@ -76,7 +81,6 @@ public class PacienteControladora {
                     System.out.println("\nInforme o Novo Nome: ");
                     String novoNomePessoa = scanner.nextLine();
                     novoNomePessoa = vd.validaString(novoNomePessoa);
-                    
 
                     if (pessoaDAO.AtualizaNomePessoaNoBancoDeDados(novoNomePessoa, pessoa, calendarioSistema) == true) {
                         System.out.println("\nO Nome Foi Atualizado Com Sucesso!");
@@ -91,9 +95,16 @@ public class PacienteControladora {
                     novoCpf = vd.validaString(novoCpf);
 
                     if (pessoaDAO.AtualizaCpfPessoaNoBancoDeDados(novoCpf, pessoa, calendarioSistema) == true) {
+
+//                        pessoaDAO.BuscaPessoaNoBancoDeDados();
+//
+//                        pessoaDAO.atualizaPessoaLogadaComBancoDeDados(novoCpf, pessoa);
+                        pessoa.setCpf(novoCpf);
+
                         System.out.println("\nO Cpf Foi Atualizado Com Sucesso!");
+
                     } else {
-                       System.out.println("\nNome Foi possivel Atualizar o Cpf.");
+                        System.out.println("\nNome Foi possivel Atualizar o Cpf.");
                     }
 
                     break;
@@ -120,7 +131,7 @@ public class PacienteControladora {
                     if (pessoaDAO.AtualizaTelefonePessoaNoBancoDeDados(novoTelefone, pessoa, calendarioSistema) == true) {
                         System.out.println("\nO Telefone Foi Atualizado Com Sucesso!");
                     } else {
-                       System.out.println("\nNao Foi Possivel Atualizar O Telefone");
+                        System.out.println("\nNao Foi Possivel Atualizar O Telefone");
                     }
                     break;
                 }
@@ -131,7 +142,11 @@ public class PacienteControladora {
                     novoLogin = vd.validaString(novoLogin);
 
                     if (pessoaDAO.AtualizaloginPessoaNoBancoDeDados(novoLogin, pessoa, calendarioSistema) == true) {
+
+                        pessoa.setLoginPessoa(novoLogin);
+
                         System.out.println("\nO Login Foi Atualizado Com Sucesso!");
+
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar O Login");
                     }
@@ -145,7 +160,10 @@ public class PacienteControladora {
                     novaSenha = vd.validaString(novaSenha);
 
                     if (pessoaDAO.AtualizaSenhaPessoaNoBancoDeDados(novaSenha, pessoa, calendarioSistema) == true) {
+
+                        pessoa.setSenhaPessoa(novaSenha);
                         System.out.println("\nA Senha Foi Atualizada Com Sucesso!");
+
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar A Senha");
                     }

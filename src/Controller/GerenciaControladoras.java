@@ -24,14 +24,13 @@ public class GerenciaControladoras {
     Scanner scanner = new Scanner(System.in);
 
     MenuTitulos Tela = new MenuTitulos();
-    
-   
+
     /*Instanciando a Classe de Validacao de dados.*/
     ValidacaoEntradaDados vd = new ValidacaoEntradaDados();
-    
+
     /*Instanciando o Calendario Do Sistema*/
     CalendarioSistema calendarioSistema = new CalendarioSistema();
-   
+
 
     /*Instanciando os DAO.*/
     PessoaDAO pessoaDAO = new PessoaDAO(calendarioSistema);
@@ -41,19 +40,20 @@ public class GerenciaControladoras {
     ConsultaDAO consultaDAO = new ConsultaDAO();
     AdmnistradorDAO admnistradorDAO = new AdmnistradorDAO(pessoaDAO, franquiaDAO, calendarioSistema);
     InfoConsultaDAO infoConsultaDAO = new InfoConsultaDAO();
-    ProcedimentoDAO procedimentoDAO = new ProcedimentoDAO(pessoaDAO, medicoDAO, unidadeFranquiaDAO, 
+    ProcedimentoDAO procedimentoDAO = new ProcedimentoDAO(pessoaDAO, medicoDAO, unidadeFranquiaDAO,
             calendarioSistema, consultaDAO);
     FinanceiroAdmDAO financeiroAdmDAO = new FinanceiroAdmDAO();
     FinanceiroMedicoDAO financeiroMedicoDAO = new FinanceiroMedicoDAO();
-    
 
     public GerenciaControladoras() {
 
-        
-        
         int opcao;
 
         do {
+
+            fazBuscaGeralNoBancoDeDados(pessoaDAO, medicoDAO, franquiaDAO,
+                    unidadeFranquiaDAO, consultaDAO, procedimentoDAO,
+                    infoConsultaDAO, financeiroAdmDAO, financeiroMedicoDAO, admnistradorDAO);
 
             opcao = Tela.menuInicial();
 
@@ -70,35 +70,34 @@ public class GerenciaControladoras {
 
                 case 3: {
                     //pessoaDAO.BuscaPessoaNoBancoDeDados();
-                    
+
                     System.out.println("\nMostrando Todas as PESSOAS Cadastradas: " + "\n");
                     pessoaDAO.mostraTodasPessoas();
-                    
+
                     System.out.println("\nMostrando TodOS os MEDICOS Cadastrados: " + "\n");
                     medicoDAO.mostraTodosMedicos();
-                    
+
                     System.out.println("\nMostrando Todas as FRANQUIAS Cadastradas: " + "\n");
                     franquiaDAO.mostraTodasFranquias();
-                    
+
                     System.out.println("\nMostrando Todas as UNIDADES DE FRANQUIAS Cadastradas: " + "\n");
                     unidadeFranquiaDAO.MostraTodasUnidadesDeFranquia();
-                    
-                    
+
                     System.out.println("\nMostrando Todos os ADMNISTRADORES Cadastrados: " + "\n");
                     admnistradorDAO.buscaTodosAdmnistradores();
-                    
+
                     System.out.println("\nMostrando Todos As Consultas Cadastradas: " + "\n");
                     consultaDAO.mostraTodasConsultas();
-                    
+
                     System.out.println("\nMostrando Todos Os Procedimentos Cadastrados: " + "\n");
                     procedimentoDAO.mostraTodosProcedimentos();
-                    
+
                     System.out.println("\nMostrando todos os Financeiros ADM: " + "\n");
                     financeiroAdmDAO.mostraTodosMovimentosFinanceiros();
-                  
+
                     System.out.println("\nMostrando todos os Financeiros Medicos: " + "\n");
                     financeiroMedicoDAO.mostraTodosFinanceiroMedico();
-                    
+
                     break;
                 }
 
@@ -109,7 +108,7 @@ public class GerenciaControladoras {
     }
 
     private void cadastrarPessoa() {
-        
+
         System.out.println("\nInforme o Nome da Pessoa: ");
         String nomePessoa = scanner.nextLine();
         nomePessoa = vd.validaString(nomePessoa);
@@ -159,6 +158,7 @@ public class GerenciaControladoras {
     }
 
     private void fazLogin() {
+
         System.out.println("\nLogin: ");
         String login = scanner.nextLine();
         login = vd.validaString(login);
@@ -168,29 +168,28 @@ public class GerenciaControladoras {
         senha = vd.validaString(senha);
 
         Pessoa pessoaLogada = pessoaDAO.buscaPessoaQuerendoLogar(login, senha);
-
         gerenciaControladoras(pessoaLogada);
     }
 
     private void gerenciaControladoras(Pessoa pessoaLogada) {
 
         if (pessoaLogada != null && pessoaLogada.isHabilitado() == true) {
-            
+
             System.out.println("\nLogin efetuado Com Sucesso!");
             System.out.println("Logado Como: " + pessoaLogada.getTipoUsuario());
 
             if (pessoaLogada.getTipoUsuario().equals("Paciente")) {
 
-                PacienteControladora pacienteControladora = 
-                new PacienteControladora(pessoaLogada, pessoaDAO, vd, consultaDAO, procedimentoDAO, 
-                        calendarioSistema, medicoDAO);
+                PacienteControladora pacienteControladora
+                        = new PacienteControladora(pessoaLogada, pessoaDAO, vd, consultaDAO, procedimentoDAO,
+                                calendarioSistema, medicoDAO);
 
             } else if (pessoaLogada.getTipoUsuario().equals("Medico")) {
 
                 Medico medico = medicoDAO.buscaMedicoAtravesdaPessoaVinculada(pessoaLogada);
 
                 MedicoControladora medicoControladora = new MedicoControladora(medico,
-                        medicoDAO, vd, consultaDAO, infoConsultaDAO, procedimentoDAO, pessoaDAO, 
+                        medicoDAO, vd, consultaDAO, infoConsultaDAO, procedimentoDAO, pessoaDAO,
                         calendarioSistema, financeiroAdmDAO, financeiroMedicoDAO, unidadeFranquiaDAO);
 
             } else if (pessoaLogada.getTipoUsuario().equals("DonodeFranquia")) {
@@ -199,28 +198,28 @@ public class GerenciaControladoras {
 
                 FranquiaControladora franquiaControladora
                         = new FranquiaControladora(franquia, franquiaDAO, pessoaDAO, medicoDAO,
-                                unidadeFranquiaDAO, vd, calendarioSistema, financeiroAdmDAO, 
+                                unidadeFranquiaDAO, vd, calendarioSistema, financeiroAdmDAO,
                                 financeiroMedicoDAO, admnistradorDAO);
-                
+
             } else if (pessoaLogada.getTipoUsuario().equals("DonoDeUnidadeDeFranquia")) {
-                
+
                 UnidadeFranquia unidadeFranquia
                         = unidadeFranquiaDAO.buscaUnidadeFranquiaAtravesDaPessoaVinculada(pessoaLogada);
 
                 UnidadeFranquiaControladora unidadeFranquiaControladora
                         = new UnidadeFranquiaControladora(unidadeFranquia, unidadeFranquiaDAO, medicoDAO,
                                 pessoaDAO, vd, calendarioSistema, financeiroAdmDAO, financeiroMedicoDAO,
-                        consultaDAO, procedimentoDAO);
-                
+                                consultaDAO, procedimentoDAO);
+
             } else if (pessoaLogada.getTipoUsuario().equals("Admnistrador")) {
-                
+
                 Admnistrador admnistradorEncontrado
                         = admnistradorDAO.buscaAdmnistradorAtravesPessoaVinculada(pessoaLogada);
 
                 AdmnistradorControladora admnistradorControladora
-                        = new AdmnistradorControladora(pessoaDAO, admnistradorDAO, 
-                                unidadeFranquiaDAO, consultaDAO, vd, 
-                                admnistradorEncontrado, medicoDAO, 
+                        = new AdmnistradorControladora(pessoaDAO, admnistradorDAO,
+                                unidadeFranquiaDAO, consultaDAO, vd,
+                                admnistradorEncontrado, medicoDAO,
                                 procedimentoDAO, calendarioSistema,
                                 financeiroAdmDAO, financeiroMedicoDAO, franquiaDAO);
             }
@@ -230,14 +229,13 @@ public class GerenciaControladoras {
                     + "Nao Cadastrado.");
         }
     }
-    
-    public void atualizaAplicacaoComBancoDeDados(PessoaDAO pessoaDAO, MedicoDAO medicoDAO, 
-            FranquiaDAO franquiaDAO, UnidadeFranquiaDAO unidadeFranquiaDAO, 
-            ConsultaDAO consultaDAO, ProcedimentoDAO procedimentoDAO, 
-            InfoConsultaDAO infoConsultaDAO, FinanceiroAdmDAO financeiroAdmDAO, 
+
+    public void fazBuscaGeralNoBancoDeDados(PessoaDAO pessoaDAO, MedicoDAO medicoDAO,
+            FranquiaDAO franquiaDAO, UnidadeFranquiaDAO unidadeFranquiaDAO,
+            ConsultaDAO consultaDAO, ProcedimentoDAO procedimentoDAO,
+            InfoConsultaDAO infoConsultaDAO, FinanceiroAdmDAO financeiroAdmDAO,
             FinanceiroMedicoDAO financeiroMedicoDAO, AdmnistradorDAO admnistradorDAO) {
-        
-        
+
         pessoaDAO.BuscaPessoaNoBancoDeDados();
         medicoDAO.BuscaMedicoNoBancoDeDados(pessoaDAO);
         franquiaDAO.BuscaFranquiaNoBancoDeDados(pessoaDAO);

@@ -647,7 +647,9 @@ public class PessoaDAO {
 
     public boolean AtualizaEnderecoPessoaNoBancoDeDados(String novoeEndereco, Pessoa pessoa, 
             CalendarioSistema calendarioSistema) {
-
+        
+        System.out.println("\nO CPF da pessoa logada he: " + pessoa.getCpf());
+        
         boolean atualizado = true;
 
         String atualizaEnderecoPessoa = "update pessoa set enderecopessoa = ? where cpf = ?";
@@ -821,5 +823,36 @@ public class PessoaDAO {
 
         return atualizado != false;
     }
-
+    
+    public void atualizaPessoaLogadaComBancoDeDados(String novoCpf, Pessoa pessoa){
+        
+        Pessoa pessoaAtualizada = buscaPessoaPacientePorCpf(novoCpf);
+        pessoa.setIdPessoa(pessoaAtualizada.getId());
+        pessoa.setNomePessoa(pessoaAtualizada.getNomePessoa());
+        pessoa.setCpf(pessoaAtualizada.getCpf());
+        pessoa.setEnderecoPessoa(pessoaAtualizada.getEnderecoPessoa());
+        pessoa.setTelefonePessoa(pessoaAtualizada.getTelefonePessoa());
+        pessoa.setLoginPessoa(pessoaAtualizada.getLoginPessoa());
+        pessoa.setSenhaPessoa(pessoaAtualizada.getSenhaPessoa());
+        pessoa.setTipoUsuario(pessoaAtualizada.getTipoUsuario());
+        pessoa.setHabilitado(true);
+        pessoa.setDataCriacao(pessoaAtualizada.getDataCriacao());
+        pessoa.setDataModificacao(pessoaAtualizada.getDataModificacao());
+        
+        
+    }
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
