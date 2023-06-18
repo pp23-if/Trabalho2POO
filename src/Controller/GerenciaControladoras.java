@@ -2,7 +2,6 @@ package Controller;
 
 import Model.Admnistrador;
 import Model.AdmnistradorDAO;
-import Model.AtualizaAplicacao;
 import Model.CalendarioSistema;
 import Model.ConsultaDAO;
 import Model.FinanceiroAdmDAO;
@@ -47,13 +46,10 @@ public class GerenciaControladoras {
     FinanceiroAdmDAO financeiroAdmDAO = new FinanceiroAdmDAO();
     FinanceiroMedicoDAO financeiroMedicoDAO = new FinanceiroMedicoDAO();
     
-    AtualizaAplicacao atualizaAplicacao = new AtualizaAplicacao();
 
     public GerenciaControladoras() {
 
-        atualizaAplicacao.atualizaAplicacaoComBancoDeDados(pessoaDAO, medicoDAO, franquiaDAO, unidadeFranquiaDAO, 
-                consultaDAO, procedimentoDAO, infoConsultaDAO, financeiroAdmDAO, 
-                financeiroMedicoDAO, admnistradorDAO);
+        
         
         int opcao;
 
@@ -73,7 +69,7 @@ public class GerenciaControladoras {
                 }
 
                 case 3: {
-                    pessoaDAO.BuscaPessoaNoBancoDeDados();
+                    //pessoaDAO.BuscaPessoaNoBancoDeDados();
                     
                     System.out.println("\nMostrando Todas as PESSOAS Cadastradas: " + "\n");
                     pessoaDAO.mostraTodasPessoas();
