@@ -315,13 +315,16 @@ public class ConsultaDAO {
 
     }
 
-    public void BuscaConsultaNoBancoDeDados(PessoaDAO pessoaDAO, MedicoDAO medicoDAO, UnidadeFranquiaDAO unidadeFranquiaDAO) {
+    public void BuscaConsultaNoBancoDeDados(PessoaDAO pessoaDAO, MedicoDAO medicoDAO,
+            UnidadeFranquiaDAO unidadeFranquiaDAO) {
 
         listaConsulta.clear();
 
         String buscaConsulta = "select * from consulta;";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); PreparedStatement pstm = connection.prepareStatement(buscaConsulta); ResultSet rs = pstm.executeQuery(buscaConsulta)) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); 
+                PreparedStatement pstm = connection.prepareStatement(buscaConsulta);
+                ResultSet rs = pstm.executeQuery(buscaConsulta)) {
 
             while (rs.next()) {
 

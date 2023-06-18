@@ -1,13 +1,10 @@
 package Model;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -559,7 +556,8 @@ public class PessoaDAO {
 
     }
 
-    public boolean AtualizaNomePessoaNoBancoDeDados(String novoNome, Pessoa pessoa, CalendarioSistema calendarioSistema) {
+    public boolean AtualizaNomePessoaNoBancoDeDados(String novoNome, Pessoa pessoa, 
+            CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
 
@@ -599,7 +597,8 @@ public class PessoaDAO {
         return atualizado != false;
     }
 
-    public boolean AtualizaCpfPessoaNoBancoDeDados(String novoCpf, Pessoa pessoa, CalendarioSistema calendarioSistema) {
+    public boolean AtualizaCpfPessoaNoBancoDeDados(String novoCpf, Pessoa pessoa, 
+            CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
 
@@ -646,7 +645,8 @@ public class PessoaDAO {
 
     }
 
-    public boolean AtualizaEnderecoPessoaNoBancoDeDados(String novoeEndereco, Pessoa pessoa, CalendarioSistema calendarioSistema) {
+    public boolean AtualizaEnderecoPessoaNoBancoDeDados(String novoeEndereco, Pessoa pessoa, 
+            CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
 
@@ -685,7 +685,8 @@ public class PessoaDAO {
         return atualizado != false;
     }
 
-    public boolean AtualizaTelefonePessoaNoBancoDeDados(String novoTelefonePessoa, Pessoa pessoa, CalendarioSistema calendarioSistema) {
+    public boolean AtualizaTelefonePessoaNoBancoDeDados(String novoTelefonePessoa, 
+            Pessoa pessoa, CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
 
@@ -732,7 +733,8 @@ public class PessoaDAO {
 
     }
 
-    public boolean AtualizaloginPessoaNoBancoDeDados(String novoLoginPessoa, Pessoa pessoa, CalendarioSistema calendarioSistema) {
+    public boolean AtualizaloginPessoaNoBancoDeDados(String novoLoginPessoa, Pessoa pessoa, 
+            CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
 
@@ -779,7 +781,8 @@ public class PessoaDAO {
 
     }
 
-    public boolean AtualizaSenhaPessoaNoBancoDeDados(String novaSenha, Pessoa pessoa, CalendarioSistema calendarioSistema) {
+    public boolean AtualizaSenhaPessoaNoBancoDeDados(String novaSenha, Pessoa pessoa, 
+            CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
 

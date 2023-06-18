@@ -9,7 +9,6 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -332,7 +331,9 @@ public class ProcedimentoDAO {
 
         String buscaProcedimento = "select * from procedimento;";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); PreparedStatement pstm = connection.prepareStatement(buscaProcedimento); ResultSet rs = pstm.executeQuery(buscaProcedimento)) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); 
+                PreparedStatement pstm = connection.prepareStatement(buscaProcedimento);
+                ResultSet rs = pstm.executeQuery(buscaProcedimento)) {
 
             while (rs.next()) {
 
@@ -375,7 +376,8 @@ public class ProcedimentoDAO {
 
     }
 
-    public boolean cancelaProcedimentoNoBancoDeDados(Procedimento procedimento, CalendarioSistema calendarioSistema) {
+    public boolean cancelaProcedimentoNoBancoDeDados(Procedimento procedimento, 
+            CalendarioSistema calendarioSistema) {
 
         boolean cancelado = true;
 

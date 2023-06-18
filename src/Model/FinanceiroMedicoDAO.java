@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -182,7 +181,9 @@ public class FinanceiroMedicoDAO {
         listaFinanceiroMedico.clear();
         String buscaFinanceiroMedico = "select * from financeiromedico";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); PreparedStatement pstm = connection.prepareStatement(buscaFinanceiroMedico); ResultSet rs = pstm.executeQuery(buscaFinanceiroMedico)) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
+                PreparedStatement pstm = connection.prepareStatement(buscaFinanceiroMedico);
+                ResultSet rs = pstm.executeQuery(buscaFinanceiroMedico)) {
 
             while (rs.next()) {
 
