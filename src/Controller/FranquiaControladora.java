@@ -135,43 +135,42 @@ public class FranquiaControladora {
                         pessoa.getTelefonePessoa(), loginDonoFranquia, senhaDonoFranquia, "DonodeFranquia",
                         calendarioSistema.getDataHoraSistema());
 
-              
-                    System.out.println("\nInforme o Nome da Franquia: ");
-                    String nomeFranquia = scanner.nextLine();
-                    nomeFranquia = vd.validaString(nomeFranquia);
+                System.out.println("\nInforme o Nome da Franquia: ");
+                String nomeFranquia = scanner.nextLine();
+                nomeFranquia = vd.validaString(nomeFranquia);
 
-                    System.out.println("\nInforme o Cnpj da Franquia: ");
-                    String cnpjFranquia = scanner.nextLine();
-                    cnpjFranquia = vd.validaString(cnpjFranquia);
+                System.out.println("\nInforme o Cnpj da Franquia: ");
+                String cnpjFranquia = scanner.nextLine();
+                cnpjFranquia = vd.validaString(cnpjFranquia);
 
-                    System.out.println("\nInforme a Cidade da Franquia: ");
-                    String cidadeFranquia = scanner.nextLine();
-                    cidadeFranquia = vd.validaString(cidadeFranquia);
+                System.out.println("\nInforme a Cidade da Franquia: ");
+                String cidadeFranquia = scanner.nextLine();
+                cidadeFranquia = vd.validaString(cidadeFranquia);
 
-                    System.out.println("\nInforme o Endereco da Franquia: ");
-                    String enderecoFranquia = scanner.nextLine();
-                    enderecoFranquia = vd.validaString(enderecoFranquia);
+                System.out.println("\nInforme o Endereco da Franquia: ");
+                String enderecoFranquia = scanner.nextLine();
+                enderecoFranquia = vd.validaString(enderecoFranquia);
 
-                    if (franquiaDAO.verificaSeFranquiaExiste(nomeFranquia, cnpjFranquia) == true) {
-                        System.out.println("\nA Franquia Ja Existe");
+                if (franquiaDAO.verificaSeFranquiaExiste(nomeFranquia, cnpjFranquia) == true) {
+                    System.out.println("\nA Franquia Ja Existe");
+                } else {
+
+                    Franquia franquia = new Franquia();
+                    franquia.setNomeFranquia(nomeFranquia.toUpperCase());
+                    franquia.setCnpj(cnpjFranquia);
+                    franquia.setCidade(cidadeFranquia);
+                    franquia.setEnderecoFranquia(enderecoFranquia);
+                    franquia.setDataCriacao(calendarioSistema.getDataHoraSistema());
+
+                    boolean franquiaAdicionada = franquiaDAO.insereFranquiaNoBancoDeDados(pessoaDonoFranquia, franquia);
+
+                    if (franquiaAdicionada == true) {
+                        System.out.println("\nFranquia Cadastrada Com Sucesso!");
                     } else {
-                        
-                        Franquia franquia = new Franquia();
-                        franquia.setNomeFranquia(nomeFranquia.toUpperCase());
-                        franquia.setCnpj(cnpjFranquia);
-                        franquia.setCidade(cidadeFranquia);
-                        franquia.setEnderecoFranquia(enderecoFranquia);
-                        franquia.setDataCriacao(calendarioSistema.getDataHoraSistema());
-                        
-                        boolean franquiaAdicionada = franquiaDAO.insereFranquiaNoBancoDeDados(pessoaDonoFranquia, franquia);
-                        
-                        if (franquiaAdicionada == true) {
-                            System.out.println("\nFranquia Cadastrada Com Sucesso!");
-                        } else {
-                            System.out.println("\nNao Foi Possivel Cadastrar a Franquia.");
-                        }
+                        System.out.println("\nNao Foi Possivel Cadastrar a Franquia.");
                     }
-                
+                }
+
             }
 
         }
@@ -368,7 +367,7 @@ public class FranquiaControladora {
                 if (unidadeFranquiaDAO.verificaSeLoginDonoDeUnidadeFranquiaEstaEmUso(LoginDonoUnidadeFranquia) == true) {
                     System.out.println("\nLogin De Dono Unidade Franquia Ja Esta Sendo Usado!");
                 } else {
-                    
+
                     System.out.println("\nInforme A Senha De Dono De Unidade De Franquia: ");
                     String senhaDonoUnidadeFranquia = scanner.nextLine();
                     senhaDonoUnidadeFranquia = vd.validaString(senhaDonoUnidadeFranquia);
@@ -379,20 +378,18 @@ public class FranquiaControladora {
                             LoginDonoUnidadeFranquia, senhaDonoUnidadeFranquia,
                             "DonoDeUnidadeDeFranquia", calendarioSistema.getDataHoraSistema());
 
-                  
-                        UnidadeFranquia unidadeFranquia = new UnidadeFranquia();
-                        unidadeFranquia.setCidadeUnidadeFranquia(cidadeUnidadeFranquia);
-                        unidadeFranquia.setEnderecoUnidadeFranquia(enderecoUnidadeFranquia);
-                        unidadeFranquia.setDataCriacao(calendarioSistema.getDataHoraSistema());
+                    UnidadeFranquia unidadeFranquia = new UnidadeFranquia();
+                    unidadeFranquia.setCidadeUnidadeFranquia(cidadeUnidadeFranquia);
+                    unidadeFranquia.setEnderecoUnidadeFranquia(enderecoUnidadeFranquia);
+                    unidadeFranquia.setDataCriacao(calendarioSistema.getDataHoraSistema());
 
-                        if (unidadeFranquiaDAO.insereUnidadeFranquiaNoBancoDeDados(pessoaDonoUnidadeFranquia, 
-                                franquia, unidadeFranquia) == true) {
-                            System.out.println("\nUnidade De Franquia Cadastrada Com Sucesso!");
-                        } else {
-                            System.out.println("\nNao Foi Possivel Cadastrar A Unidade De Franquia.");
-                        }
-                   
-                    
+                    if (unidadeFranquiaDAO.insereUnidadeFranquiaNoBancoDeDados(pessoaDonoUnidadeFranquia,
+                            franquia, unidadeFranquia) == true) {
+                        System.out.println("\nUnidade De Franquia Cadastrada Com Sucesso!");
+                    } else {
+                        System.out.println("\nNao Foi Possivel Cadastrar A Unidade De Franquia.");
+                    }
+
                 }
 
             }
@@ -489,25 +486,22 @@ public class FranquiaControladora {
                         String senhaAdmnistrador = scanner.nextLine();
                         senhaAdmnistrador = vd.validaString(senhaAdmnistrador);
 
-                        Pessoa pessoaAdm = new Pessoa(pessoaEncontrada.getNomePessoa(), pessoaEncontrada.getCpf(),
-                                pessoaEncontrada.getCpf(), pessoaEncontrada.getTelefonePessoa(),
-                                loginAdmnistrador, senhaAdmnistrador, "Admnistrador", calendarioSistema.getDataHoraSistema());
+                        Pessoa pessoaAdm = new Pessoa(pessoaEncontrada.getNomePessoa(),
+                                pessoaEncontrada.getCpf(), pessoaEncontrada.getCpf(),
+                                pessoaEncontrada.getTelefonePessoa(), loginAdmnistrador,
+                                senhaAdmnistrador, "Admnistrador",
+                                calendarioSistema.getDataHoraSistema());
 
-                        if (pessoaDAO.adicionaPessoa(pessoaAdm) == true) {
+                        Admnistrador admnistrador = new Admnistrador(pessoaAdm, franquia,
+                                calendarioSistema.getDataHoraSistema());
 
-                            Admnistrador admnistrador = new Admnistrador(pessoaAdm, franquia,
-                                    calendarioSistema.getDataHoraSistema());
+                        if (admnistradorDAO.insereAdmnistradorNoBancoDeDados(pessoaAdm, admnistrador) == true) {
 
-                            if (admnistradorDAO.adicionaAdmnistrador(admnistrador) == true) {
+                            System.out.println("\nAdmnistrador Designado Com Sucesso!");
 
-                                System.out.println("\nAdmnistrador Designado Com Sucesso!");
-
-                            } else {
-
-                                System.out.println("\nNao Foi Possivel Designar O Admnistrador.");
-                            }
                         } else {
-                            System.out.println("\nErro Ao Designar Admnistrador.");
+
+                            System.out.println("\nNao Foi Possivel Designar O Admnistrador.");
                         }
 
                     }
