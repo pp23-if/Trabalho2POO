@@ -10,7 +10,7 @@ import java.util.List;
 
 public class MedicoDAO {
 
-    private List <Medico> listaMedico = new LinkedList();
+    private List<Medico> listaMedico = new LinkedList();
 
     public MedicoDAO(PessoaDAO pessoaDAO, CalendarioSistema calendarioSistema) {
 
@@ -34,9 +34,7 @@ public class MedicoDAO {
 //            Medico medico3 = new Medico("GHI-789", pessoaMedico3, "Cardiologista", calendarioSistema.getDataHoraSistema());
 //            adicionaMedico(medico3);
 //        }
-
     }
-
 
     public boolean adicionaMedico(Medico medico) {
         return listaMedico.add(medico) == true;
@@ -50,9 +48,8 @@ public class MedicoDAO {
             }
         }
     }
-    
-    
-     public void mostraTodosMedicos() {
+
+    public void mostraTodosMedicos() {
         for (Medico medico : listaMedico) {
             if (medico != null) {
                 System.out.println(medico + "\n");
@@ -82,19 +79,17 @@ public class MedicoDAO {
         return null;
     }
 
-    public Medico buscaMedicoPorCrm (String crm)
-    {
+    public Medico buscaMedicoPorCrm(String crm) {
         for (Medico medico : listaMedico) {
-            
-            if(medico != null && medico.getCrm().equals(crm))
-            {
+
+            if (medico != null && medico.getCrm().equals(crm)) {
                 return medico;
             }
         }
         return null;
-        
+
     }
-    
+
     /*public boolean atualizaLoginMedico(Medico m, String novoLogin, CalendarioSistema calendarioSistema) {
 
         if (!verificaSeloginEstaSendoUsado(novoLogin) == true) {
@@ -111,7 +106,6 @@ public class MedicoDAO {
 
         return false;
     }*/
-
     public boolean atualizaSenhaMedico(Medico m, String novaSenha, CalendarioSistema calendarioSistema) {
 
         for (Medico medico : listaMedico) {
@@ -212,44 +206,38 @@ public class MedicoDAO {
         }
         return false;
     }
-    
-   public boolean excluirMedico(Medico medico, CalendarioSistema calendarioSistema)
-   {
-       if(medico != null
-          && medico.getPessoa().isHabilitado() == true)
-       {
-          medico.getPessoa().setHabilitado(false);
-          medico.getPessoa().setDataModificacao(calendarioSistema.getDataHoraSistema());
-          medico.setDataModificacao(calendarioSistema.getDataHoraSistema());
-          return true;
-       }
+
+    public boolean excluirMedico(Medico medico, CalendarioSistema calendarioSistema) {
+        if (medico != null
+                && medico.getPessoa().isHabilitado() == true) {
+            medico.getPessoa().setHabilitado(false);
+            medico.getPessoa().setDataModificacao(calendarioSistema.getDataHoraSistema());
+            medico.setDataModificacao(calendarioSistema.getDataHoraSistema());
+            return true;
+        }
         return false;
-   }
-    
-    public void filtraMedicosExcluidos()
-    {
+    }
+
+    public void filtraMedicosExcluidos() {
         for (Medico medico : listaMedico) {
-            
-            if(medico != null && medico.getPessoa().isHabilitado() == false)
-            {
+
+            if (medico != null && medico.getPessoa().isHabilitado() == false) {
                 System.out.println(medico + "\n");
             }
         }
     }
-    
-   public boolean reverterExclusaoMedico(Medico medico, CalendarioSistema calendarioSistema)
-   {
-       if(medico != null
-          && medico.getPessoa().isHabilitado() == false)
-       {
-          medico.getPessoa().setHabilitado(true);
-          medico.getPessoa().setDataModificacao(calendarioSistema.getDataHoraSistema());
-          medico.setDataModificacao(calendarioSistema.getDataHoraSistema());
-          return true;
-       }
+
+    public boolean reverterExclusaoMedico(Medico medico, CalendarioSistema calendarioSistema) {
+        if (medico != null
+                && medico.getPessoa().isHabilitado() == false) {
+            medico.getPessoa().setHabilitado(true);
+            medico.getPessoa().setDataModificacao(calendarioSistema.getDataHoraSistema());
+            medico.setDataModificacao(calendarioSistema.getDataHoraSistema());
+            return true;
+        }
         return false;
-   }
-   
+    }
+
     public Medico buscaMedicoExcluidoPorId(int idMedicoExcluido) {
         for (Medico medico : listaMedico) {
 
@@ -260,13 +248,11 @@ public class MedicoDAO {
         }
         return null;
     }
-    
-    
-     public boolean insereMedicoNoBancoDeDados(Pessoa pessoa, Medico medico) {
+
+    public boolean insereMedicoNoBancoDeDados(Pessoa pessoa, Medico medico) {
 
         boolean adicionado = true;
-        
-        
+
         String inserePessoaMedico = "insert into tipousuario (cpfpessoa,logintipousuario,senhatipousuario,"
                 + "tipousuario, telefonepessoa, datacriacao) \n"
                 + "values (?,?,?,?,?,?)";
@@ -274,13 +260,11 @@ public class MedicoDAO {
         String insereMedico = "insert into medico (cpfmedico,crm,especialidade,datacriacao) \n"
                 + "values (?,?,?,?)";
 
-       
         try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmInsereMedico = connection.prepareStatement(insereMedico);
-                 PreparedStatement pstmInserePessoaMedico = connection.prepareStatement(inserePessoaMedico)) {
+            try (PreparedStatement pstmInsereMedico = connection.prepareStatement(insereMedico); PreparedStatement pstmInserePessoaMedico = connection.prepareStatement(inserePessoaMedico)) {
 
                 pstmInserePessoaMedico.setString(1, pessoa.getCpf());
                 pstmInserePessoaMedico.setString(2, pessoa.getLoginPessoa());
@@ -291,13 +275,12 @@ public class MedicoDAO {
                 pstmInserePessoaMedico.setTimestamp(6, Timestamp.valueOf(pessoa.getDataCriacao()));
 
                 pstmInserePessoaMedico.execute();
-                
-                
+
                 pstmInsereMedico.setString(1, pessoa.getCpf());
                 pstmInsereMedico.setString(2, medico.getCrm());
                 pstmInsereMedico.setString(3, medico.getEspecialidade());
                 pstmInsereMedico.setTimestamp(4, Timestamp.valueOf(medico.getDataCriacao()));
-                  
+
                 pstmInsereMedico.execute();
 
                 connection.commit();
@@ -317,17 +300,14 @@ public class MedicoDAO {
         return adicionado != false;
 
     }
-    
-    
+
     public void BuscaMedicoNoBancoDeDados(PessoaDAO pessoaDAO) {
 
         listaMedico.clear();
-        
+
         String buscaMedico = "select idmedico, cpfmedico, crm, especialidade, datacriacao, datamodificacao from  medico";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                PreparedStatement pstm = connection.prepareStatement(buscaMedico);
-                ResultSet rs = pstm.executeQuery(buscaMedico)) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); PreparedStatement pstm = connection.prepareStatement(buscaMedico); ResultSet rs = pstm.executeQuery(buscaMedico)) {
 
             while (rs.next()) {
 
@@ -336,22 +316,20 @@ public class MedicoDAO {
                 String cpfPessoa = rs.getString("cpfmedico");
                 Pessoa pessoaMedico = pessoaDAO.buscaPessoaMedicoPorCpf(cpfPessoa);
                 medico.setPessoa(pessoaMedico);
-                
+
                 medico.setIdMedico(rs.getInt("idmedico"));
                 medico.setEspecialidade(rs.getString("especialidade"));
                 medico.setCrm(rs.getString("crm"));
-                
+
                 Timestamp medicoDataCriacao = rs.getTimestamp("datacriacao");
                 medico.setDataCriacao(medicoDataCriacao.toLocalDateTime());
-                
+
                 Timestamp medicoDataModificacao = rs.getTimestamp("datamodificacao");
-                
-                if(medicoDataModificacao != null)
-                {
-                  medico.setDataModificacao(medicoDataModificacao.toLocalDateTime());   
+
+                if (medicoDataModificacao != null) {
+                    medico.setDataModificacao(medicoDataModificacao.toLocalDateTime());
                 }
-                
-                
+
                 listaMedico.add(medico);
 
             }
@@ -361,8 +339,7 @@ public class MedicoDAO {
         }
 
     }
-    
-    
+
     public boolean AtualizaLoginMedicoNoBancoDeDados(String novoLoginMedico, Medico medico,
             CalendarioSistema calendarioSistema) {
 
@@ -379,8 +356,7 @@ public class MedicoDAO {
 
                 connection.setAutoCommit(false);
 
-                try (PreparedStatement pstmAtualizaLoginMedico = connection.prepareStatement(atualizaLoginMedico);
-                        PreparedStatement pstmAtualizaDataAlteracaoPessoaMedico
+                try (PreparedStatement pstmAtualizaLoginMedico = connection.prepareStatement(atualizaLoginMedico); PreparedStatement pstmAtualizaDataAlteracaoPessoaMedico
                         = connection.prepareStatement(atualizaDataAlteracaoPessoaMedico)) {
 
                     pstmAtualizaLoginMedico.setString(1, novoLoginMedico);
@@ -417,9 +393,7 @@ public class MedicoDAO {
         return atualizado != false;
 
     }
-    
-    
-    
+
     public boolean AtualizaSenhaMedicoNoBancoDeDados(String novaSenhaMedico, Medico medico,
             CalendarioSistema calendarioSistema) {
 
@@ -434,8 +408,7 @@ public class MedicoDAO {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmAtualizaSenhaMedico = connection.prepareStatement(atualizaSenhaMedico);
-                    PreparedStatement pstmAtualizaDataAlteracaoPessoaMedico
+            try (PreparedStatement pstmAtualizaSenhaMedico = connection.prepareStatement(atualizaSenhaMedico); PreparedStatement pstmAtualizaDataAlteracaoPessoaMedico
                     = connection.prepareStatement(atualizaDataAlteracaoPessoaMedico)) {
 
                 pstmAtualizaSenhaMedico.setString(1, novaSenhaMedico);
@@ -466,9 +439,7 @@ public class MedicoDAO {
 
         return atualizado != false;
     }
-    
-    
-    
+
     public boolean AtualizaTelefoneMedicoNoBancoDeDados(String novoTelefoneMedico, Medico medico,
             CalendarioSistema calendarioSistema) {
 
@@ -485,8 +456,7 @@ public class MedicoDAO {
 
                 connection.setAutoCommit(false);
 
-                try (PreparedStatement pstmAtualizaTelefoneMedico = connection.prepareStatement(atualizaTelefoneMedico);
-                        PreparedStatement pstmAtualizaDataAlteracaoPessoaMedico
+                try (PreparedStatement pstmAtualizaTelefoneMedico = connection.prepareStatement(atualizaTelefoneMedico); PreparedStatement pstmAtualizaDataAlteracaoPessoaMedico
                         = connection.prepareStatement(atualizaDataAlteracaoPessoaMedico)) {
 
                     pstmAtualizaTelefoneMedico.setString(1, novoTelefoneMedico);
@@ -523,6 +493,16 @@ public class MedicoDAO {
         return atualizado != false;
 
     }
-    
-    
+
+    public void atualizaMedicoLogadaComBancoDeDados(String crm, Medico medico, MedicoDAO medicoDAO) {
+
+        Medico medicoAtualizado = medicoDAO.buscaMedicoPorCrm(crm);
+        medico.getPessoa().setLoginPessoa(medicoAtualizado.getPessoa().getLoginPessoa());
+        medico.getPessoa().setSenhaPessoa(medicoAtualizado.getPessoa().getSenhaPessoa());
+        medico.getPessoa().setTelefonePessoa(medicoAtualizado.getPessoa().getTelefonePessoa());
+        medico.getPessoa().setDataCriacao(medicoAtualizado.getPessoa().getDataCriacao());
+        medico.getPessoa().setDataModificacao(medicoAtualizado.getPessoa().getDataModificacao());
+
+    }
+
 }

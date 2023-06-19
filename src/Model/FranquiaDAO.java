@@ -237,8 +237,7 @@ public class FranquiaDAO {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmInsereDonoDeFranquia = connection.prepareStatement(inserePessoaDonoDeFranquia);
-                    PreparedStatement pstmInsereFranquia = connection.prepareStatement(insereFranquia)) {
+            try (PreparedStatement pstmInsereDonoDeFranquia = connection.prepareStatement(inserePessoaDonoDeFranquia); PreparedStatement pstmInsereFranquia = connection.prepareStatement(insereFranquia)) {
 
                 pstmInsereDonoDeFranquia.setString(1, pessoa.getCpf());
                 pstmInsereDonoDeFranquia.setString(2, pessoa.getLoginPessoa());
@@ -283,9 +282,7 @@ public class FranquiaDAO {
         String buscaFranquia = "select idfranquia, nomefranquia, cnpj, cidade, endereco, cpfdono, datacriacao, datamodificacao"
                 + " from franquia;";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                PreparedStatement pstm = connection.prepareStatement(buscaFranquia);
-                ResultSet rs = pstm.executeQuery(buscaFranquia)) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); PreparedStatement pstm = connection.prepareStatement(buscaFranquia); ResultSet rs = pstm.executeQuery(buscaFranquia)) {
 
             while (rs.next()) {
 
@@ -334,8 +331,7 @@ public class FranquiaDAO {
 
                 connection.setAutoCommit(false);
 
-                try (PreparedStatement pstmAtualizaNomeFranquia = connection.prepareStatement(atualizaNomeFranquia);
-                        PreparedStatement pstmAtualizaDataAlteracaoFranquia = connection.prepareStatement(atualizaDataAlteracaoFranquia)) {
+                try (PreparedStatement pstmAtualizaNomeFranquia = connection.prepareStatement(atualizaNomeFranquia); PreparedStatement pstmAtualizaDataAlteracaoFranquia = connection.prepareStatement(atualizaDataAlteracaoFranquia)) {
 
                     pstmAtualizaNomeFranquia.setString(1, novoNomeFranquia);
                     pstmAtualizaNomeFranquia.setString(2, franquia.getCnpj());
@@ -380,8 +376,7 @@ public class FranquiaDAO {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmAtualizaCidadeFranquia = connection.prepareStatement(atualizaCidadeFranquia);
-                    PreparedStatement pstmAtualizaDataAlteracaoFranquia = connection.prepareStatement(atualizaDataAlteracaoFranquia)) {
+            try (PreparedStatement pstmAtualizaCidadeFranquia = connection.prepareStatement(atualizaCidadeFranquia); PreparedStatement pstmAtualizaDataAlteracaoFranquia = connection.prepareStatement(atualizaDataAlteracaoFranquia)) {
 
                 pstmAtualizaCidadeFranquia.setString(1, novaCidadeFranquia);
                 pstmAtualizaCidadeFranquia.setString(2, franquia.getCnpj());
@@ -421,8 +416,7 @@ public class FranquiaDAO {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmAtualizaEnderecoFranquia = connection.prepareStatement(atualizaEnderecoFranquia);
-                    PreparedStatement pstmAtualizaDataAlteracaoFranquia = connection.prepareStatement(atualizaDataAlteracaoFranquia)) {
+            try (PreparedStatement pstmAtualizaEnderecoFranquia = connection.prepareStatement(atualizaEnderecoFranquia); PreparedStatement pstmAtualizaDataAlteracaoFranquia = connection.prepareStatement(atualizaDataAlteracaoFranquia)) {
 
                 pstmAtualizaEnderecoFranquia.setString(1, novoEnderecoFranquia);
                 pstmAtualizaEnderecoFranquia.setString(2, franquia.getCnpj());
@@ -465,8 +459,7 @@ public class FranquiaDAO {
 
                 connection.setAutoCommit(false);
 
-                try (PreparedStatement pstmAtualizaLoginDonoFranquia = connection.prepareStatement(atualizaLoginDonoFranquia);
-                        PreparedStatement pstmAtualizaDataAlteracaoPessoaDonoFranquia
+                try (PreparedStatement pstmAtualizaLoginDonoFranquia = connection.prepareStatement(atualizaLoginDonoFranquia); PreparedStatement pstmAtualizaDataAlteracaoPessoaDonoFranquia
                         = connection.prepareStatement(atualizaDataAlteracaoPessoaDonoFranquia)) {
 
                     pstmAtualizaLoginDonoFranquia.setString(1, novoLoginDonoFranquia);
@@ -518,8 +511,7 @@ public class FranquiaDAO {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmAtualizaSenhaDonoFranquia = connection.prepareStatement(atualizaSenhaDonoFranquia);
-                    PreparedStatement pstmAtualizaDataAlteracaoPessoaDonoFranquia
+            try (PreparedStatement pstmAtualizaSenhaDonoFranquia = connection.prepareStatement(atualizaSenhaDonoFranquia); PreparedStatement pstmAtualizaDataAlteracaoPessoaDonoFranquia
                     = connection.prepareStatement(atualizaDataAlteracaoPessoaDonoFranquia)) {
 
                 pstmAtualizaSenhaDonoFranquia.setString(1, novaSenhaDonoFranquia);
@@ -551,7 +543,6 @@ public class FranquiaDAO {
         return atualizado != false;
     }
 
-    
     public boolean AtualizaTelefoneDonoFranquiaNoBancoDeDados(String novoTelefoneDonoFranquia, Franquia franquia,
             CalendarioSistema calendarioSistema) {
 
@@ -568,8 +559,7 @@ public class FranquiaDAO {
 
                 connection.setAutoCommit(false);
 
-                try (PreparedStatement pstmAtualizaLoginDonoFranquia = connection.prepareStatement(atualizaLoginDonoFranquia);
-                        PreparedStatement pstmAtualizaDataAlteracaoPessoaDonoFranquia
+                try (PreparedStatement pstmAtualizaLoginDonoFranquia = connection.prepareStatement(atualizaLoginDonoFranquia); PreparedStatement pstmAtualizaDataAlteracaoPessoaDonoFranquia
                         = connection.prepareStatement(atualizaDataAlteracaoPessoaDonoFranquia)) {
 
                     pstmAtualizaLoginDonoFranquia.setString(1, novoTelefoneDonoFranquia);
@@ -606,4 +596,22 @@ public class FranquiaDAO {
         return atualizado != false;
 
     }
+
+    public void atualizaFranquiaLogadaComBancoDeDados(String cnpj, Franquia franquia) {
+
+        Franquia franquiaAtualizada = buscaFranquiaPorCnpj(cnpj);
+        franquia.setNomeFranquia(franquiaAtualizada.getNomeFranquia());
+        franquia.setCidade(franquiaAtualizada.getCidade());
+        franquia.setEnderecoFranquia(franquiaAtualizada.getEnderecoFranquia());
+        franquia.setDataCriacao(franquiaAtualizada.getDataCriacao());
+        franquia.setDataModificacao(franquiaAtualizada.getDataModificacao());
+
+        franquia.getPessoa().setLoginPessoa(franquiaAtualizada.getPessoa().getLoginPessoa());
+        franquia.getPessoa().setSenhaPessoa(franquiaAtualizada.getPessoa().getSenhaPessoa());
+        franquia.getPessoa().setTelefonePessoa(franquiaAtualizada.getPessoa().getTelefonePessoa());
+        franquia.getPessoa().setDataCriacao(franquiaAtualizada.getPessoa().getDataCriacao());
+        franquia.getPessoa().setDataModificacao(franquiaAtualizada.getPessoa().getDataModificacao());
+
+    }
+
 }
