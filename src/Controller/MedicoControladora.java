@@ -43,7 +43,11 @@ public class MedicoControladora {
         int opcao;
 
         do {
+
             opcao = telaMedico.menuMedico();
+
+            pessoaDAO.BuscaPessoaNoBancoDeDados();
+            medicoDAO.BuscaMedicoNoBancoDeDados(pessoaDAO);
 
             switch (opcao) {
                 case 1: {
@@ -93,18 +97,26 @@ public class MedicoControladora {
                     novologinMedico = vd.validaString(novologinMedico);
 
                     if (medicoDAO.AtualizaLoginMedicoNoBancoDeDados(novologinMedico, medico, calendarioSistema) == true) {
+
+                        medico.getPessoa().setLoginPessoa(novologinMedico);
+
                         System.out.println("\nO Login De Medico Foi Atualizado Com Sucesso!");
+
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar O Login de Medico.");
                     }
                     break;
                 }
                 case 2: {
+
                     System.out.println("\nInforme a Nova Senha De Medico: ");
                     String novaSenhaMedico = scanner.nextLine();
                     novaSenhaMedico = vd.validaString(novaSenhaMedico);
 
                     if (medicoDAO.AtualizaSenhaMedicoNoBancoDeDados(novaSenhaMedico, medico, calendarioSistema) == true) {
+
+                        medico.getPessoa().setSenhaPessoa(novaSenhaMedico);
+
                         System.out.println("\nA Senha De Medico Foi Atualizada Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar a Senha de Medico.");
@@ -118,6 +130,9 @@ public class MedicoControladora {
                     novoTelefoneMedico = vd.validaString(novoTelefoneMedico);
 
                     if (medicoDAO.AtualizaTelefoneMedicoNoBancoDeDados(novoTelefoneMedico, medico, calendarioSistema) == true) {
+
+                        medico.getPessoa().setTelefonePessoa(novoTelefoneMedico);
+
                         System.out.println("\nO Telefone De Medico Foi Atualizado Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar o Telefone de Medico.");
@@ -141,22 +156,20 @@ public class MedicoControladora {
 
             consultaDAO.BuscaConsultaNoBancoDeDados(pessoaDAO, medicoDAO, unidadeFranquiaDAO);
             infoConsultaDAO.BuscaInfoConsultaNoBancoDeDados(consultaDAO);
-            
+
             switch (opcao) {
                 case 1: {
-                    
+
                     System.out.println("\n");
                     if (consultaDAO.buscaConsultasDoDia(calendarioSistema, medico) == true) {
-                        
+
                         if (consultaDAO.recebeConsultaParaSerAtendida(medico, calendarioSistema, financeiroAdmDAO) == true) {
                             System.out.println("\nConsulta atendida com sucesso.");
                         } else {
                             System.out.println("\nNao Foi Possivel Atender a Consulta.");
                         }
-                    }
-                    else
-                    {
-                      System.out.println("\nNao existe mais consultas marcadas.");  
+                    } else {
+                        System.out.println("\nNao existe mais consultas marcadas.");
                     }
 
                     break;
@@ -215,13 +228,15 @@ public class MedicoControladora {
         do {
             opcao = telaMedico.menuGerenciaProcedimentos();
 
+            procedimentoDAO.BuscaProcedimentosNoBancoDeDados(consultaDAO);
+
             switch (opcao) {
                 case 1: {
                     marcarProcedimentoComoMedico(consultaDAO, procedimentoDAO, medico, vd, calendarioSistema);
                     break;
                 }
                 case 2: {
-                    realizarProcedimento(procedimentoDAO, medico, vd, calendarioSistema, 
+                    realizarProcedimento(procedimentoDAO, medico, vd, calendarioSistema,
                             financeiroAdmDAO, consultaDAO);
                     break;
                 }
@@ -285,7 +300,6 @@ public class MedicoControladora {
 
                 } else {
 
-                    
                     Procedimento procedimento = new Procedimento();
                     procedimento.setNomeProcedimento(nomeProcedimento);
                     procedimento.setDiaProcedimento(diaProcedimento);
@@ -295,7 +309,6 @@ public class MedicoControladora {
                     procedimento.setValorProcedimento(1500);
                     procedimento.setLaudo("");
                     procedimento.setDataCriacao(calendarioSistema.getDataHoraSistema());
-                    
 
                     if (procedimentoDAO.insereProcedimentoNoBancoDeDados(consultaEncontrada, procedimento) == true) {
 
@@ -371,7 +384,7 @@ public class MedicoControladora {
                     System.out.println("\nDia e hora Informados, Indisponiveis.");
 
                 } else {
-                    if (procedimentoDAO.remarcaProcedimentoNoBancoDeDados(diaProcedimento, horaProcedimento, 
+                    if (procedimentoDAO.remarcaProcedimentoNoBancoDeDados(diaProcedimento, horaProcedimento,
                             procedimentoEncontrado, calendarioSistema) == true) {
 
                         System.out.println("\nProcedimento Remarcado Com Sucesso!");
@@ -387,12 +400,12 @@ public class MedicoControladora {
     }
 
     private void realizarProcedimento(ProcedimentoDAO procedimentoDAO, Medico medico,
-            ValidacaoEntradaDados vd, CalendarioSistema calendarioSistema, 
+            ValidacaoEntradaDados vd, CalendarioSistema calendarioSistema,
             FinanceiroAdmDAO financeiroAdmDAO, ConsultaDAO consultaDAO) {
-        
+
         procedimentoDAO.BuscaProcedimentosNoBancoDeDados(consultaDAO);
         System.out.println("\n");
-        
+
         Procedimento procedimentoEncontrado = procedimentoDAO.buscaProcedimentoNaoRealizado(medico, calendarioSistema);
 
         if (procedimentoEncontrado == null) {

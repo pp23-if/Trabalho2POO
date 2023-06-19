@@ -33,6 +33,8 @@ public class PacienteControladora {
 
             pessoaDAO.BuscaPessoaNoBancoDeDados();
 
+            pessoaDAO.atualizaPessoaLogadaComBancoDeDados(pessoa.getCpf(), pessoa);
+
             opcao = telaPaciente.menuPaciente();
 
             switch (opcao) {
