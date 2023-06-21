@@ -51,7 +51,7 @@ public class GerenciaControladoras {
 
         do {
 
-            
+           
             fazBuscaGeralNoBancoDeDados(pessoaDAO, medicoDAO, franquiaDAO,
                     unidadeFranquiaDAO, consultaDAO, procedimentoDAO,
                     infoConsultaDAO, financeiroAdmDAO, financeiroMedicoDAO, admnistradorDAO);

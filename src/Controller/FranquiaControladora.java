@@ -203,7 +203,7 @@ public class FranquiaControladora {
                     if (franquiaDAO.AtualizaNomeFranquiaNoBancoDeDados(novoNomeFranquia,
                             franquia, calendarioSistema) == true) {
                         
-                        franquia.setNomeFranquia(novoNomeFranquia);
+                        franquia.setNomeFranquia(novoNomeFranquia.toUpperCase());
                         
                         System.out.println("\nNome Da Franquia Atualizado Com Sucesso!");
                     } else {

@@ -279,10 +279,13 @@ public class FranquiaDAO {
 
         listaFranquia.clear();
 
-        String buscaFranquia = "select idfranquia, nomefranquia, cnpj, cidade, endereco, cpfdono, datacriacao, datamodificacao"
+        String buscaFranquia = "select idfranquia, nomefranquia, cnpj, cidade, endereco, "
+                + "cpfdono, datacriacao, datamodificacao"
                 + " from franquia;";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); PreparedStatement pstm = connection.prepareStatement(buscaFranquia); ResultSet rs = pstm.executeQuery(buscaFranquia)) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); 
+                PreparedStatement pstm = connection.prepareStatement(buscaFranquia); 
+                ResultSet rs = pstm.executeQuery(buscaFranquia)) {
 
             while (rs.next()) {
 
@@ -331,9 +334,11 @@ public class FranquiaDAO {
 
                 connection.setAutoCommit(false);
 
-                try (PreparedStatement pstmAtualizaNomeFranquia = connection.prepareStatement(atualizaNomeFranquia); PreparedStatement pstmAtualizaDataAlteracaoFranquia = connection.prepareStatement(atualizaDataAlteracaoFranquia)) {
+                try (PreparedStatement pstmAtualizaNomeFranquia = connection.prepareStatement(atualizaNomeFranquia); 
+                      PreparedStatement pstmAtualizaDataAlteracaoFranquia = 
+                              connection.prepareStatement(atualizaDataAlteracaoFranquia)) {
 
-                    pstmAtualizaNomeFranquia.setString(1, novoNomeFranquia);
+                    pstmAtualizaNomeFranquia.setString(1, novoNomeFranquia.toUpperCase());
                     pstmAtualizaNomeFranquia.setString(2, franquia.getCnpj());
 
                     pstmAtualizaNomeFranquia.execute();
