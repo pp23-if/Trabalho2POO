@@ -44,6 +44,10 @@ public class FranquiaControladora {
             
             franquiaDAO.BuscaFranquiaNoBancoDeDados(pessoaDAO);
             
+            medicoDAO.BuscaMedicoNoBancoDeDados(pessoaDAO);
+            
+            unidadeFranquiaDAO.BuscaUnidadeFranquiaNoBancoDeDados(pessoaDAO, franquiaDAO);
+            
             franquiaDAO.atualizaFranquiaLogadaComBancoDeDados(franquia.getCnpj(), franquia);
             
             
