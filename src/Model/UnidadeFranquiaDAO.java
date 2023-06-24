@@ -216,8 +216,7 @@ public class UnidadeFranquiaDAO {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmInsereDonoDeUnidadeDeFranquia = connection.prepareStatement(inserePessoaDonoUnidadeDeFranquia);
-                    PreparedStatement pstmInsereUnidadeDeFranquia = connection.prepareStatement(insereUnidadeDeFranquia)) {
+            try (PreparedStatement pstmInsereDonoDeUnidadeDeFranquia = connection.prepareStatement(inserePessoaDonoUnidadeDeFranquia); PreparedStatement pstmInsereUnidadeDeFranquia = connection.prepareStatement(insereUnidadeDeFranquia)) {
 
                 pstmInsereDonoDeUnidadeDeFranquia.setString(1, pessoa.getCpf());
                 pstmInsereDonoDeUnidadeDeFranquia.setString(2, pessoa.getLoginPessoa());
@@ -262,9 +261,7 @@ public class UnidadeFranquiaDAO {
                 + "cpfdonounidade, datacriacao, datamodificacao"
                 + " from unidadefranquia;";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                PreparedStatement pstm = connection.prepareStatement(buscaUnidadeFranquia);
-                ResultSet rs = pstm.executeQuery(buscaUnidadeFranquia)) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); PreparedStatement pstm = connection.prepareStatement(buscaUnidadeFranquia); ResultSet rs = pstm.executeQuery(buscaUnidadeFranquia)) {
 
             while (rs.next()) {
 
@@ -316,8 +313,7 @@ public class UnidadeFranquiaDAO {
             connection.setAutoCommit(false);
 
             try (PreparedStatement pstmAtualizaCidadeUnidadeFranquia
-                    = connection.prepareStatement(atualizaCidadeUnidadeFranquia);
-                    PreparedStatement pstmAtualizaDataAlteracaoUnidadeFranquia
+                    = connection.prepareStatement(atualizaCidadeUnidadeFranquia); PreparedStatement pstmAtualizaDataAlteracaoUnidadeFranquia
                     = connection.prepareStatement(atualizaDataAlteracaoUnidadeFranquia)) {
 
                 pstmAtualizaCidadeUnidadeFranquia.setString(1, novaCidadeUnidadeFranquia);
@@ -358,8 +354,7 @@ public class UnidadeFranquiaDAO {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmAtualizaEnderecoUnidadeFranquia = connection.prepareStatement(atualizaEnderecoUnidadeFranquia);
-                    PreparedStatement pstmAtualizaDataAlteracaoUnidadeFranquia
+            try (PreparedStatement pstmAtualizaEnderecoUnidadeFranquia = connection.prepareStatement(atualizaEnderecoUnidadeFranquia); PreparedStatement pstmAtualizaDataAlteracaoUnidadeFranquia
                     = connection.prepareStatement(atualizaDataAlteracaoUnidadeFranquia)) {
 
                 pstmAtualizaEnderecoUnidadeFranquia.setString(1, novoEnderecoUnidadeFranquia);
@@ -404,8 +399,7 @@ public class UnidadeFranquiaDAO {
                 connection.setAutoCommit(false);
 
                 try (PreparedStatement pstmAtualizaLoginDonoUnidadeFranquia
-                        = connection.prepareStatement(atualizaLoginDonoUnidadeFranquia);
-                        PreparedStatement pstmAtualizaDataAlteracaoPessoaDonoUnidadeFranquia
+                        = connection.prepareStatement(atualizaLoginDonoUnidadeFranquia); PreparedStatement pstmAtualizaDataAlteracaoPessoaDonoUnidadeFranquia
                         = connection.prepareStatement(atualizaDataAlteracaoPessoaDonoUnidadeFranquia)) {
 
                     pstmAtualizaLoginDonoUnidadeFranquia.setString(1, novoLoginDonoUnidadeFranquia);
@@ -458,8 +452,7 @@ public class UnidadeFranquiaDAO {
             connection.setAutoCommit(false);
 
             try (PreparedStatement pstmAtualizaSenhaDonoUnidadeFranquia
-                    = connection.prepareStatement(atualizaSenhaDonoFranquia);
-                    PreparedStatement pstmAtualizaDataAlteracaoPessoaDonoUnidadeFranquia
+                    = connection.prepareStatement(atualizaSenhaDonoFranquia); PreparedStatement pstmAtualizaDataAlteracaoPessoaDonoUnidadeFranquia
                     = connection.prepareStatement(atualizaDataAlteracaoPessoaDonoUnidadeFranquia)) {
 
                 pstmAtualizaSenhaDonoUnidadeFranquia.setString(1, novaSenhaDonoUnidadeFranquia);
@@ -492,9 +485,8 @@ public class UnidadeFranquiaDAO {
         return atualizado != false;
 
     }
-    
-    
-     public boolean AtualizaTelefoneDonoUnidadeFranquiaNoBancoDeDados(String novoTelefoneDonoUnidadeFranquia, UnidadeFranquia unidadeFranquia,
+
+    public boolean AtualizaTelefoneDonoUnidadeFranquiaNoBancoDeDados(String novoTelefoneDonoUnidadeFranquia, UnidadeFranquia unidadeFranquia,
             CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
@@ -511,8 +503,7 @@ public class UnidadeFranquiaDAO {
                 connection.setAutoCommit(false);
 
                 try (PreparedStatement pstmAtualizaTelefoneDonoUnidadeFranquia
-                        = connection.prepareStatement(atualizaTelefoneDonoUnidadeFranquia);
-                        PreparedStatement pstmAtualizaDataAlteracaoPessoaDonoUnidadeFranquia
+                        = connection.prepareStatement(atualizaTelefoneDonoUnidadeFranquia); PreparedStatement pstmAtualizaDataAlteracaoPessoaDonoUnidadeFranquia
                         = connection.prepareStatement(atualizaDataAlteracaoPessoaDonoUnidadeFranquia)) {
 
                     pstmAtualizaTelefoneDonoUnidadeFranquia.setString(1, novoTelefoneDonoUnidadeFranquia);
@@ -547,6 +538,22 @@ public class UnidadeFranquiaDAO {
         }
 
         return atualizado != false;
+
+    }
+
+    public void atualizaUnidadeFranquiaLogadaComBancoDeDados(int idUnidadeFranquia,
+            UnidadeFranquia unidadeFranquia, UnidadeFranquiaDAO unidadeFranquiaDAO) {
+
+        
+       UnidadeFranquia unidadeFranquiaAtualizada = unidadeFranquiaDAO.buscaUnidadeFranquiaPorId(idUnidadeFranquia);
+       unidadeFranquia.setEnderecoUnidadeFranquia(unidadeFranquiaAtualizada.getEnderecoUnidadeFranquia());
+       unidadeFranquia.setCidadeUnidadeFranquia(unidadeFranquiaAtualizada.getCidadeUnidadeFranquia());
+       
+       unidadeFranquia.getPessoa().setLoginPessoa(unidadeFranquiaAtualizada.getPessoa().getLoginPessoa());
+       unidadeFranquia.getPessoa().setSenhaPessoa(unidadeFranquiaAtualizada.getPessoa().getSenhaPessoa());
+       unidadeFranquia.getPessoa().setTelefonePessoa(unidadeFranquiaAtualizada.getPessoa().getTelefonePessoa());
+       
+       
 
     }
 

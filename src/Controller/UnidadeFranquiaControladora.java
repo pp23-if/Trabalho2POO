@@ -4,6 +4,7 @@ import Model.CalendarioSistema;
 import Model.ConsultaDAO;
 import Model.FinanceiroAdmDAO;
 import Model.FinanceiroMedicoDAO;
+import Model.FranquiaDAO;
 import Model.Medico;
 import Model.MedicoDAO;
 import Model.Pessoa;
@@ -22,23 +23,36 @@ public class UnidadeFranquiaControladora {
     public UnidadeFranquiaControladora(UnidadeFranquia unidadeFranquia, UnidadeFranquiaDAO unidadeFranquiaDAO,
             MedicoDAO medicoDAO, PessoaDAO pessoaDAO, ValidacaoEntradaDados vd, CalendarioSistema calendarioSistema,
             FinanceiroAdmDAO financeiroAdmDAO, FinanceiroMedicoDAO financeiroMedicoDAO,
-            ConsultaDAO consultaDAO, ProcedimentoDAO procedimentoDAO) {
+            ConsultaDAO consultaDAO, ProcedimentoDAO procedimentoDAO, FranquiaDAO franquiaDAO) {
 
         menuOpcoesUnidadeFranquia(unidadeFranquia, unidadeFranquiaDAO, vd, medicoDAO, pessoaDAO,
-                calendarioSistema, financeiroAdmDAO, financeiroMedicoDAO, consultaDAO, procedimentoDAO);
+                calendarioSistema, financeiroAdmDAO, financeiroMedicoDAO, 
+                consultaDAO, procedimentoDAO, franquiaDAO);
     }
 
     private void menuOpcoesUnidadeFranquia(UnidadeFranquia unidadeFranquia,
             UnidadeFranquiaDAO unidadeFranquiaDAO, ValidacaoEntradaDados vd,
             MedicoDAO medicoDAO, PessoaDAO pessoaDAO, CalendarioSistema calendarioSistema,
             FinanceiroAdmDAO financeiroAdmDAO, FinanceiroMedicoDAO financeiroMedicoDAO,
-            ConsultaDAO consultaDAO, ProcedimentoDAO procedimentoDAO) {
+            ConsultaDAO consultaDAO, ProcedimentoDAO procedimentoDAO, 
+            FranquiaDAO franquiaDAO) {
 
         int opcao;
 
         do {
+            unidadeFranquiaDAO.BuscaUnidadeFranquiaNoBancoDeDados(pessoaDAO, franquiaDAO);
+            
+            unidadeFranquiaDAO.atualizaUnidadeFranquiaLogadaComBancoDeDados(unidadeFranquia.getIdUnidadeFranquia(), 
+                    unidadeFranquia, unidadeFranquiaDAO);
+            
+            pessoaDAO.BuscaPessoaNoBancoDeDados();
+            
+            medicoDAO.BuscaMedicoNoBancoDeDados(pessoaDAO);
+            
             opcao = menuTitulosUnidadeFranquia.menuUnidadeFranquia();
 
+            
+            
             switch (opcao) {
                 case 1: {
                     System.out.println("\n" + unidadeFranquiaDAO.buscaUnidadeDeFranquia(unidadeFranquia));
@@ -93,6 +107,9 @@ public class UnidadeFranquiaControladora {
 
                     if (unidadeFranquiaDAO.AtualizaCidadeUnidadeFranquiaNoBancoDeDados(novaCidadeUnidadeFranquia,
                             unidadeFranquia, calendarioSistema) == true) {
+                        
+                        unidadeFranquia.setCidadeUnidadeFranquia(novaCidadeUnidadeFranquia);
+                        
                         System.out.println("\nCidade Da Unidade De Franquia Atualizada Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar A Cidade Da Unidade De Franquia.");
@@ -106,6 +123,9 @@ public class UnidadeFranquiaControladora {
 
                     if (unidadeFranquiaDAO.AtualizaEnderecoUnidadeFranquiaNoBancoDeDados(novoEnderecoUnidadeFranquia,
                             unidadeFranquia, calendarioSistema) == true) {
+                        
+                        unidadeFranquia.setEnderecoUnidadeFranquia(novoEnderecoUnidadeFranquia);
+                        
                         System.out.println("\nEndereco Da Unidade De Franquia Atualizada Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar O Endereco Da Unidade De Franquia.");
@@ -119,6 +139,9 @@ public class UnidadeFranquiaControladora {
 
                     if (unidadeFranquiaDAO.AtualizaLoginDonoUnidadeFranquiaNoBancoDeDados(novoLoginDonoUnidadeFranquia,
                             unidadeFranquia, calendarioSistema) == true) {
+                        
+                        unidadeFranquia.getPessoa().setLoginPessoa(novoLoginDonoUnidadeFranquia);
+                        
                         System.out.println("\nLogin Dono Unidade De Franquia Atualizada Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar O Login Dono Da Unidade De Franquia.");
@@ -132,6 +155,9 @@ public class UnidadeFranquiaControladora {
 
                     if (unidadeFranquiaDAO.AtualizaSenhaDonoUnidadeFranquiaNoBancoDeDados(novaSenhaDonoUnidadeFranquia,
                             unidadeFranquia, calendarioSistema) == true) {
+                        
+                        unidadeFranquia.getPessoa().setSenhaPessoa(novaSenhaDonoUnidadeFranquia);
+                        
                         System.out.println("\nSenha Dono Unidade De Franquia Atualizada Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar A Senha Dono Da Unidade De Franquia.");
@@ -145,6 +171,9 @@ public class UnidadeFranquiaControladora {
 
                     if (unidadeFranquiaDAO.AtualizaTelefoneDonoUnidadeFranquiaNoBancoDeDados(novoTelefoneDonoUnidadeFranquia,
                             unidadeFranquia, calendarioSistema) == true) {
+                        
+                        unidadeFranquia.getPessoa().setTelefonePessoa(novoTelefoneDonoUnidadeFranquia);
+                        
                         System.out.println("\nTelefone Dono Unidade De Franquia Atualizada Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Atualizar O Telefone Dono Da Unidade De Franquia.");
