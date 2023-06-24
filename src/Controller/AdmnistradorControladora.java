@@ -37,8 +37,8 @@ public class AdmnistradorControladora {
             FinanceiroMedicoDAO financeiroMedicoDAO, FranquiaDAO franquiaDAO) {
 
         menuOpcoesAdmnistrador(pessoaDAO, admnistradorDAO,
-                unidadeFranquiaDAO, consultaDAO, vd, admnistrador, medicoDAO, procedimentoDAO, calendarioSistema,
-                financeiroAdmDAO, financeiroMedicoDAO, franquiaDAO);
+                unidadeFranquiaDAO, consultaDAO, vd, admnistrador, medicoDAO, procedimentoDAO, 
+                calendarioSistema, financeiroAdmDAO, financeiroMedicoDAO, franquiaDAO);
 
     }
 
@@ -46,13 +46,21 @@ public class AdmnistradorControladora {
             AdmnistradorDAO admnistradorDAO, UnidadeFranquiaDAO unidadeFranquiaDAO,
             ConsultaDAO consultaDAO, ValidacaoEntradaDados vd, Admnistrador admnistrador,
             MedicoDAO medicoDAO, ProcedimentoDAO procedimentoDAO, CalendarioSistema calendarioSistema,
-            FinanceiroAdmDAO financeiroAdmDAO, FinanceiroMedicoDAO financeiroMedicoDAO, FranquiaDAO franquiaDAO) {
+            FinanceiroAdmDAO financeiroAdmDAO, FinanceiroMedicoDAO financeiroMedicoDAO, 
+            FranquiaDAO franquiaDAO) {
 
         int opcao;
 
         do {
+            
+            consultaDAO.BuscaConsultaNoBancoDeDados(pessoaDAO, medicoDAO, unidadeFranquiaDAO);
+            procedimentoDAO.BuscaProcedimentosNoBancoDeDados(consultaDAO);
+            financeiroAdmDAO.buscaFinanceiroADMNoBancoDeDados(unidadeFranquiaDAO);
+            financeiroMedicoDAO.buscaFinanceiroMedicoNoBancoDeDados(medicoDAO, franquiaDAO);
+            
+            
             opcao = telaAdmistrador.menuAdmnistrador();
-
+            
             switch (opcao) {
                 case 1: {
                     System.out.println("\n" + admnistradorDAO.
@@ -91,6 +99,9 @@ public class AdmnistradorControladora {
         int opcao;
 
         do {
+            
+            consultaDAO.BuscaConsultaNoBancoDeDados(pessoaDAO, medicoDAO, unidadeFranquiaDAO);
+            
             opcao = telaAdmistrador.menuConsultas();
 
             switch (opcao) {
@@ -123,7 +134,8 @@ public class AdmnistradorControladora {
 
     private void marcarConsulta(Admnistrador admnistrador,
             UnidadeFranquiaDAO unidadeFranquiaDAO, ValidacaoEntradaDados vd,
-            PessoaDAO pessoaDAO, MedicoDAO medicoDAO, ConsultaDAO consultaDAO, CalendarioSistema calendarioSistema) {
+            PessoaDAO pessoaDAO, MedicoDAO medicoDAO, ConsultaDAO consultaDAO, 
+            CalendarioSistema calendarioSistema) {
 
         System.out.println("\n");
         unidadeFranquiaDAO.buscaUnidadeFranquiaAtravesDaFranquiaVinculada(admnistrador.getFranquia());
@@ -297,6 +309,9 @@ public class AdmnistradorControladora {
         int opcao;
 
         do {
+            
+            procedimentoDAO.BuscaProcedimentosNoBancoDeDados(consultaDAO);
+            
             opcao = telaAdmistrador.menuProcedimentos();
 
             switch (opcao) {
@@ -515,6 +530,10 @@ public class AdmnistradorControladora {
         int opcao;
 
         do {
+            
+            financeiroAdmDAO.buscaFinanceiroADMNoBancoDeDados(unidadeFranquiaDAO);
+            financeiroMedicoDAO.buscaFinanceiroMedicoNoBancoDeDados(medicoDAO, franquiaDAO);
+            
             System.out.println("\nData e Hora do Sistema: " + calendarioSistema.getDataHoraSistema().format(DateTimeFormatter.
                     ofPattern("dd/MM/yyyy HH:mm:ss")));
             opcao = telaAdmistrador.menuFinanceiroAdm();
