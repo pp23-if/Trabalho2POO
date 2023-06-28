@@ -601,7 +601,8 @@ public class FranquiaControladora {
             System.out.println("\nPessoa Nao Encontrada.");
             
         } else {
-            if (pessoaDAO.excluirPaciente(pessoaEncontrada, calendarioSistema) == true) {
+            if (pessoaDAO.excluirPacienteNoBancoDeDados(pessoaEncontrada,
+                    calendarioSistema) == true) {
                 
                 System.out.println("\nPaciente Excluido Com Sucesso!");
                 
@@ -613,7 +614,8 @@ public class FranquiaControladora {
         
     }
     
-    private void excluirMedico(MedicoDAO medicoDAO, ValidacaoEntradaDados vd, CalendarioSistema calendarioSistema) {
+    private void excluirMedico(MedicoDAO medicoDAO, ValidacaoEntradaDados vd, 
+            CalendarioSistema calendarioSistema) {
         
         System.out.println("\n");
         medicoDAO.mostraTodosMedicosHabilitados();

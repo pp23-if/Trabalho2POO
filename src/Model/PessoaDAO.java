@@ -338,8 +338,7 @@ public class PessoaDAO {
 
     }
 
-    
-      public Pessoa buscaPessoaAdmnistradorPorCpf(String CpfAdmnistrador) {
+    public Pessoa buscaPessoaAdmnistradorPorCpf(String CpfAdmnistrador) {
         for (Pessoa pessoa : listaPessoa) {
 
             if (pessoa != null && pessoa.getCpf().equals(CpfAdmnistrador)
@@ -351,8 +350,8 @@ public class PessoaDAO {
         return null;
 
     }
-      
-      public Pessoa buscaPessoaPacientePorCpf(String CpfPaciente) {
+
+    public Pessoa buscaPessoaPacientePorCpf(String CpfPaciente) {
         for (Pessoa pessoa : listaPessoa) {
 
             if (pessoa != null && pessoa.getCpf().equals(CpfPaciente)
@@ -364,7 +363,7 @@ public class PessoaDAO {
         return null;
 
     }
-    
+
     public Pessoa filtraPessoasCandidatasAMedico() {
 
         for (Pessoa pessoa : listaPessoa) {
@@ -475,8 +474,7 @@ public class PessoaDAO {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmInserePessoa = connection.prepareStatement(inserePessoa);
-                    PreparedStatement pstmInsereTipoUsuario = connection.prepareStatement(insereTipoUsuario)) {
+            try (PreparedStatement pstmInserePessoa = connection.prepareStatement(inserePessoa); PreparedStatement pstmInsereTipoUsuario = connection.prepareStatement(insereTipoUsuario)) {
 
                 pstmInserePessoa.setString(1, pessoa.getNomePessoa());
                 pstmInserePessoa.setString(2, pessoa.getEnderecoPessoa());
@@ -520,9 +518,7 @@ public class PessoaDAO {
                 + "from pessoa p inner join tipousuario tp\n"
                 + "on p.cpf = tp.cpfpessoa";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados();
-                PreparedStatement pstm = connection.prepareStatement(buscaPessoa);
-                ResultSet rs = pstm.executeQuery(buscaPessoa)) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); PreparedStatement pstm = connection.prepareStatement(buscaPessoa); ResultSet rs = pstm.executeQuery(buscaPessoa)) {
 
             while (rs.next()) {
 
@@ -557,7 +553,7 @@ public class PessoaDAO {
 
     }
 
-    public boolean AtualizaNomePessoaNoBancoDeDados(String novoNome, Pessoa pessoa, 
+    public boolean AtualizaNomePessoaNoBancoDeDados(String novoNome, Pessoa pessoa,
             CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
@@ -570,8 +566,7 @@ public class PessoaDAO {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmAtualizaNomePessoa = connection.prepareStatement(atualizaNomePessoa);
-                    PreparedStatement pstmAtualizaDataAlteracaoPessoa = connection.prepareStatement(atualizaDataAlteracaoPessoa)) {
+            try (PreparedStatement pstmAtualizaNomePessoa = connection.prepareStatement(atualizaNomePessoa); PreparedStatement pstmAtualizaDataAlteracaoPessoa = connection.prepareStatement(atualizaDataAlteracaoPessoa)) {
 
                 pstmAtualizaNomePessoa.setString(1, novoNome);
                 pstmAtualizaNomePessoa.setString(2, pessoa.getCpf());
@@ -598,7 +593,7 @@ public class PessoaDAO {
         return atualizado != false;
     }
 
-    public boolean AtualizaCpfPessoaNoBancoDeDados(String novoCpf, Pessoa pessoa, 
+    public boolean AtualizaCpfPessoaNoBancoDeDados(String novoCpf, Pessoa pessoa,
             CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
@@ -613,8 +608,7 @@ public class PessoaDAO {
 
                 connection.setAutoCommit(false);
 
-                try (PreparedStatement pstmAtualizaCpfPessoa = connection.prepareStatement(atualizaCpfPessoa);
-                        PreparedStatement pstmAtualizaDataAlteracaoPessoa = connection.prepareStatement(atualizaDataAlteracaoPessoa)) {
+                try (PreparedStatement pstmAtualizaCpfPessoa = connection.prepareStatement(atualizaCpfPessoa); PreparedStatement pstmAtualizaDataAlteracaoPessoa = connection.prepareStatement(atualizaDataAlteracaoPessoa)) {
 
                     pstmAtualizaCpfPessoa.setString(1, novoCpf);
                     pstmAtualizaCpfPessoa.setString(2, pessoa.getCpf());
@@ -646,11 +640,11 @@ public class PessoaDAO {
 
     }
 
-    public boolean AtualizaEnderecoPessoaNoBancoDeDados(String novoeEndereco, Pessoa pessoa, 
+    public boolean AtualizaEnderecoPessoaNoBancoDeDados(String novoeEndereco, Pessoa pessoa,
             CalendarioSistema calendarioSistema) {
-        
+
         System.out.println("\nO CPF da pessoa logada he: " + pessoa.getCpf());
-        
+
         boolean atualizado = true;
 
         String atualizaEnderecoPessoa = "update pessoa set enderecopessoa = ? where cpf = ?";
@@ -661,8 +655,7 @@ public class PessoaDAO {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmAtualizaEnderecoPessoa = connection.prepareStatement(atualizaEnderecoPessoa);
-                    PreparedStatement pstmAtualizaDataAlteracaoPessoa = connection.prepareStatement(atualizaDataAlteracaoPessoa)) {
+            try (PreparedStatement pstmAtualizaEnderecoPessoa = connection.prepareStatement(atualizaEnderecoPessoa); PreparedStatement pstmAtualizaDataAlteracaoPessoa = connection.prepareStatement(atualizaDataAlteracaoPessoa)) {
 
                 pstmAtualizaEnderecoPessoa.setString(1, novoeEndereco);
                 pstmAtualizaEnderecoPessoa.setString(2, pessoa.getCpf());
@@ -688,7 +681,7 @@ public class PessoaDAO {
         return atualizado != false;
     }
 
-    public boolean AtualizaTelefonePessoaNoBancoDeDados(String novoTelefonePessoa, 
+    public boolean AtualizaTelefonePessoaNoBancoDeDados(String novoTelefonePessoa,
             Pessoa pessoa, CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
@@ -703,8 +696,7 @@ public class PessoaDAO {
 
                 connection.setAutoCommit(false);
 
-                try (PreparedStatement pstmAtualizaTelefonePessoa = connection.prepareStatement(atualizaTelefonePessoa);
-                        PreparedStatement pstmAtualizaDataAlteracaoPessoa = connection.prepareStatement(atualizaDataAlteracaoPessoa)) {
+                try (PreparedStatement pstmAtualizaTelefonePessoa = connection.prepareStatement(atualizaTelefonePessoa); PreparedStatement pstmAtualizaDataAlteracaoPessoa = connection.prepareStatement(atualizaDataAlteracaoPessoa)) {
 
                     pstmAtualizaTelefonePessoa.setString(1, novoTelefonePessoa);
                     pstmAtualizaTelefonePessoa.setString(2, pessoa.getCpf());
@@ -736,7 +728,7 @@ public class PessoaDAO {
 
     }
 
-    public boolean AtualizaloginPessoaNoBancoDeDados(String novoLoginPessoa, Pessoa pessoa, 
+    public boolean AtualizaloginPessoaNoBancoDeDados(String novoLoginPessoa, Pessoa pessoa,
             CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
@@ -751,8 +743,7 @@ public class PessoaDAO {
 
                 connection.setAutoCommit(false);
 
-                try (PreparedStatement pstmAtualizaLoginPessoa = connection.prepareStatement(atualizaLoginPessoa);
-                        PreparedStatement pstmAtualizaDataAlteracaoPessoa = connection.prepareStatement(atualizaDataAlteracaoPessoa)) {
+                try (PreparedStatement pstmAtualizaLoginPessoa = connection.prepareStatement(atualizaLoginPessoa); PreparedStatement pstmAtualizaDataAlteracaoPessoa = connection.prepareStatement(atualizaDataAlteracaoPessoa)) {
 
                     pstmAtualizaLoginPessoa.setString(1, novoLoginPessoa);
                     pstmAtualizaLoginPessoa.setString(2, pessoa.getCpf());
@@ -784,39 +775,44 @@ public class PessoaDAO {
 
     }
 
-    public boolean AtualizaSenhaPessoaNoBancoDeDados(String novaSenha, Pessoa pessoa, 
+    public boolean AtualizaSenhaPessoaNoBancoDeDados(String novaSenha, Pessoa pessoa,
             CalendarioSistema calendarioSistema) {
 
         boolean atualizado = true;
 
-        String atualizaSenhaPessoa = "update tipousuario set senhatipousuario = ? where cpfpessoa = ? and tipousuario = ?";
-        
-        String atualizaDataAlteracaoPessoa = "update tipousuario set datamodificacao = ? where cpfpessoa = ?";
+        String atualizaSenhaPessoa = "update tipousuario set senhatipousuario = ? "
+                + "where cpfpessoa = ? and tipousuario = ?";
+
+        String atualizaDataAlteracaoPessoa = "update tipousuario set datamodificacao = ?"
+                + " where cpfpessoa = ?";
 
         try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
 
             connection.setAutoCommit(false);
 
-            try (PreparedStatement pstmAtualizaSenhaPessoa = connection.prepareStatement(atualizaSenhaPessoa);
-                 PreparedStatement pstmAtualizaDataAlteracaoPessoa = connection.prepareStatement(atualizaDataAlteracaoPessoa)) {
+            try (PreparedStatement pstmAtualizaSenhaPessoa = 
+                    connection.prepareStatement(atualizaSenhaPessoa); 
+                    PreparedStatement pstmAtualizaDataAlteracaoPessoa 
+                            = connection.prepareStatement(atualizaDataAlteracaoPessoa)) {
 
                 pstmAtualizaSenhaPessoa.setString(1, novaSenha);
                 pstmAtualizaSenhaPessoa.setString(2, pessoa.getCpf());
                 pstmAtualizaSenhaPessoa.setString(3, pessoa.getTipoUsuario());
 
                 pstmAtualizaSenhaPessoa.execute();
-                
+
                 pstmAtualizaDataAlteracaoPessoa.setTimestamp(1, Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
                 pstmAtualizaDataAlteracaoPessoa.setString(2, pessoa.getCpf());
                 pstmAtualizaDataAlteracaoPessoa.execute();
-                
+
                 connection.commit();
 
             } catch (SQLException erro) {
 
                 connection.rollback();
                 atualizado = false;
-                System.out.println("\n Nao foi possivel Atualizar A Senha da pessoa no banco de dados!\n" + erro.getMessage());
+                System.out.println("\n Nao foi possivel Atualizar A Senha da pessoa "
+                        + "no banco de dados!\n" + erro.getMessage());
             }
 
         } catch (Exception e) {
@@ -825,8 +821,62 @@ public class PessoaDAO {
         return atualizado != false;
     }
     
-    public void atualizaPessoaLogadaComBancoDeDados(String novoCpf, Pessoa pessoa){
+    public boolean excluirPacienteNoBancoDeDados(Pessoa pessoa, 
+           CalendarioSistema calendarioSistema) {
         
+        
+//        String updateQuery = "UPDATE tipousuario SET habilitado = ? WHERE idpessoa = ?";
+
+        String desabilitaPaciente = "update tipousuario set habilitado = ? where idpessoa = ?";
+
+        String atualizaDataDesabilitado = "update tipousuario set datamodificacao = ? "
+                + "where idpessoa = ?";
+
+        boolean excluido = true;
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+            
+            connection.setAutoCommit(false);
+            
+            try (PreparedStatement pstmDesabilitaPaciente = 
+                    connection.prepareStatement(desabilitaPaciente);
+                    PreparedStatement pstmAtualizaDataDesabilitado = connection.prepareStatement(atualizaDataDesabilitado);
+                    ){
+                
+                boolean exclusao = false;
+                
+                
+                pstmDesabilitaPaciente.setBoolean(1, exclusao);
+                
+                
+                pstmDesabilitaPaciente.setInt(2, pessoa.getId());
+                pstmDesabilitaPaciente.execute();
+                
+                pstmAtualizaDataDesabilitado.setTimestamp(1, 
+                        Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+                
+                pstmAtualizaDataDesabilitado.setInt(2, pessoa.getId());
+                pstmAtualizaDataDesabilitado.execute();
+                
+                connection.commit();
+
+            } catch (SQLException erro) {
+                connection.rollback();
+                excluido = false;
+                System.out.println("\nErro ao desabilitar Paciente no Banco de Dados: " 
+                        + erro.getMessage());
+            }
+            
+            
+        } catch (SQLException erro) {
+            excluido = false;
+        }
+
+        return excluido != false;
+    }
+
+    public void atualizaPessoaLogadaComBancoDeDados(String novoCpf, Pessoa pessoa) {
+
         Pessoa pessoaAtualizada = buscaPessoaPacientePorCpf(novoCpf);
         pessoa.setIdPessoa(pessoaAtualizada.getId());
         pessoa.setNomePessoa(pessoaAtualizada.getNomePessoa());
@@ -839,21 +889,7 @@ public class PessoaDAO {
         pessoa.setHabilitado(true);
         pessoa.setDataCriacao(pessoaAtualizada.getDataCriacao());
         pessoa.setDataModificacao(pessoaAtualizada.getDataModificacao());
-        
-        
+
     }
-    
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
