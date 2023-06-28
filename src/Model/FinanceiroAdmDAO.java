@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class FinanceiroAdmDAO {
 
@@ -250,6 +252,14 @@ public class FinanceiroAdmDAO {
     
     public void geraRelatorioGeralFinanceiroAdmEmPdf(){
         
+        String RESULT = "relatoriosPOOT2/relatoriaFinanceiroAdm.pdf";
+        
+        try {
+            createPdf(RESULT);
+            System.out.println("Relatorio Gerado com Sucesso!!");
+        } catch (DocumentException | IOException ex) {
+            System.out.println("Erro! " + ex.getMessage());
+        } 
     }  
     
     public void createPdf(String filename)
@@ -261,7 +271,7 @@ public class FinanceiroAdmDAO {
         // ste p 3
         document.open();
         // step 4
-        document.add(new Paragraph("Hello World!"));
+        document.add(new Paragraph("NOSSO RELATORIO!"));
         
         // step 5
         document.close();
