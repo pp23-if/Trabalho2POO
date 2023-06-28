@@ -145,9 +145,22 @@ public class GerenciaControladoras {
             System.out.println("\nPessoa ja Cadastrada");
 
         } else {
-            Pessoa pessoa = new Pessoa(nomePessoa, cpf, enderecoPessoa, telefonePessoa,
-                    loginPessoa, senhaPessoa, tipoUsuario, calendarioSistema.getDataHoraSistema());
-
+//            Pessoa pessoa = new Pessoa(nomePessoa, cpf, enderecoPessoa, telefonePessoa,
+//                    loginPessoa, senhaPessoa, tipoUsuario, calendarioSistema.getDataHoraSistema());
+            
+            Pessoa pessoa = new Pessoa();
+            
+            pessoa.setNomePessoa(nomePessoa);
+            pessoa.setCpf(cpf);
+            pessoa.setEnderecoPessoa(enderecoPessoa);
+            pessoa.setTelefonePessoa(telefonePessoa);
+            pessoa.setLoginPessoa(loginPessoa);
+            pessoa.setSenhaPessoa(senhaPessoa);
+            pessoa.setTipoUsuario(tipoUsuario);
+            pessoa.setHabilitado(true);
+            pessoa.setDataCriacao(calendarioSistema.getDataHoraSistema());
+            
+            
             adicionado = pessoaDAO.inserePessoaNoBancoDeDados(pessoa);
 
             if (adicionado == true) {

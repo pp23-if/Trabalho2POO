@@ -120,7 +120,7 @@ public class AdmnistradorDAO {
 
         String inserePessoaAdmnistrador = "insert into tipousuario (cpfpessoa, "
                 + "logintipousuario, senhatipousuario, tipousuario,"
-                + "telefonepessoa, datacriacao) values (?,?,?,?,?,?)";
+                + "telefonepessoa, datacriacao, habilitado) values (?,?,?,?,?,?,?)";
 
         String insereAdmnistrador = "insert into admnistrador (cpfpessoa, cnpjfranquia, "
                 + "datacriacao) values (?,?,?)";
@@ -140,6 +140,7 @@ public class AdmnistradorDAO {
                 pstmInserePessoaAdmnistrador.setString(4, pessoa.getTipoUsuario());
                 pstmInserePessoaAdmnistrador.setString(5, pessoa.getTelefonePessoa());
                 pstmInserePessoaAdmnistrador.setTimestamp(6, Timestamp.valueOf(pessoa.getDataCriacao()));
+                pstmInserePessoaAdmnistrador.setBoolean(7, pessoa.isHabilitado());
 
                 pstmInserePessoaAdmnistrador.execute();
                 

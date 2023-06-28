@@ -50,6 +50,7 @@ public class FranquiaControladora {
             
             franquiaDAO.atualizaFranquiaLogadaComBancoDeDados(franquia.getCnpj(), franquia);
             
+            admnistradorDAO.BuscaAdmnistradorNoBancoDeDados(pessoaDAO, franquiaDAO);
             
             
             switch (opcao) {
@@ -197,6 +198,7 @@ public class FranquiaControladora {
             opcao = telaFranquia.menuAtualizacaoDeDadosFranquia();
             
             franquiaDAO.BuscaFranquiaNoBancoDeDados(pessoaDAO);
+            
             
             switch (opcao) {
                 case 1: {

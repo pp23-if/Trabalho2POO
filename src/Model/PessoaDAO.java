@@ -468,8 +468,8 @@ public class PessoaDAO {
                 + "values (?,?,?)";
 
         String insereTipoUsuario = "insert into tipousuario (cpfpessoa,logintipousuario,senhatipousuario,"
-                + "tipousuario, telefonepessoa, datacriacao) \n"
-                + "values (?,?,?,?,?,?)";
+                + "tipousuario, telefonepessoa, datacriacao, habilitado) \n"
+                + "values (?,?,?,?,?,?,?)";
 
         try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
 
@@ -490,6 +490,7 @@ public class PessoaDAO {
                 pstmInsereTipoUsuario.setString(4, pessoa.getTipoUsuario());
                 pstmInsereTipoUsuario.setString(5, pessoa.getTelefonePessoa());
                 pstmInsereTipoUsuario.setTimestamp(6, Timestamp.valueOf(pessoa.getDataCriacao()));
+                pstmInsereTipoUsuario.setBoolean(7, pessoa.isHabilitado());
 
                 pstmInsereTipoUsuario.execute();
 
@@ -544,7 +545,7 @@ public class PessoaDAO {
                     pessoa.setDataModificacao(dataModificacao.toLocalDateTime());
                 }
 
-                pessoa.setHabilitado(true);
+                pessoa.setHabilitado(rs.getBoolean("habilitado"));
 
                 listaPessoa.add(pessoa);
 

@@ -227,8 +227,8 @@ public class FranquiaDAO {
         boolean adicionado = true;
 
         String inserePessoaDonoDeFranquia = "insert into tipousuario (cpfpessoa,logintipousuario,senhatipousuario,"
-                + "tipousuario, telefonepessoa, datacriacao) \n"
-                + "values (?,?,?,?,?,?)";
+                + "tipousuario, telefonepessoa, datacriacao, habilitado) \n"
+                + "values (?,?,?,?,?,?,?)";
 
         String insereFranquia = "insert into franquia (nomefranquia, cnpj, cidade, endereco, cpfdono, datacriacao) \n"
                 + "values (?,?,?,?,?,?)";
@@ -245,6 +245,7 @@ public class FranquiaDAO {
                 pstmInsereDonoDeFranquia.setString(4, pessoa.getTipoUsuario());
                 pstmInsereDonoDeFranquia.setString(5, pessoa.getTelefonePessoa());
                 pstmInsereDonoDeFranquia.setTimestamp(6, Timestamp.valueOf(pessoa.getDataCriacao()));
+                pstmInsereDonoDeFranquia.setBoolean(7, pessoa.isHabilitado());
 
                 pstmInsereDonoDeFranquia.execute();
 

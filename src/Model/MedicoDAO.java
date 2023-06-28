@@ -254,8 +254,8 @@ public class MedicoDAO {
         boolean adicionado = true;
 
         String inserePessoaMedico = "insert into tipousuario (cpfpessoa,logintipousuario,senhatipousuario,"
-                + "tipousuario, telefonepessoa, datacriacao) \n"
-                + "values (?,?,?,?,?,?)";
+                + "tipousuario, telefonepessoa, datacriacao, habilitado) \n"
+                + "values (?,?,?,?,?,?,?)";
 
         String insereMedico = "insert into medico (cpfmedico,crm,especialidade,datacriacao) \n"
                 + "values (?,?,?,?)";
@@ -271,8 +271,8 @@ public class MedicoDAO {
                 pstmInserePessoaMedico.setString(3, pessoa.getSenhaPessoa());
                 pstmInserePessoaMedico.setString(4, pessoa.getTipoUsuario());
                 pstmInserePessoaMedico.setString(5, pessoa.getTelefonePessoa());
-
                 pstmInserePessoaMedico.setTimestamp(6, Timestamp.valueOf(pessoa.getDataCriacao()));
+                pstmInserePessoaMedico.setBoolean(7, pessoa.isHabilitado());
 
                 pstmInserePessoaMedico.execute();
 
@@ -307,7 +307,9 @@ public class MedicoDAO {
 
         String buscaMedico = "select idmedico, cpfmedico, crm, especialidade, datacriacao, datamodificacao from  medico";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); PreparedStatement pstm = connection.prepareStatement(buscaMedico); ResultSet rs = pstm.executeQuery(buscaMedico)) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); 
+                PreparedStatement pstm = connection.prepareStatement(buscaMedico); 
+                ResultSet rs = pstm.executeQuery(buscaMedico)) {
 
             while (rs.next()) {
 
