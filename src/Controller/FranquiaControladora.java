@@ -557,6 +557,10 @@ public class FranquiaControladora {
         int opcao;
         
         do {
+            
+            pessoaDAO.BuscaPessoaNoBancoDeDados();
+            medicoDAO.BuscaMedicoNoBancoDeDados(pessoaDAO);
+            
             opcao = telaFranquia.menuExclusoesDonoFranquia();
             
             switch (opcao) {
