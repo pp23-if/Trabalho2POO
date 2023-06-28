@@ -1,5 +1,11 @@
 package Model;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -241,5 +247,23 @@ public class FinanceiroAdmDAO {
         }
         return pago != false;
     }
-
+    
+    public void geraRelatorioGeralFinanceiroAdmEmPdf(){
+        
+    }  
+    
+    public void createPdf(String filename)
+            throws DocumentException, IOException {
+        // step 1
+        Document document = new Document();
+        // step 2
+        PdfWriter.getInstance(document, new FileOutputStream(filename));
+        // ste p 3
+        document.open();
+        // step 4
+        document.add(new Paragraph("Hello World!"));
+        
+        // step 5
+        document.close();
+    }
 }
