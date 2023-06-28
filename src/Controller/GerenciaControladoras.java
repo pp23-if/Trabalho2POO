@@ -17,11 +17,8 @@ import Model.ProcedimentoDAO;
 import Model.UnidadeFranquia;
 import Model.UnidadeFranquiaDAO;
 import View.MenuTitulos;
-import com.itextpdf.text.DocumentException;
-import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class GerenciaControladoras {
 

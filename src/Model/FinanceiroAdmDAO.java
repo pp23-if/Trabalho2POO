@@ -3,6 +3,9 @@ package Model;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,8 +16,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class FinanceiroAdmDAO {
 
@@ -271,9 +273,32 @@ public class FinanceiroAdmDAO {
         // ste p 3
         document.open();
         // step 4
-        document.add(new Paragraph("NOSSO RELATORIO!"));
+        document.add(new Paragraph("NOSSO RELATORIO!\n"));
+        document.add(createFirstTable());
         
         // step 5
         document.close();
     }
+    
+    public static PdfPTable createFirstTable() {
+    	// a table with three columns
+        PdfPTable table = new PdfPTable(3);
+        // the cell object
+        PdfPCell cell;
+        // we add a cell with colspan 3
+        cell = new PdfPCell(new Phrase("Cell with colspan 3"));
+        cell.setColspan(3);
+        table.addCell(cell);
+        // now we add a cell with rowspan 2
+        cell = new PdfPCell(new Phrase("Cell with rowspan 2"));
+        cell.setRowspan(2);
+        table.addCell(cell);
+        // we add the four remaining cells with addCell()
+        table.addCell("row 1; cell 1");
+        table.addCell("row 1; cell 2");
+        table.addCell("row 2; cell 1");
+        table.addCell("row 2; cell 2");
+        return table;
+    }
+    
 }
