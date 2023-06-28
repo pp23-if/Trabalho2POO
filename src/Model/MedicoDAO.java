@@ -495,6 +495,111 @@ public class MedicoDAO {
         return atualizado != false;
 
     }
+    
+    public boolean excluiMedicoNoBancoDeDados(Pessoa pessoa, 
+           CalendarioSistema calendarioSistema) {
+        
+        
+//        String updateQuery = "UPDATE tipousuario SET habilitado = ? WHERE idpessoa = ?";
+
+        String desabilitaPaciente = "update tipousuario set habilitado = ? where idpessoa = ?";
+
+        String atualizaDataDesabilitado = "update tipousuario set datamodificacao = ? "
+                + "where idpessoa = ?";
+
+        boolean excluido = true;
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+            
+            connection.setAutoCommit(false);
+            
+            try (PreparedStatement pstmDesabilitaPaciente = 
+                    connection.prepareStatement(desabilitaPaciente);
+                    PreparedStatement pstmAtualizaDataDesabilitado = connection.prepareStatement(atualizaDataDesabilitado);
+                    ){
+                
+                boolean exclusao = false;
+                
+                
+                pstmDesabilitaPaciente.setBoolean(1, exclusao);
+                
+                
+                pstmDesabilitaPaciente.setInt(2, pessoa.getId());
+                pstmDesabilitaPaciente.execute();
+                
+                pstmAtualizaDataDesabilitado.setTimestamp(1, 
+                        Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+                
+                pstmAtualizaDataDesabilitado.setInt(2, pessoa.getId());
+                pstmAtualizaDataDesabilitado.execute();
+                
+                connection.commit();
+
+            } catch (SQLException erro) {
+                connection.rollback();
+                excluido = false;
+                System.out.println("\nErro ao desabilitar Paciente no Banco de Dados: " 
+                        + erro.getMessage());
+            }
+            
+            
+        } catch (SQLException erro) {
+            excluido = false;
+        }
+
+        return excluido != false;
+    }
+    
+     public boolean habilitaMedicoNoBancoDeDados(Pessoa pessoa, 
+           CalendarioSistema calendarioSistema) {
+        
+        
+//        String updateQuery = "UPDATE tipousuario SET habilitado = ? WHERE idpessoa = ?";
+
+        String desabilitaPaciente = "update tipousuario set habilitado = ? where idpessoa = ?";
+
+        String atualizaDataDesabilitado = "update tipousuario set datamodificacao = ? "
+                + "where idpessoa = ?";
+
+        boolean habilitado = true;
+
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados()) {
+            
+            connection.setAutoCommit(false);
+            
+            try (PreparedStatement pstmDesabilitaPaciente = 
+                    connection.prepareStatement(desabilitaPaciente);
+                    PreparedStatement pstmAtualizaDataDesabilitado = connection.prepareStatement(atualizaDataDesabilitado);
+                    ){
+                
+                pstmDesabilitaPaciente.setBoolean(1, true);
+                
+                pstmDesabilitaPaciente.setInt(2, pessoa.getId());
+                pstmDesabilitaPaciente.execute();
+                
+                pstmAtualizaDataDesabilitado.setTimestamp(1, 
+                        Timestamp.valueOf(calendarioSistema.getDataHoraSistema()));
+                
+                pstmAtualizaDataDesabilitado.setInt(2, pessoa.getId());
+                pstmAtualizaDataDesabilitado.execute();
+                
+                connection.commit();
+
+            } catch (SQLException erro) {
+                connection.rollback();
+                habilitado = false;
+                System.out.println("\nErro ao desabilitar Paciente no Banco de Dados: " 
+                        + erro.getMessage());
+            }
+            
+            
+        } catch (SQLException erro) {
+            habilitado = false;
+        }
+
+        return habilitado != false;
+    }
+    
 
     public void atualizaMedicoLogadaComBancoDeDados(String crm, Medico medico, MedicoDAO medicoDAO) {
 
