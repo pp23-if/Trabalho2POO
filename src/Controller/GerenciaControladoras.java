@@ -54,8 +54,15 @@ public class GerenciaControladoras {
             fazBuscaGeralNoBancoDeDados(pessoaDAO, medicoDAO, franquiaDAO,
                     unidadeFranquiaDAO, consultaDAO, procedimentoDAO,
                     infoConsultaDAO, financeiroAdmDAO, financeiroMedicoDAO, admnistradorDAO);
-
-            opcao = Tela.menuInicial();
+            
+            
+            try {
+                opcao = Tela.menuInicial();
+            } catch (Exception e) {
+                System.out.println("opcao invalida!!");
+                opcao = 20;
+            }
+            
 
             switch (opcao) {
                 case 1: {

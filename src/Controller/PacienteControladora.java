@@ -35,7 +35,12 @@ public class PacienteControladora {
 
             pessoaDAO.atualizaPessoaLogadaComBancoDeDados(pessoa.getCpf(), pessoa);
 
-            opcao = telaPaciente.menuPaciente();
+            try {
+                opcao = telaPaciente.menuPaciente();
+            } catch (Exception e) {
+                System.out.println("\nOpcao invalida!! " + e.getMessage());
+                opcao = 20;
+            }
 
             switch (opcao) {
                 case 1: {
@@ -75,8 +80,14 @@ public class PacienteControladora {
         do {
 
             pessoaDAO.BuscaPessoaNoBancoDeDados();
-
-            opcao = telaPaciente.menuAlteraDadosPaciente();
+            
+            try {
+                opcao = telaPaciente.menuAlteraDadosPaciente();
+            } catch (Exception e) {
+                System.out.println("\n opcao invalida!!");
+                opcao = 20;
+            }
+            
 
             switch (opcao) {
                 case 1: {
