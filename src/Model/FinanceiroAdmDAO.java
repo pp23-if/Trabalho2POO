@@ -1,12 +1,18 @@
 package Model;
 
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -14,9 +20,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
-
+import static javax.swing.Spring.height;
 
 public class FinanceiroAdmDAO {
 
@@ -176,9 +183,7 @@ public class FinanceiroAdmDAO {
 
         String buscaFinanceiroADM = "select * from financeiroadm";
 
-        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); 
-                PreparedStatement pstm = connection.prepareStatement(buscaFinanceiroADM); 
-                ResultSet rs = pstm.executeQuery(buscaFinanceiroADM)) {
+        try (Connection connection = new ConexaoBancoDeDados().ConectaBancoDeDados(); PreparedStatement pstm = connection.prepareStatement(buscaFinanceiroADM); ResultSet rs = pstm.executeQuery(buscaFinanceiroADM)) {
 
             while (rs.next()) {
 
@@ -251,54 +256,195 @@ public class FinanceiroAdmDAO {
         }
         return pago != false;
     }
-    
-    public void geraRelatorioGeralFinanceiroAdmEmPdf(){
-        
+
+    public void geraRelatorioGeralFinanceiroAdmEmPdf() {
+
         String RESULT = "relatoriosPOOT2/relatoriaFinanceiroAdm.pdf";
-        
+
         try {
             createPdf(RESULT);
             System.out.println("Relatorio Gerado com Sucesso!!");
         } catch (DocumentException | IOException ex) {
             System.out.println("Erro! " + ex.getMessage());
-        } 
-    }  
-    
+        }
+    }
+
     public void createPdf(String filename)
             throws DocumentException, IOException {
-        // step 1
+
         Document document = new Document();
-        // step 2
-        PdfWriter.getInstance(document, new FileOutputStream(filename));
-        // ste p 3
+
+        PdfWriter.getInstance(document, 
+                new FileOutputStream(new File(filename)));
+
         document.open();
-        // step 4
-        document.add(new Paragraph("NOSSO RELATORIO!\n"));
+
+        //criando o paragrafo com o titulo do arquivo
+        Font font = FontFactory.getFont(FontFactory.COURIER_BOLD, 26);
+        Paragraph relaParagraph = new Paragraph("RELATORIO FINANCEIRO GERAL", font);
+        relaParagraph.setAlignment(Element.ALIGN_CENTER);
+
+        relaParagraph.getFont().setColor(BaseColor.DARK_GRAY);
+
+        document.add(relaParagraph);
+
+        document.add(Chunk.NEWLINE);
+
         document.add(createFirstTable());
         
-        // step 5
+       
+        for (FinanceiroAdm financeiroAdm : listaFinanceiroAdm) {
+            document.add(BuscaDadosDaColecao(financeiroAdm));
+        }
+        
         document.close();
+
     }
-    
-    public static PdfPTable createFirstTable() {
-    	// a table with three columns
-        PdfPTable table = new PdfPTable(3);
+
+    public PdfPTable createFirstTable() {
+        // a table with three columns
+        PdfPTable table = new PdfPTable(7);
         // the cell object
+
+        //area disponivel para a tabela
+        table.setWidthPercentage(100);
+
+        //altura das colunas
+        int height = 80;
+
         PdfPCell cell;
-        // we add a cell with colspan 3
-        cell = new PdfPCell(new Phrase("Cell with colspan 3"));
-        cell.setColspan(3);
+
+        Phrase phrase = new Phrase("ID");
+        phrase.getFont().setColor(BaseColor.BLACK);
+        cell = new PdfPCell(phrase);
+        cell.setFixedHeight(height);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
-        // now we add a cell with rowspan 2
-        cell = new PdfPCell(new Phrase("Cell with rowspan 2"));
-        cell.setRowspan(2);
+
+        Phrase phrase2 = new Phrase("Movimento");
+        phrase2.getFont().setColor(BaseColor.BLACK);
+        cell = new PdfPCell(phrase2);
+        cell.setFixedHeight(height);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
-        // we add the four remaining cells with addCell()
-        table.addCell("row 1; cell 1");
-        table.addCell("row 1; cell 2");
-        table.addCell("row 2; cell 1");
-        table.addCell("row 2; cell 2");
+
+        Phrase phrase3 = new Phrase("Valor");
+        phrase3.getFont().setColor(BaseColor.BLACK);
+        cell = new PdfPCell(phrase3);
+        cell.setFixedHeight(height);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        Phrase phrase4 = new Phrase("Descrição");
+        phrase4.getFont().setColor(BaseColor.BLACK);
+        cell = new PdfPCell(phrase4);
+        cell.setFixedHeight(height);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        Phrase phrase5 = new Phrase("Criação");
+        phrase5.getFont().setColor(BaseColor.BLACK);
+        cell = new PdfPCell(phrase5);
+        cell.setFixedHeight(height);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        Phrase phrase6 = new Phrase("Modificação");
+        phrase6.getFont().setColor(BaseColor.BLACK);
+        cell = new PdfPCell(phrase6);
+        cell.setFixedHeight(height);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        Phrase phrase7 = new Phrase("Unidade");
+        phrase7.getFont().setColor(BaseColor.BLACK);
+        cell = new PdfPCell(phrase7);
+        cell.setFixedHeight(height);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        cell = new PdfPCell(new Phrase("oi",
+                FontFactory.getFont(FontFactory.HELVETICA, 10)));
+
+        table.addCell(cell);
+
         return table;
     }
-    
+
+    public PdfPTable BuscaDadosDaColecao(FinanceiroAdm financeiroAdm) {
+        
+        PdfPTable table = new PdfPTable(7);
+        
+
+        //area disponivel para a tabela
+        table.setWidthPercentage(100);
+
+        //altura das colunas
+        int height = 80;
+
+        String id = Integer.toString(financeiroAdm.getIdFinanceiroAdm());
+        String movimento = financeiroAdm.getTipoMovimento();
+        String valor = Double.toString(financeiroAdm.getValor());
+        String descricao = financeiroAdm.getDescritivoMovimento();
+        
+//        DateTimeFormatter fd = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+//        String criacao = fd.format(financeiroAdm.getDataCriacao());
+//        String modificacao = fd.format(financeiroAdm.getDataModificacao());
+        String unidade = Integer.toString(financeiroAdm.getUnidadeFranquia().getIdUnidadeFranquia());
+        
+        PdfPCell cell;
+
+       
+        Phrase phrase = new Phrase(id);
+        phrase.getFont().setColor(BaseColor.BLACK);
+        cell = new PdfPCell(phrase);
+        cell.setFixedHeight(height);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        Phrase phrase2 = new Phrase(movimento);
+        phrase2.getFont().setColor(BaseColor.BLACK);
+        cell = new PdfPCell(phrase2);
+        cell.setFixedHeight(height);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        Phrase phrase3 = new Phrase(valor);
+        phrase3.getFont().setColor(BaseColor.BLACK);
+        cell = new PdfPCell(phrase3);
+        cell.setFixedHeight(height);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        Phrase phrase4 = new Phrase(descricao);
+        phrase4.getFont().setColor(BaseColor.BLACK);
+        cell = new PdfPCell(phrase4);
+        cell.setFixedHeight(height);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        Phrase phrase5 = new Phrase("criacaoX");
+        phrase5.getFont().setColor(BaseColor.BLACK);
+        cell = new PdfPCell(phrase5);
+        cell.setFixedHeight(height);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        Phrase phrase6 = new Phrase("modificacaoX");
+        phrase6.getFont().setColor(BaseColor.BLACK);
+        cell = new PdfPCell(phrase6);
+        cell.setFixedHeight(height);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+
+        Phrase phrase7 = new Phrase(unidade);
+        phrase7.getFont().setColor(BaseColor.BLACK);
+        cell = new PdfPCell(phrase7);
+        cell.setFixedHeight(height);
+        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(cell);
+            
+        return table;
+    }
+
 }
