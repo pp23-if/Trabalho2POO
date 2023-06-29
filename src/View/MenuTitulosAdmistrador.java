@@ -67,6 +67,7 @@ public class MenuTitulosAdmistrador {
         builder.append("\n2 - Fazer Pagamentos...................: ");
         builder.append("\n3 - Ver Movimentos Financeiros.........: ");
         builder.append("\n4 - Ver Pagamentos Dos Medicos.........: ");
+        builder.append("\n5 - Gerar Relatorio Geral Pdf..........: ");
         builder.append("\n\nInforme Opcao........................: ");
 
         System.out.print(builder.toString());

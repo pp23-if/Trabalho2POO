@@ -19,7 +19,6 @@ import Model.UnidadeFranquiaDAO;
 import View.MenuTitulos;
 import java.util.Scanner;
 
-
 public class GerenciaControladoras {
 
     Scanner scanner = new Scanner(System.in);
@@ -52,14 +51,9 @@ public class GerenciaControladoras {
 
         do {
 
-           
             fazBuscaGeralNoBancoDeDados(pessoaDAO, medicoDAO, franquiaDAO,
                     unidadeFranquiaDAO, consultaDAO, procedimentoDAO,
                     infoConsultaDAO, financeiroAdmDAO, financeiroMedicoDAO, admnistradorDAO);
-            
-            financeiroAdmDAO.geraRelatorioGeralFinanceiroAdmEmPdf();
-            
-            
 
             opcao = Tela.menuInicial();
 
@@ -152,9 +146,9 @@ public class GerenciaControladoras {
         } else {
 //            Pessoa pessoa = new Pessoa(nomePessoa, cpf, enderecoPessoa, telefonePessoa,
 //                    loginPessoa, senhaPessoa, tipoUsuario, calendarioSistema.getDataHoraSistema());
-            
+
             Pessoa pessoa = new Pessoa();
-            
+
             pessoa.setNomePessoa(nomePessoa);
             pessoa.setCpf(cpf);
             pessoa.setEnderecoPessoa(enderecoPessoa);
@@ -164,8 +158,7 @@ public class GerenciaControladoras {
             pessoa.setTipoUsuario(tipoUsuario);
             pessoa.setHabilitado(true);
             pessoa.setDataCriacao(calendarioSistema.getDataHoraSistema());
-            
-            
+
             adicionado = pessoaDAO.inserePessoaNoBancoDeDados(pessoa);
 
             if (adicionado == true) {

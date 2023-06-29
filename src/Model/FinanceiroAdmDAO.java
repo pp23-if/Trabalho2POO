@@ -20,11 +20,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
-import static javax.swing.Spring.height;
 
 public class FinanceiroAdmDAO {
 
@@ -258,16 +256,18 @@ public class FinanceiroAdmDAO {
         return pago != false;
     }
 
-    public void geraRelatorioGeralFinanceiroAdmEmPdf() {
+    public boolean geraRelatorioGeralFinanceiroAdmEmPdf() {
+
+        boolean gerado = true;
 
         String RESULT = "relatoriosPOOT2/relatoriaFinanceiroAdm.pdf";
 
         try {
             createPdf(RESULT);
-            System.out.println("Relatorio Gerado com Sucesso!!");
         } catch (DocumentException | IOException ex) {
-            System.out.println("Erro! " + ex.getMessage());
+            gerado = false;
         }
+        return gerado != false;
     }
 
     public void createPdf(String filename)

@@ -33,11 +33,11 @@ public class AdmnistradorControladora {
     public AdmnistradorControladora(PessoaDAO pessoaDAO, AdmnistradorDAO admnistradorDAO,
             UnidadeFranquiaDAO unidadeFranquiaDAO, ConsultaDAO consultaDAO, ValidacaoEntradaDados vd,
             Admnistrador admnistrador, MedicoDAO medicoDAO, ProcedimentoDAO procedimentoDAO,
-            CalendarioSistema calendarioSistema, FinanceiroAdmDAO financeiroAdmDAO, 
+            CalendarioSistema calendarioSistema, FinanceiroAdmDAO financeiroAdmDAO,
             FinanceiroMedicoDAO financeiroMedicoDAO, FranquiaDAO franquiaDAO) {
 
         menuOpcoesAdmnistrador(pessoaDAO, admnistradorDAO,
-                unidadeFranquiaDAO, consultaDAO, vd, admnistrador, medicoDAO, procedimentoDAO, 
+                unidadeFranquiaDAO, consultaDAO, vd, admnistrador, medicoDAO, procedimentoDAO,
                 calendarioSistema, financeiroAdmDAO, financeiroMedicoDAO, franquiaDAO);
 
     }
@@ -46,21 +46,20 @@ public class AdmnistradorControladora {
             AdmnistradorDAO admnistradorDAO, UnidadeFranquiaDAO unidadeFranquiaDAO,
             ConsultaDAO consultaDAO, ValidacaoEntradaDados vd, Admnistrador admnistrador,
             MedicoDAO medicoDAO, ProcedimentoDAO procedimentoDAO, CalendarioSistema calendarioSistema,
-            FinanceiroAdmDAO financeiroAdmDAO, FinanceiroMedicoDAO financeiroMedicoDAO, 
+            FinanceiroAdmDAO financeiroAdmDAO, FinanceiroMedicoDAO financeiroMedicoDAO,
             FranquiaDAO franquiaDAO) {
 
         int opcao;
 
         do {
-            
+
             consultaDAO.BuscaConsultaNoBancoDeDados(pessoaDAO, medicoDAO, unidadeFranquiaDAO);
             procedimentoDAO.BuscaProcedimentosNoBancoDeDados(consultaDAO);
             financeiroAdmDAO.buscaFinanceiroADMNoBancoDeDados(unidadeFranquiaDAO);
             financeiroMedicoDAO.buscaFinanceiroMedicoNoBancoDeDados(medicoDAO, franquiaDAO);
-            
-            
+
             opcao = telaAdmistrador.menuAdmnistrador();
-            
+
             switch (opcao) {
                 case 1: {
                     System.out.println("\n" + admnistradorDAO.
@@ -99,9 +98,9 @@ public class AdmnistradorControladora {
         int opcao;
 
         do {
-            
+
             consultaDAO.BuscaConsultaNoBancoDeDados(pessoaDAO, medicoDAO, unidadeFranquiaDAO);
-            
+
             opcao = telaAdmistrador.menuConsultas();
 
             switch (opcao) {
@@ -134,7 +133,7 @@ public class AdmnistradorControladora {
 
     private void marcarConsulta(Admnistrador admnistrador,
             UnidadeFranquiaDAO unidadeFranquiaDAO, ValidacaoEntradaDados vd,
-            PessoaDAO pessoaDAO, MedicoDAO medicoDAO, ConsultaDAO consultaDAO, 
+            PessoaDAO pessoaDAO, MedicoDAO medicoDAO, ConsultaDAO consultaDAO,
             CalendarioSistema calendarioSistema) {
 
         System.out.println("\n");
@@ -309,9 +308,9 @@ public class AdmnistradorControladora {
         int opcao;
 
         do {
-            
+
             procedimentoDAO.BuscaProcedimentosNoBancoDeDados(consultaDAO);
-            
+
             opcao = telaAdmistrador.menuProcedimentos();
 
             switch (opcao) {
@@ -524,16 +523,16 @@ public class AdmnistradorControladora {
     private void menuOpcoesFinanceiro(FinanceiroAdmDAO financeiroAdmDAO,
             CalendarioSistema calendarioSistema, ConsultaDAO consultaDAO,
             ProcedimentoDAO procedimentoDAO, Admnistrador admnistrador, UnidadeFranquiaDAO unidadeFranquiaDAO,
-            ValidacaoEntradaDados vd, FinanceiroMedicoDAO financeiroMedicoDAO, 
+            ValidacaoEntradaDados vd, FinanceiroMedicoDAO financeiroMedicoDAO,
             MedicoDAO medicoDAO, PessoaDAO pessoaDAO, FranquiaDAO franquiaDAO) {
 
         int opcao;
 
         do {
-            
+
             financeiroAdmDAO.buscaFinanceiroADMNoBancoDeDados(unidadeFranquiaDAO);
             financeiroMedicoDAO.buscaFinanceiroMedicoNoBancoDeDados(medicoDAO, franquiaDAO);
-            
+
             System.out.println("\nData e Hora do Sistema: " + calendarioSistema.getDataHoraSistema().format(DateTimeFormatter.
                     ofPattern("dd/MM/yyyy HH:mm:ss")));
             opcao = telaAdmistrador.menuFinanceiroAdm();
@@ -573,6 +572,14 @@ public class AdmnistradorControladora {
                     System.out.println("\n");
                     financeiroMedicoDAO.buscaPagamentosMedicosPorFranquia(admnistrador.getFranquia());
                     break;
+                }
+                case 5: {
+                    if(financeiroAdmDAO.geraRelatorioGeralFinanceiroAdmEmPdf() == true){
+                        System.out.println("\nRelatorio gerado com sucesso!!");
+                    }else{
+                        System.out.println("\nNao foi possivel gerar relatorio.");
+                    }
+                    
                 }
 
             }
@@ -780,9 +787,9 @@ public class AdmnistradorControladora {
             if (medicoEncontrado == null) {
                 System.out.println("\nO Medico Informado Nao Foi Encontrado!!!");
             } else {
-                
+
                 financeiroMedicoDAO.buscaFinanceiroMedicoNoBancoDeDados(medicoDAO, franquiaDAO);
-                
+
                 if (financeiroMedicoDAO.verificaCalculosValoresMedico(medicoEncontrado, calendarioSistema,
                         admnistrador.getFranquia()) == true) {
                     System.out.println("\n--------- Os Calculos Do Medico Informado Ja Foram Feitos esse mes. -----");
@@ -810,7 +817,7 @@ public class AdmnistradorControladora {
                     FinanceiroMedico financeiroMedico = new FinanceiroMedico(valorLiquidomedico, medicoEncontrado,
                             "Agendado", admnistrador.getFranquia(), calendarioSistema.getDataHoraSistema());
 
-                    if (financeiroMedicoDAO.insereFinanceiroMedicoNoBancoDeDados(financeiroMedico)== true) {
+                    if (financeiroMedicoDAO.insereFinanceiroMedicoNoBancoDeDados(financeiroMedico) == true) {
                         System.out.println("\nCalculos Gerados Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Gerar Os Calculos.");
@@ -841,9 +848,9 @@ public class AdmnistradorControladora {
         System.out.println("\n=========== Pagar Os Medicos! =============");
 
         do {
-              
+
             financeiroMedicoDAO.buscaFinanceiroMedicoNoBancoDeDados(medicoDAO, franquiaDAO);
-            
+
             System.out.println("\n");
             if (financeiroMedicoDAO.buscaPagamentosMedicosPorFranquiaEhMes(admnistrador.getFranquia(),
                     calendarioSistema) == false) {
@@ -861,8 +868,8 @@ public class AdmnistradorControladora {
                 if (financeiroMedicoEncontrado == null) {
                     System.out.println("\nFinanceiro Medico Nao Encontrado!");
                 } else {
-                    if (financeiroMedicoDAO.realizaPagamentoFinanceroMedicoNoBancoDeDados(financeiroMedicoEncontrado, 
-                            calendarioSistema)== true) {
+                    if (financeiroMedicoDAO.realizaPagamentoFinanceroMedicoNoBancoDeDados(financeiroMedicoEncontrado,
+                            calendarioSistema) == true) {
                         System.out.println("\nPagamento Realizado Com Sucesso!");
                     } else {
                         System.out.println("\nNao Foi Possivel Realizar O Pagamento.");
