@@ -20,6 +20,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
@@ -274,7 +275,7 @@ public class FinanceiroAdmDAO {
 
         Document document = new Document();
 
-        PdfWriter.getInstance(document, 
+        PdfWriter.getInstance(document,
                 new FileOutputStream(new File(filename)));
 
         document.open();
@@ -291,26 +292,24 @@ public class FinanceiroAdmDAO {
         document.add(Chunk.NEWLINE);
 
         document.add(createFirstTable());
-        
-       
+
         for (FinanceiroAdm financeiroAdm : listaFinanceiroAdm) {
             document.add(BuscaDadosDaColecao(financeiroAdm));
         }
-        
+
         document.close();
 
     }
 
     public PdfPTable createFirstTable() {
-        // a table with three columns
+
         PdfPTable table = new PdfPTable(7);
-        // the cell object
 
         //area disponivel para a tabela
         table.setWidthPercentage(100);
 
         //altura das colunas
-        int height = 80;
+        int height = 30;
 
         PdfPCell cell;
 
@@ -372,29 +371,30 @@ public class FinanceiroAdmDAO {
     }
 
     public PdfPTable BuscaDadosDaColecao(FinanceiroAdm financeiroAdm) {
-        
+
         PdfPTable table = new PdfPTable(7);
-        
 
         //area disponivel para a tabela
         table.setWidthPercentage(100);
 
         //altura das colunas
-        int height = 80;
+        int height = 40;
 
         String id = Integer.toString(financeiroAdm.getIdFinanceiroAdm());
         String movimento = financeiroAdm.getTipoMovimento();
         String valor = Double.toString(financeiroAdm.getValor());
         String descricao = financeiroAdm.getDescritivoMovimento();
-        
-//        DateTimeFormatter fd = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-//        String criacao = fd.format(financeiroAdm.getDataCriacao());
-//        String modificacao = fd.format(financeiroAdm.getDataModificacao());
+
+        DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
+        String criacao = financeiroAdm.getDataCriacao().format(formatador);
+
+        String modificacao = criacao;
+
         String unidade = Integer.toString(financeiroAdm.getUnidadeFranquia().getIdUnidadeFranquia());
-        
+
         PdfPCell cell;
 
-       
         Phrase phrase = new Phrase(id);
         phrase.getFont().setColor(BaseColor.BLACK);
         cell = new PdfPCell(phrase);
@@ -423,14 +423,14 @@ public class FinanceiroAdmDAO {
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
 
-        Phrase phrase5 = new Phrase("criacaoX");
+        Phrase phrase5 = new Phrase(criacao);
         phrase5.getFont().setColor(BaseColor.BLACK);
         cell = new PdfPCell(phrase5);
         cell.setFixedHeight(height);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
 
-        Phrase phrase6 = new Phrase("modificacaoX");
+        Phrase phrase6 = new Phrase(modificacao);
         phrase6.getFont().setColor(BaseColor.BLACK);
         cell = new PdfPCell(phrase6);
         cell.setFixedHeight(height);
@@ -443,7 +443,7 @@ public class FinanceiroAdmDAO {
         cell.setFixedHeight(height);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
-            
+
         return table;
     }
 
