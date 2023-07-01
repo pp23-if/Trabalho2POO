@@ -341,14 +341,14 @@ public class FinanceiroAdmDAO {
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
 
-        Phrase phrase5 = new Phrase("Criação");
+        Phrase phrase5 = new Phrase("Data");
         phrase5.getFont().setColor(BaseColor.BLACK);
         cell = new PdfPCell(phrase5);
         cell.setFixedHeight(height);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
 
-        Phrase phrase6 = new Phrase("Modificação");
+        Phrase phrase6 = new Phrase("Franquia");
         phrase6.getFont().setColor(BaseColor.BLACK);
         cell = new PdfPCell(phrase6);
         cell.setFixedHeight(height);
@@ -362,10 +362,6 @@ public class FinanceiroAdmDAO {
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
 
-        cell = new PdfPCell(new Phrase("oi",
-                FontFactory.getFont(FontFactory.HELVETICA, 10)));
-
-        table.addCell(cell);
 
         return table;
     }
@@ -386,12 +382,9 @@ public class FinanceiroAdmDAO {
         String descricao = financeiroAdm.getDescritivoMovimento();
 
         DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-
-        String criacao = financeiroAdm.getDataCriacao().format(formatador);
-
-        String modificacao = criacao;
-
-        String unidade = Integer.toString(financeiroAdm.getUnidadeFranquia().getIdUnidadeFranquia());
+        String data = financeiroAdm.getDataCriacao().format(formatador);
+        String franquia = financeiroAdm.getUnidadeFranquia().getFranquia().getNomeFranquia();
+        String unidade = financeiroAdm.getUnidadeFranquia().getCidadeUnidadeFranquia();
 
         PdfPCell cell;
 
@@ -409,7 +402,7 @@ public class FinanceiroAdmDAO {
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
 
-        Phrase phrase3 = new Phrase(valor);
+        Phrase phrase3 = new Phrase("R$ " + valor);
         phrase3.getFont().setColor(BaseColor.BLACK);
         cell = new PdfPCell(phrase3);
         cell.setFixedHeight(height);
@@ -423,14 +416,14 @@ public class FinanceiroAdmDAO {
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
 
-        Phrase phrase5 = new Phrase(criacao);
+        Phrase phrase5 = new Phrase(data);
         phrase5.getFont().setColor(BaseColor.BLACK);
         cell = new PdfPCell(phrase5);
         cell.setFixedHeight(height);
         cell.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(cell);
 
-        Phrase phrase6 = new Phrase(modificacao);
+        Phrase phrase6 = new Phrase(franquia);
         phrase6.getFont().setColor(BaseColor.BLACK);
         cell = new PdfPCell(phrase6);
         cell.setFixedHeight(height);

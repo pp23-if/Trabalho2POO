@@ -298,7 +298,7 @@ public class ProcedimentoDAO {
 
                 pstmInsereProcedimento.setString(1, procedimento.getNomeProcedimento());
                 pstmInsereProcedimento.setInt(2, consulta.getIdConsulta());
-                pstmInsereProcedimento.setDate(3, Date.valueOf(procedimento.getDiaProcedimento()));
+                pstmInsereProcedimento.setDate(3, Date.valueOf(procedimento.getDiaProcedimento().plusDays(1)));
                 pstmInsereProcedimento.setTime(4, Time.valueOf(procedimento.getHoraProcedimento()));
                 pstmInsereProcedimento.setString(5, procedimento.getEstadoProcedimento());
                 pstmInsereProcedimento.setDouble(6, procedimento.getValorProcedimento());

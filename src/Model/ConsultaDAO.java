@@ -286,7 +286,7 @@ public class ConsultaDAO {
 
             try (PreparedStatement pstmInsereConsulta = connection.prepareStatement(insereConsulta)) {
 
-                pstmInsereConsulta.setDate(1, Date.valueOf(consulta.getDiaConsulta()));
+                pstmInsereConsulta.setDate(1, Date.valueOf(consulta.getDiaConsulta().plusDays(1)));
                 pstmInsereConsulta.setTime(2, Time.valueOf(consulta.getHoraConsulta()));
                 pstmInsereConsulta.setString(3, consulta.getEstadoConsulta());
                 pstmInsereConsulta.setString(4, consulta.getMedico().getCrm());
