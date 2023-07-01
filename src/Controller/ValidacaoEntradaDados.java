@@ -78,4 +78,23 @@ public class ValidacaoEntradaDados {
         return horaProcedimentoValidado;
     }
     
+    public double validaDespesaAvulsaValor(String valorDespesa){
+        
+        double valorPagamento = 0;
+        
+        while(valorDespesa.equals("")){
+            try {
+                System.out.println("\nInforme O Valor Do Pagamento: ");
+                valorDespesa = scanner.nextLine();
+                valorPagamento = Double.parseDouble(valorDespesa);
+            } 
+            catch (Exception e) {
+                valorDespesa = "";
+                valorPagamento = 0;
+            }
+            
+        }
+        return valorPagamento;
+    }
+    
 }

@@ -57,8 +57,14 @@ public class AdmnistradorControladora {
             procedimentoDAO.BuscaProcedimentosNoBancoDeDados(consultaDAO);
             financeiroAdmDAO.buscaFinanceiroADMNoBancoDeDados(unidadeFranquiaDAO);
             financeiroMedicoDAO.buscaFinanceiroMedicoNoBancoDeDados(medicoDAO, franquiaDAO);
-
-            opcao = telaAdmistrador.menuAdmnistrador();
+            
+            try {
+                opcao = telaAdmistrador.menuAdmnistrador();
+            } 
+            catch (Exception e) {
+                opcao = 20;
+                System.out.println("\nOpcao invalida!!");
+            }
 
             switch (opcao) {
                 case 1: {
@@ -100,9 +106,15 @@ public class AdmnistradorControladora {
         do {
 
             consultaDAO.BuscaConsultaNoBancoDeDados(pessoaDAO, medicoDAO, unidadeFranquiaDAO);
-
-            opcao = telaAdmistrador.menuConsultas();
-
+            
+            try {
+                opcao = telaAdmistrador.menuConsultas();
+            } 
+            catch (Exception e) {
+                opcao = 20;
+                System.out.println("\nOpcao invalida!!");
+            }
+            
             switch (opcao) {
                 case 1: {
                     marcarConsulta(admnistrador, unidadeFranquiaDAO, vd,
@@ -138,11 +150,18 @@ public class AdmnistradorControladora {
 
         System.out.println("\n");
         unidadeFranquiaDAO.buscaUnidadeFranquiaAtravesDaFranquiaVinculada(admnistrador.getFranquia());
-
-        System.out.println("\nInforme o ID da Unidade da Franquia que deseja realizar a consulta: ");
-        int idUnidadeFranquia = Integer.parseInt(scanner.nextLine());
-        idUnidadeFranquia = vd.validarINT(idUnidadeFranquia);
-
+        
+        int idUnidadeFranquia;
+        try {
+            System.out.println("\nInforme o ID da Unidade da Franquia que deseja realizar a consulta: ");
+            idUnidadeFranquia = Integer.parseInt(scanner.nextLine());
+            idUnidadeFranquia = vd.validarINT(idUnidadeFranquia);
+        } 
+        catch (Exception e) {
+            idUnidadeFranquia = 1000;
+            System.out.println("\nID da Unidade da Franquia invalido!! ");
+        }
+        
         UnidadeFranquia unidadeEncontrada = unidadeFranquiaDAO.
                 buscaUnidadeFranquiaPorId(idUnidadeFranquia);
 
@@ -152,11 +171,18 @@ public class AdmnistradorControladora {
 
             System.out.println("\n");
             pessoaDAO.filtraPacientes();
-
-            System.out.println("\nInforme o ID Da pessoa que deseja marcar para consulta: ");
-            int idPessoaConsulta = Integer.parseInt(scanner.nextLine());
-            idPessoaConsulta = vd.validarINT(idPessoaConsulta);
-
+            
+            int idPessoaConsulta;
+            try {
+                System.out.println("\nInforme o ID Da pessoa que deseja marcar para consulta: ");
+                idPessoaConsulta = Integer.parseInt(scanner.nextLine());
+                idPessoaConsulta = vd.validarINT(idPessoaConsulta);
+            } 
+            catch (Exception e) {
+                idPessoaConsulta = 1000;
+                System.out.println("\nID Da pessoa invalido!!");
+            }
+  
             System.out.println("\n");
             Pessoa pessoaEncontrada = pessoaDAO.buscaPessoaPorId(idPessoaConsulta);
 
@@ -166,11 +192,18 @@ public class AdmnistradorControladora {
 
                 System.out.println("\n");
                 medicoDAO.mostraTodosMedicosHabilitados();
-
-                System.out.println("\nInforme o ID Do Medico que deseja se consultar: ");
-                int idMedico = Integer.parseInt(scanner.nextLine());
-                idMedico = vd.validarINT(idMedico);
-
+                
+                int idMedico;
+                try {
+                    System.out.println("\nInforme o ID Do Medico que deseja se consultar: ");
+                    idMedico = Integer.parseInt(scanner.nextLine());
+                    idMedico = vd.validarINT(idMedico);
+                } 
+                catch (Exception e) {
+                    idMedico = 1000;
+                    System.out.println("\nID Do Medico invalido!!");
+                }
+                
                 Medico medicoEncontrado = medicoDAO.buscaMedicoPorId(idMedico);
 
                 if (medicoEncontrado == null) {
@@ -182,16 +215,33 @@ public class AdmnistradorControladora {
                         System.out.println("\nMedico e Paciente sao as Mesmas Pessoas..");
                     } else {
                         double valorConsulta = medicoDAO.verificaValorConsulta(medicoEncontrado);
-
+                        
                         DateTimeFormatter fdia = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-                        System.out.println("\nInforme a Data Da Consulta No Seguinte Formato, Dia/Mes/Ano (00/00/0000)..: ");
-                        String dia = scanner.nextLine();
-                        LocalDate diaConsulta = LocalDate.parse(dia, fdia);
-
-                        System.out.println("\nInforme a Hora Da Consulta No Seguinte Formato, Hora:Minutos (00:00)..: ");
-                        String Hora = scanner.nextLine();
-                        LocalTime horaConsulta = LocalTime.parse(Hora);
+                        
+                        String dia = "";
+                        LocalDate diaConsulta;
+                        try {
+                            System.out.println("\nInforme a Data Da Consulta No Seguinte Formato, Dia/Mes/Ano (00/00/0000)..: ");
+                            dia = scanner.nextLine();
+                            diaConsulta = LocalDate.parse(dia, fdia);
+                        } 
+                        catch (Exception e) {
+                            dia = "";
+                            diaConsulta = vd.validaStringData(dia);
+                        }
+                        
+                        String Hora = "";
+                        LocalTime horaConsulta;
+                        try {
+                            System.out.println("\nInforme a Hora Da Consulta No Seguinte Formato, Hora:Minutos (00:00)..: ");
+                            Hora = scanner.nextLine();
+                            horaConsulta = LocalTime.parse(Hora);
+                        }
+                        catch (Exception e) {
+                            Hora = "";
+                            horaConsulta = vd.validaHora(Hora);
+                        }
+                       
 
                         if (consultaDAO.verificaDataConsulta(calendarioSistema, diaConsulta) == true) {
                             System.out.println("\nData Informada Invalida.");
@@ -228,11 +278,18 @@ public class AdmnistradorControladora {
 
         System.out.println("\n");
         consultaDAO.buscaConsultaPorFranquia(admnistrador.getFranquia());
-
-        System.out.println("\nInforme o ID da Consulta que deseja cancelar: ");
-        int idConsulta = Integer.parseInt(scanner.nextLine());
-        idConsulta = vd.validarINT(idConsulta);
-
+        
+        int idConsulta;
+        try {
+            System.out.println("\nInforme o ID da Consulta que deseja cancelar: ");
+            idConsulta = Integer.parseInt(scanner.nextLine());
+            idConsulta = vd.validarINT(idConsulta);
+        } 
+        catch (Exception e) {
+            idConsulta = 1000;
+            System.out.println("\nID da Consulta invalido!!");
+        }
+        
         Consulta consultaEncontra = consultaDAO.buscaConsultaPorId(idConsulta);
 
         if (consultaEncontra == null) {
@@ -254,26 +311,50 @@ public class AdmnistradorControladora {
 
         System.out.println("\n");
         consultaDAO.buscaConsultaPorFranquia(admnistrador.getFranquia());
-
-        System.out.println("\nInforme o ID da consulta que desaja remarcar: ");
-        int idConsulta = Integer.parseInt(scanner.nextLine());
-        idConsulta = vd.validarINT(idConsulta);
-
+        
+        int idConsulta;
+        try {
+            System.out.println("\nInforme o ID da consulta que desaja remarcar: ");
+            idConsulta = Integer.parseInt(scanner.nextLine());
+            idConsulta = vd.validarINT(idConsulta);
+        } 
+        catch (Exception e) {
+            idConsulta = 1000;
+            System.out.println("\nID da consulta invalido!!");
+        }
+        
         Consulta consultaEncontrada = consultaDAO.buscaConsultaPorId(idConsulta);
 
         if (consultaEncontrada == null) {
             System.out.println("\nConsulta Nao Encontrada");
         } else {
+            
             DateTimeFormatter fdia = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-            System.out.println("\nInforme a Nova Data Da Consulta No Seguinte Formato, Dia/Mes/Ano (00/00/0000)..: ");
-            String dia = scanner.nextLine();
-            LocalDate diaConsulta = LocalDate.parse(dia, fdia);
-
-            System.out.println("\nInforme a Nova Hora Da Consulta No Seguinte Formato, Hora:Minutos (00:00)..: ");
-            String Hora = scanner.nextLine();
-            LocalTime horaConsulta = LocalTime.parse(Hora);
-
+            
+            String dia = "";
+            LocalDate diaConsulta;
+            try {
+                System.out.println("\nInforme a Nova Data Da Consulta No Seguinte Formato, Dia/Mes/Ano (00/00/0000)..: ");
+                dia = scanner.nextLine();
+                diaConsulta = LocalDate.parse(dia, fdia);
+            } 
+            catch (Exception e) {
+                dia = "";
+                diaConsulta = vd.validaStringData(dia);
+            }
+            
+            String Hora = "";
+            LocalTime horaConsulta;
+            try {
+                System.out.println("\nInforme a Nova Hora Da Consulta No Seguinte Formato, Hora:Minutos (00:00)..: ");
+                Hora = scanner.nextLine();
+                horaConsulta = LocalTime.parse(Hora);
+            } 
+            catch (Exception e) {
+                Hora = "";
+                horaConsulta = vd.validaHora(Hora);
+            }
+            
             if (consultaDAO.verificaDataConsulta(calendarioSistema, diaConsulta) == true) {
 
                 System.out.println("\nData Informada Invalida.");
@@ -310,9 +391,15 @@ public class AdmnistradorControladora {
         do {
 
             procedimentoDAO.BuscaProcedimentosNoBancoDeDados(consultaDAO);
-
-            opcao = telaAdmistrador.menuProcedimentos();
-
+            
+            try {
+                opcao = telaAdmistrador.menuProcedimentos();
+            } 
+            catch (Exception e) {
+                opcao = 20;
+                System.out.println("\nOpcao invalida!!");
+            }
+            
             switch (opcao) {
                 case 1: {
 
@@ -346,10 +433,18 @@ public class AdmnistradorControladora {
 
         System.out.println("\n");
         pessoaDAO.filtraPacientes();
-
-        System.out.println("\nInforme o ID - paciente que Ira Passar pelo Procedimento: ");
-        int idPessoa = Integer.parseInt(scanner.nextLine());
-        idPessoa = vd.validarINT(idPessoa);
+        
+        int idPessoa;
+        try {
+            System.out.println("\nInforme o ID - paciente que Ira Passar pelo Procedimento: ");
+            idPessoa = Integer.parseInt(scanner.nextLine());
+            idPessoa = vd.validarINT(idPessoa);
+        } 
+        catch (Exception e) {
+            idPessoa = 1000;
+            System.out.println("\nID - paciente invalido!!");
+        }
+        
 
         Pessoa pessoaEncontrada = pessoaDAO.buscaPessoaPorId(idPessoa);
 
@@ -358,11 +453,17 @@ public class AdmnistradorControladora {
         } else {
             System.out.println("\n");
             medicoDAO.mostraTodosMedicosHabilitados();
-
-            System.out.println("\nInforme o ID - Medico que Ira Fazer O Procedimento: ");
-            int idMedico = Integer.parseInt(scanner.nextLine());
-            idMedico = vd.validarINT(idMedico);
-
+            
+            int idMedico;
+            try {
+                System.out.println("\nInforme o ID - Medico que Ira Fazer O Procedimento: ");
+                idMedico = Integer.parseInt(scanner.nextLine());
+                idMedico = vd.validarINT(idMedico);
+            } catch (Exception e) {
+                idMedico = 1000;
+                System.out.println("\nID - Medico invalido!!");
+            }
+            
             Medico medicoEncontrado = medicoDAO.buscaMedicoPorId(idMedico);
 
             if (medicoEncontrado == null) {
@@ -370,11 +471,18 @@ public class AdmnistradorControladora {
             } else {
                 System.out.println("\n");
                 unidadeFranquiaDAO.buscaUnidadeFranquiaAtravesDaFranquiaVinculada(admnistrador.getFranquia());
-
-                System.out.println("\nInforme o ID - UnidadeFranquia Onde Ocorrera O Procedimento: ");
-                int idUnidadeFranquia = Integer.parseInt(scanner.nextLine());
-                idUnidadeFranquia = vd.validarINT(idUnidadeFranquia);
-
+                
+                int idUnidadeFranquia;
+                try {
+                    System.out.println("\nInforme o ID - UnidadeFranquia Onde Ocorrera O Procedimento: ");
+                    idUnidadeFranquia = Integer.parseInt(scanner.nextLine());
+                    idUnidadeFranquia = vd.validarINT(idUnidadeFranquia);
+                } 
+                catch (Exception e) {
+                    idUnidadeFranquia = 1000;
+                    System.out.println("\nID - UnidadeFranquia invalido!!");
+                }
+                
                 UnidadeFranquia unidadeFranquiaEncontrada
                         = unidadeFranquiaDAO.buscaUnidadeFranquiaPorId(idUnidadeFranquia);
 
@@ -383,19 +491,35 @@ public class AdmnistradorControladora {
                 } else {
 
                     DateTimeFormatter fdia = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
+                    
                     System.out.println("\nQual procedimento Sera Feito: ");
                     String nomeProcedimento = scanner.nextLine();
                     nomeProcedimento = vd.validaString(nomeProcedimento);
-
-                    System.out.println("\nInforme a Data Do Procedimento No Seguinte Formato, Dia/Mes/Ano (00/00/0000)..: ");
-                    String dia = scanner.nextLine();
-                    LocalDate diaProcediemnto = LocalDate.parse(dia, fdia);
-
-                    System.out.println("\nInforme a Hora Da Consulta No Seguinte Formato, Hora:Minutos (00:00)..: ");
-                    String Hora = scanner.nextLine();
-                    LocalTime horaProcedimento = LocalTime.parse(Hora);
-
+                    
+                    String dia = "";
+                    LocalDate diaProcediemnto;
+                    try {
+                        System.out.println("\nInforme a Data Do Procedimento No Seguinte Formato, Dia/Mes/Ano (00/00/0000)..: ");
+                        dia = scanner.nextLine();
+                        diaProcediemnto = LocalDate.parse(dia, fdia);
+                    } 
+                    catch (Exception e) {
+                        dia = "";
+                        diaProcediemnto = vd.validaStringData(dia);
+                    }
+                    
+                    String Hora = "";
+                    LocalTime horaProcedimento;
+                    try {
+                        System.out.println("\nInforme a Hora Do Procedimento No Seguinte Formato, Hora:Minutos (00:00)..: ");
+                        Hora = scanner.nextLine();
+                        horaProcedimento = LocalTime.parse(Hora);
+                    } 
+                    catch (Exception e) {
+                        Hora = "";
+                        horaProcedimento = vd.validaHora(Hora);
+                    }
+                    
                     if (procedimentoDAO.verificaDataProcedimento(calendarioSistema, diaProcediemnto) == true) {
                         System.out.println("\nData Informada Invalida.");
                     } else {
@@ -452,10 +576,17 @@ public class AdmnistradorControladora {
 
         System.out.println("\n");
         procedimentoDAO.buscaProcedimentoPorFranquia(admnistrador.getFranquia());
-
-        System.out.println("\nInforme o ID - Procedimento Que Deseja Cancelar: ");
-        int idProcedimento = Integer.parseInt(scanner.nextLine());
-        idProcedimento = vd.validarINT(idProcedimento);
+        
+        int idProcedimento;
+        try {
+            System.out.println("\nInforme o ID - Procedimento Que Deseja Cancelar: ");
+            idProcedimento = Integer.parseInt(scanner.nextLine());
+            idProcedimento = vd.validarINT(idProcedimento);
+        } catch (Exception e) {
+            idProcedimento = 1000;
+            System.out.println("\nID - Procedimento invalido!!");
+        }
+        
 
         Procedimento procedimentoEncontrado = procedimentoDAO.buscaProcedimentoPorId(idProcedimento);
 
@@ -475,26 +606,50 @@ public class AdmnistradorControladora {
 
         System.out.println("\n");
         procedimentoDAO.buscaProcedimentoPorFranquia(admnistrador.getFranquia());
-
-        System.out.println("\nInforme o ID - Procedimento Que Deseja Remarcar: ");
-        int idProcedimento = Integer.parseInt(scanner.nextLine());
-        idProcedimento = vd.validarINT(idProcedimento);
-
+        
+        int idProcedimento;
+        try {
+            System.out.println("\nInforme o ID - Procedimento Que Deseja Remarcar: ");
+            idProcedimento = Integer.parseInt(scanner.nextLine());
+            idProcedimento = vd.validarINT(idProcedimento);
+        } 
+        catch (Exception e) {
+            idProcedimento = 1000;
+            System.out.println("\nID - Procedimento invalido!!");
+        }
+        
         Procedimento procedimentoEncontrado = procedimentoDAO.buscaProcedimentoPorId(idProcedimento);
 
         if (procedimentoEncontrado == null) {
             System.out.println("\nProcedimento Nao Encontrado.");
         } else {
+            
             DateTimeFormatter fdia = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-            System.out.println("\nInforme a Nova Data Do Procedimento No Seguinte Formato, Dia/Mes/Ano (00/00/0000)..: ");
-            String dia = scanner.nextLine();
-            LocalDate diaProcedimento = LocalDate.parse(dia, fdia);
-
-            System.out.println("\nInforme a Nova Hora Do Procedimento No Seguinte Formato, Hora:Minutos (00:00)..: ");
-            String Hora = scanner.nextLine();
-            LocalTime horaProcedimento = LocalTime.parse(Hora);
-
+            
+            String dia = "";
+            LocalDate diaProcedimento;
+            try {
+                System.out.println("\nInforme a Nova Data Do Procedimento No Seguinte Formato, Dia/Mes/Ano (00/00/0000)..: ");
+                dia = scanner.nextLine();
+                diaProcedimento = LocalDate.parse(dia, fdia);
+            } 
+            catch (Exception e) {
+                dia = "";
+                diaProcedimento = vd.validaStringData(dia);
+            }
+            
+            String Hora = "";
+            LocalTime horaProcedimento;
+            try {
+                System.out.println("\nInforme a Nova Hora Do Procedimento No Seguinte Formato, Hora:Minutos (00:00)..: ");
+                Hora = scanner.nextLine();
+                horaProcedimento = LocalTime.parse(Hora);
+            } 
+            catch (Exception e) {
+                Hora = "";
+                horaProcedimento = vd.validaHora(Hora);
+            }
+            
             if (procedimentoDAO.verificaDataProcedimento(calendarioSistema, diaProcedimento) == true) {
                 System.out.println("\nData Informada Invalida.");
             } else {
@@ -535,8 +690,14 @@ public class AdmnistradorControladora {
 
             System.out.println("\nData e Hora do Sistema: " + calendarioSistema.getDataHoraSistema().format(DateTimeFormatter.
                     ofPattern("dd/MM/yyyy HH:mm:ss")));
-            opcao = telaAdmistrador.menuFinanceiroAdm();
-
+            
+            try {
+                opcao = telaAdmistrador.menuFinanceiroAdm();
+            } catch (Exception e) {
+                opcao = 20;
+                System.out.println("\nOpcao invalida!!");
+            }
+            
             int dias = 0;
             switch (opcao) {
                 case 1: {
@@ -621,8 +782,14 @@ public class AdmnistradorControladora {
         int opcao;
 
         do {
-            opcao = telaAdmistrador.menuPagamentosAdm();
-
+            
+            try {
+                opcao = telaAdmistrador.menuPagamentosAdm();
+            } catch (Exception e) {
+                opcao = 20;
+                System.out.println("\nOpcao invalida!!");
+            }
+            
             switch (opcao) {
                 case 1: {
 
@@ -647,9 +814,7 @@ public class AdmnistradorControladora {
                 case 2: {
                     pagaDespesasAvulsas(calendarioSistema, unidadeFranquiaDAO, admnistrador, vd, financeiroAdmDAO);
                     break;
-
                 }
-
             }
 
         } while (opcao != 0);
@@ -673,13 +838,19 @@ public class AdmnistradorControladora {
 
             System.out.println("\n");
             unidadeFranquiaDAO.buscaUnidadeFranquiaAtravesDaFranquiaVinculada(admnistrador.getFranquia());
-
-            System.out.println("\nInforme o ID - UnidadeFranquia da Qual deseja fazer o Pagamento: ");
-            int idUnidadeFranquia = Integer.parseInt(scanner.nextLine());
-            idUnidadeFranquia = vd.validarINT(idUnidadeFranquia);
-
+            
+            int idUnidadeFranquia;
+            try {
+                System.out.println("\nInforme o ID - UnidadeFranquia da Qual deseja fazer o Pagamento: ");
+                idUnidadeFranquia = Integer.parseInt(scanner.nextLine());
+                idUnidadeFranquia = vd.validarINT(idUnidadeFranquia);
+            } 
+            catch (Exception e) {
+                idUnidadeFranquia = 1000;
+                System.out.println("\nID - UnidadeFranquia invalida!!");
+            }
+            
             financeiroAdmDAO.buscaFinanceiroADMNoBancoDeDados(unidadeFranquiaDAO);
-
             UnidadeFranquia unidadeSelecionada = unidadeFranquiaDAO.buscaUnidadeFranquiaPorId(idUnidadeFranquia);
 
             if (unidadeSelecionada == null) {
@@ -712,9 +883,16 @@ public class AdmnistradorControladora {
 
             System.out.println("\n0 - Para Sair Do Modulo De Pagamentos Franquia: ");
             System.out.println("\n1 - Para Continuar Realizando Pagamentos Franquia: ");
-            System.out.println("\nInforme Opcao : ");
-            opcao = Integer.parseInt(scanner.nextLine());
-
+            
+            try {
+                System.out.println("\nInforme Opcao : ");
+                opcao = Integer.parseInt(scanner.nextLine());
+            } 
+            catch (Exception e) {
+                opcao = 20;
+                System.out.println("\nOpcao invalida!!");
+            }
+            
             if (opcao == 0) {
                 saiu = true;
             }
@@ -729,11 +907,18 @@ public class AdmnistradorControladora {
 
         System.out.println("\n");
         unidadeFranquiaDAO.buscaUnidadeFranquiaAtravesDaFranquiaVinculada(admnistrador.getFranquia());
-
-        System.out.println("\nInforme o ID - UnidadeFranquia da Qual deseja fazer o Pagamento: ");
-        int idUnidadeFranquia = Integer.parseInt(scanner.nextLine());
-        idUnidadeFranquia = vd.validarINT(idUnidadeFranquia);
-
+        
+        int idUnidadeFranquia;
+        try {
+            System.out.println("\nInforme o ID - UnidadeFranquia da Qual deseja fazer o Pagamento: ");
+            idUnidadeFranquia = Integer.parseInt(scanner.nextLine());
+            idUnidadeFranquia = vd.validarINT(idUnidadeFranquia);
+        } 
+        catch (Exception e) {
+            idUnidadeFranquia = 1000;
+            System.out.println("\nID - UnidadeFranquia invalido!!");
+        }
+        
         UnidadeFranquia unidadeSelecionada = unidadeFranquiaDAO.buscaUnidadeFranquiaPorId(idUnidadeFranquia);
 
         if (unidadeSelecionada == null) {
@@ -742,11 +927,20 @@ public class AdmnistradorControladora {
             System.out.println("\nInforme O Descritivo Do Movimento: ");
             String descritivoMovimento = scanner.nextLine();
             descritivoMovimento = vd.validaString(descritivoMovimento);
-
-            System.out.println("\nInforme O Valor Do Pagamento: ");
-            double valorPagamento = Double.parseDouble(scanner.nextLine());
-            valorPagamento = vd.validarDoble(valorPagamento);
-
+            
+            double valorPagamento;
+            String valorDespesa = "";
+            try {
+                System.out.println("\nInforme O Valor Do Pagamento: ");
+                valorDespesa = scanner.nextLine();
+                valorPagamento = Double.parseDouble(valorDespesa);
+                valorPagamento = vd.validarDoble(valorPagamento);
+            } 
+            catch (Exception e) {
+                valorDespesa = "";
+                valorPagamento = vd.validaDespesaAvulsaValor(valorDespesa);
+            }
+            
             FinanceiroAdm financeiroAdm = new FinanceiroAdm("Saida", valorPagamento, unidadeSelecionada,
                     descritivoMovimento, calendarioSistema.getDataHoraSistema());
 
@@ -777,11 +971,17 @@ public class AdmnistradorControladora {
 
             System.out.println("\n");
             medicoDAO.mostraTodosMedicos();
-
-            System.out.println("\nInforme o ID - Medico Que deseja Gerar O Calculo: ");
-            int idMedico = Integer.parseInt(scanner.nextLine());
-            idMedico = vd.validarINT(idMedico);
-
+            
+            int idMedico;
+            try {
+                System.out.println("\nInforme o ID - Medico Que deseja Gerar O Calculo: ");
+                idMedico = Integer.parseInt(scanner.nextLine());
+                idMedico = vd.validarINT(idMedico);
+            } catch (Exception e) {
+                idMedico = 1000;
+                System.out.println("\nID - Medico invalido!!");
+            }
+            
             Medico medicoEncontrado = medicoDAO.buscaMedicoPorId(idMedico);
 
             if (medicoEncontrado == null) {
@@ -828,9 +1028,16 @@ public class AdmnistradorControladora {
 
             System.out.println("\n0 - Para Sair Do Modulo De Geracao De Calculos Financeiros De Medicos: ");
             System.out.println("\n1 - Para Continuar Realizando Geracao De Calculos Financeiros De Medicos: ");
-            System.out.println("\nInforme Opcao : ");
-            opcao = Integer.parseInt(scanner.nextLine());
-
+            
+            try {
+                System.out.println("\nInforme Opcao : ");
+                opcao = Integer.parseInt(scanner.nextLine());
+            } 
+            catch (Exception e) {
+                opcao = 20;
+                System.out.println("\nOpcao invalida!!");
+            }
+            
             if (opcao == 0) {
                 saiu = true;
             }
@@ -857,11 +1064,18 @@ public class AdmnistradorControladora {
                 System.out.println("\n------------ Todos Os Medicos Ja Foram pagos Esse Mes! --------");
 
             } else {
-
-                System.out.println("\nInforme o ID - Financeiro Medico Que Deseja Pagar: ");
-                int idFinanceiroMedico = Integer.parseInt(scanner.nextLine());
-                idFinanceiroMedico = vd.validarINT(idFinanceiroMedico);
-
+                
+                int idFinanceiroMedico;
+                try {
+                    System.out.println("\nInforme o ID - Financeiro Medico Que Deseja Pagar: ");
+                    idFinanceiroMedico = Integer.parseInt(scanner.nextLine());
+                    idFinanceiroMedico = vd.validarINT(idFinanceiroMedico);
+                } 
+                catch (Exception e) {
+                    idFinanceiroMedico = 1000;
+                    System.out.println("\nID - Financeiro Medico invalido!!");
+                }
+                
                 FinanceiroMedico financeiroMedicoEncontrado
                         = financeiroMedicoDAO.buscaPagamentosMedicosPorID(idFinanceiroMedico);
 
@@ -879,9 +1093,16 @@ public class AdmnistradorControladora {
 
             System.out.println("\n0 - Para Sair Do Modulo De Pagamento De Medicos: ");
             System.out.println("\n1 - Para Continuar Realizando Pagamento De Medicos: ");
-            System.out.println("\nInforme Opcao : ");
-            opcao = Integer.parseInt(scanner.nextLine());
-
+            
+            try {
+                System.out.println("\nInforme Opcao : ");
+                opcao = Integer.parseInt(scanner.nextLine());
+            } 
+            catch (Exception e) {
+                opcao = 20;
+                System.out.println("\nOpcao invalida!!");
+            }
+            
         } while (opcao != 0);
 
     }
