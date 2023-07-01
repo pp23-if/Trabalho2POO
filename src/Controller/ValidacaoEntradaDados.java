@@ -1,5 +1,8 @@
 package Controller;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class ValidacaoEntradaDados {
@@ -34,6 +37,45 @@ public class ValidacaoEntradaDados {
             numero = Integer.parseInt(scanner.nextLine());
         }
         return numero;
+    }
+    
+    public LocalDate validaStringData(String dataProcedimento){
+        
+        DateTimeFormatter fdia = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate diaConsulta = null;
+        
+        while(dataProcedimento.equals("")){
+            try {
+                System.out.println("\nInforme a Data Do Procedimento No Seguinte Formato, "
+                        + "Dia/Mes/Ano (00/00/0000)..: ");
+                dataProcedimento = scanner.nextLine();
+                
+                diaConsulta = LocalDate.parse(dataProcedimento, fdia);
+            } 
+            catch (Exception e) {
+                dataProcedimento = "";
+                System.out.println("\nFormato invalido");   
+            }   
+        }
+        return diaConsulta;
+    }
+    
+    public LocalTime validaHora(String horaProcedimento){
+        
+        LocalTime horaProcedimentoValidado = null;
+        
+        while(horaProcedimento.equals("")){
+            try {
+                System.out.println("\nInforme a Hora Do Procedimento No Seguinte Formato, Hora:Minutos (00:00)..: ");
+                horaProcedimento = scanner.nextLine();
+                horaProcedimentoValidado = LocalTime.parse(horaProcedimento);
+            } 
+            catch (Exception e) {
+                horaProcedimento = "";
+                System.out.println("\nFormato invalido");   
+            }   
+        }
+        return horaProcedimentoValidado;
     }
     
 }

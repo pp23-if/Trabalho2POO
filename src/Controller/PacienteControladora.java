@@ -38,7 +38,7 @@ public class PacienteControladora {
             try {
                 opcao = telaPaciente.menuPaciente();
             } catch (Exception e) {
-                System.out.println("\nOpcao invalida!! " + e.getMessage());
+                System.out.println("\nOpcao invalida!! ");
                 opcao = 20;
             }
 
@@ -192,11 +192,17 @@ public class PacienteControladora {
 
         System.out.println("\n");
         medicoDAO.mostraTodosMedicosHabilitados();
-
-        System.out.println("\nInforme o ID - Medico: ");
-        int idMedico = Integer.parseInt(scanner.nextLine());
-        idMedico = vd.validarINT(idMedico);
-
+        
+        int idMedico;
+        try {
+            System.out.println("\nInforme o ID - Medico: ");
+            idMedico = Integer.parseInt(scanner.nextLine());
+            idMedico = vd.validarINT(idMedico);
+        } catch (NumberFormatException e) {
+            idMedico = 100;
+            System.out.println("\nID - Medico - invalido");
+        }
+        
         Medico medicoEncontrado = medicoDAO.buscaMedicoPorId(idMedico);
 
         if (medicoEncontrado == null) {
