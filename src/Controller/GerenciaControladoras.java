@@ -53,7 +53,8 @@ public class GerenciaControladoras {
 
             fazBuscaGeralNoBancoDeDados(pessoaDAO, medicoDAO, franquiaDAO,
                     unidadeFranquiaDAO, consultaDAO, procedimentoDAO,
-                    infoConsultaDAO, financeiroAdmDAO, financeiroMedicoDAO, admnistradorDAO);
+                    infoConsultaDAO, financeiroAdmDAO, 
+                    financeiroMedicoDAO, admnistradorDAO, calendarioSistema);
             
             
             try {
@@ -253,7 +254,8 @@ public class GerenciaControladoras {
             FranquiaDAO franquiaDAO, UnidadeFranquiaDAO unidadeFranquiaDAO,
             ConsultaDAO consultaDAO, ProcedimentoDAO procedimentoDAO,
             InfoConsultaDAO infoConsultaDAO, FinanceiroAdmDAO financeiroAdmDAO,
-            FinanceiroMedicoDAO financeiroMedicoDAO, AdmnistradorDAO admnistradorDAO) {
+            FinanceiroMedicoDAO financeiroMedicoDAO, 
+            AdmnistradorDAO admnistradorDAO, CalendarioSistema calendarioSistema) {
 
         pessoaDAO.BuscaPessoaNoBancoDeDados();
         medicoDAO.BuscaMedicoNoBancoDeDados(pessoaDAO);
@@ -265,6 +267,7 @@ public class GerenciaControladoras {
         procedimentoDAO.BuscaProcedimentosNoBancoDeDados(consultaDAO);
         financeiroAdmDAO.buscaFinanceiroADMNoBancoDeDados(unidadeFranquiaDAO);
         financeiroMedicoDAO.buscaFinanceiroMedicoNoBancoDeDados(medicoDAO, franquiaDAO);
+        calendarioSistema.buscaDataHoraSistemaNoBancoDeDados();
     }
 
 }

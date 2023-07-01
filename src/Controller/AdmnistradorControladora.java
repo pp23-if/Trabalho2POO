@@ -20,6 +20,7 @@ import Model.UnidadeFranquia;
 import Model.UnidadeFranquiaDAO;
 import View.MenuTitulosAdmistrador;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -703,16 +704,30 @@ public class AdmnistradorControladora {
                 case 1: {
 
                     dias++;
-
+                    
+                    LocalDateTime diaAntesDePassar = calendarioSistema.getDataHoraSistema();
                     if (calendarioSistema.passaDias(dias) == true) {
-                        System.out.println("\nDia Encerrado com sucesso.");
+                        
+                        if(calendarioSistema.
+                                passaDiasnoBancoDeDados(calendarioSistema.
+                                        getDataHoraSistema()) == true){
+                            
+                            calendarioSistema.buscaDataHoraSistemaNoBancoDeDados();
+                            
+                            consultaDAO.BuscaConsultaNoBancoDeDados(pessoaDAO, medicoDAO,
+                                    unidadeFranquiaDAO);
+                            
+                            procedimentoDAO.BuscaProcedimentosNoBancoDeDados(consultaDAO);
 
-                        consultaDAO.BuscaConsultaNoBancoDeDados(pessoaDAO, medicoDAO, unidadeFranquiaDAO);
-                        procedimentoDAO.BuscaProcedimentosNoBancoDeDados(consultaDAO);
-
-                        cancelaConsultasNaoAtendidasNoDia(consultaDAO, calendarioSistema);
-                        cancelaProcedimentosNaoAtendidosNoDia(procedimentoDAO, calendarioSistema);
-
+                            cancelaConsultasNaoAtendidasNoDia(consultaDAO, calendarioSistema);
+                            cancelaProcedimentosNaoAtendidosNoDia(procedimentoDAO, calendarioSistema);
+                            
+                            System.out.println("\nDia encerrado com sucesso!!");
+                        }else{
+                            calendarioSistema.setDataHoraSistema(diaAntesDePassar);
+                            System.out.println("\nErro ao Passar Dia!!");
+                        }
+                        
                     } else {
                         System.out.println("\nNao foi possivel Encerrar o dia");
                     }
