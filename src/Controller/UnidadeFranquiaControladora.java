@@ -49,9 +49,12 @@ public class UnidadeFranquiaControladora {
             
             medicoDAO.BuscaMedicoNoBancoDeDados(pessoaDAO);
             
-            opcao = menuTitulosUnidadeFranquia.menuUnidadeFranquia();
-
-            
+            try {
+                opcao = menuTitulosUnidadeFranquia.menuUnidadeFranquia();
+            } catch (Exception e) {
+                opcao = 20;
+                System.out.println("\nOpcao invalida!!");
+            }
             
             switch (opcao) {
                 case 1: {
@@ -97,8 +100,14 @@ public class UnidadeFranquiaControladora {
         int opcao;
 
         do {
-            opcao = menuTitulosUnidadeFranquia.menuAtualizacaoDeDadosUnidadeFranquia();
-
+            
+            try {
+                opcao = menuTitulosUnidadeFranquia.menuAtualizacaoDeDadosUnidadeFranquia();
+            } catch (Exception e) {
+                opcao = 20;
+                System.out.println("\nOpcao invalida!!");
+            }
+            
             switch (opcao) {
                 case 1: {
                     System.out.println("\nInforme o Nova Cidade da Unidade De Franquia: ");
@@ -192,11 +201,17 @@ public class UnidadeFranquiaControladora {
 
         System.out.println("\n");
         pessoaDAO.filtraPessoasCandidatasAMedico();
-
-        System.out.println("\nInforme o Id da pessoa que Sera Medico: ");
-        int idPessoa = Integer.parseInt(scanner.nextLine());
-        idPessoa = vd.validarINT(idPessoa);
-
+        
+        int idPessoa;
+        try {
+            System.out.println("\nInforme o Id da pessoa que Sera Medico: ");
+            idPessoa = Integer.parseInt(scanner.nextLine());
+            idPessoa = vd.validarINT(idPessoa);
+        } catch (Exception e) {
+            idPessoa = 1000;
+            System.out.println("\nId da Medico invalido!!");
+        }
+        
         Pessoa pessoaEncontrada = pessoaDAO.buscaPessoaPorId(idPessoa);
 
         if (pessoaEncontrada == null) {
@@ -263,8 +278,14 @@ public class UnidadeFranquiaControladora {
         int opcao;
 
         do {
-            opcao = menuTitulosUnidadeFranquia.menuRelatoriosFinanceirosUnidadeFranquia();
-
+            
+            try {
+                opcao = menuTitulosUnidadeFranquia.menuRelatoriosFinanceirosUnidadeFranquia();
+            } catch (Exception e) {
+                opcao = 20;
+                System.out.println("\nOpcao invalida!!");
+            }
+            
             switch (opcao) {
                 case 1: {
                     relatorioGeralUnidadeFranquia(financeiroAdmDAO, financeiroMedicoDAO, unidadeFranquia,
@@ -305,10 +326,16 @@ public class UnidadeFranquiaControladora {
             System.out.println("\n");
             medicoDAO.mostraTodosMedicos();
 
-            System.out.println("\nInforme O ID - Medico: ");
-            int idMedico = Integer.parseInt(scanner.nextLine());
-            idMedico = vd.validarINT(idMedico);
-
+            int idMedico;
+            try {
+                System.out.println("\nInforme O ID - Medico: ");
+                idMedico = Integer.parseInt(scanner.nextLine());
+                idMedico = vd.validarINT(idMedico);
+            } catch (Exception e) {
+                idMedico = 1000;
+                System.out.println("\nID - Medico invalido!!");
+            }
+            
             Medico medicoEncontrado = medicoDAO.buscaMedicoPorId(idMedico);
 
             if (medicoEncontrado == null) {
@@ -337,11 +364,16 @@ public class UnidadeFranquiaControladora {
 
             System.out.println("\n0 - Para Sair Do Relatorio: ");
             System.out.println("\n1 - Para Continuar No Relatorio: ");
-            System.out.println("\nInforme Opcao : ");
-            opcao = Integer.parseInt(scanner.nextLine());
-
+            
+            try {
+                System.out.println("\nInforme Opcao : ");
+                opcao = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                opcao = 20;
+                System.out.println("\nOpcao invalida!!");
+            }
+            
         } while (opcao != 0);
-
     }
 
     private void relatorioMensalUnidadeFranquia(FinanceiroAdmDAO financeiroAdmDAO,
@@ -355,11 +387,17 @@ public class UnidadeFranquiaControladora {
         double valorBrutoConsulta;
         double valorBrutoProcedimento;
         double valoresMedicos;
-
-        System.out.println("\nInforme O Numero Do Mes Que Deseja Ver Relatorio: ");
-        int numeroMes = Integer.parseInt(scanner.nextLine());
-        numeroMes = vd.validarINT(numeroMes);
-
+        
+        int numeroMes;
+        try {
+            System.out.println("\nInforme O Numero Do Mes Que Deseja Ver Relatorio: ");
+            numeroMes = Integer.parseInt(scanner.nextLine());
+            numeroMes = vd.validarINT(numeroMes);
+        } catch (Exception e) {
+            numeroMes = 1000;
+            System.out.println("\nNumero Do Mes invalido!!");
+        }
+        
         do {
 
             System.out.println("\nMovimentacoes Financeiras Mensais Unidade De Franquia  - (Entrada/saida): ");
@@ -369,11 +407,17 @@ public class UnidadeFranquiaControladora {
             System.out.println("\nMovimentacoes Financeiras Mensais Unidade De Franquia - (Pagamentos Dos Medicos): ");
             System.out.println("\n");
             medicoDAO.mostraTodosMedicos();
-
-            System.out.println("\nInforme O ID - Medico: ");
-            int idMedico = Integer.parseInt(scanner.nextLine());
-            idMedico = vd.validarINT(idMedico);
-
+            
+            int idMedico;
+            try {
+                System.out.println("\nInforme O ID - Medico: ");
+                idMedico = Integer.parseInt(scanner.nextLine());
+                idMedico = vd.validarINT(idMedico);
+            } catch (Exception e) {
+                idMedico = 1000;
+                System.out.println("\nID - Medico invalido!!");
+            }
+            
             Medico medicoEncontrado = medicoDAO.buscaMedicoPorId(idMedico);
 
             if (medicoEncontrado == null) {
@@ -405,11 +449,15 @@ public class UnidadeFranquiaControladora {
 
             System.out.println("\n0 - Para Sair Do Relatorio: ");
             System.out.println("\n1 - Para Continuar No Relatorio: ");
-            System.out.println("\nInforme Opcao : ");
-            opcao = Integer.parseInt(scanner.nextLine());
-
+            
+            try {
+                System.out.println("\nInforme Opcao : ");
+                opcao = Integer.parseInt(scanner.nextLine());
+            } catch (Exception e) {
+                opcao = 20;
+                System.out.println("\nOpcao invalida!!");
+            }
+           
         } while (opcao != 0);
-
     }
-
 }
