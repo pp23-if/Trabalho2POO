@@ -38,7 +38,12 @@ public class FranquiaControladora {
         int opcao;
         
         do {
-            opcao = telaFranquia.menuFranquia();
+            try {
+                opcao = telaFranquia.menuFranquia();
+            } catch (Exception e) {
+                opcao = 20;
+                System.out.println("\nOpcao invalida!!");
+            }
             
             pessoaDAO.BuscaPessoaNoBancoDeDados();
             
@@ -121,9 +126,15 @@ public class FranquiaControladora {
         System.out.println("\n");
         pessoaDAO.filtraPessoasCandidatasADonoDeFranquia();
         
-        System.out.println("\nInforme o Id da pessoa que Sera a Dona da Franquia: ");
-        int idPessoa = Integer.parseInt(scanner.nextLine());
-        idPessoa = vd.validarINT(idPessoa);
+        int idPessoa;
+        try {
+            System.out.println("\nInforme o Id da pessoa que Sera a Dona da Franquia: ");
+            idPessoa = Integer.parseInt(scanner.nextLine());
+            idPessoa = vd.validarINT(idPessoa);
+        } catch (Exception e) {
+            idPessoa = 1000;
+            System.out.println("\nId da pessoa invalida!!");
+        }
         
         Pessoa pessoa = pessoaDAO.buscaPessoaPorId(idPessoa);
         
@@ -192,13 +203,19 @@ public class FranquiaControladora {
     
     private void menuOpcoesAtualizarDadosFranquia(Franquia franquia, FranquiaDAO franquiaDAO, ValidacaoEntradaDados vd,
             CalendarioSistema calendarioSistema, PessoaDAO pessoaDAO) {
-        int opcao;
         
+        int opcao;
+     
         do {
-            opcao = telaFranquia.menuAtualizacaoDeDadosFranquia();
+            try {
+                opcao = telaFranquia.menuAtualizacaoDeDadosFranquia();
+            } 
+            catch (Exception e) {
+                opcao = 20;
+                System.out.println("\nOpcao invalida!!");
+            }
             
             franquiaDAO.BuscaFranquiaNoBancoDeDados(pessoaDAO);
-            
             
             switch (opcao) {
                 case 1: {
@@ -314,9 +331,15 @@ public class FranquiaControladora {
         System.out.println("\n");
         pessoaDAO.filtraPessoasCandidatasAMedico();
         
-        System.out.println("\nInforme o Id da pessoa que Sera Medico: ");
-        int idPessoa = Integer.parseInt(scanner.nextLine());
-        idPessoa = vd.validarINT(idPessoa);
+        int idPessoa;
+        try {
+            System.out.println("\nInforme o Id da pessoa que Sera Medico: ");
+            idPessoa = Integer.parseInt(scanner.nextLine());
+            idPessoa = vd.validarINT(idPessoa);
+        } catch (Exception e) {
+            idPessoa = 1000;
+            System.out.println("\nId da pessoa invalido!!");
+        }
         
         Pessoa pessoaEncontrada = pessoaDAO.buscaPessoaPorId(idPessoa);
         
@@ -380,10 +403,16 @@ public class FranquiaControladora {
         System.out.println("\n");
         pessoaDAO.filtraPessoaCandidatasADonoUnidadeFranquia();
         
-        System.out.println("\nInforme o Id da Pessoa Que Sera Dono De Unidade De Franquia: ");
-        int idPessoa = Integer.parseInt(scanner.nextLine());
-        idPessoa = vd.validarINT(idPessoa);
-        
+        int idPessoa;
+        try {
+            System.out.println("\nInforme o Id da Pessoa Que Sera Dono De Unidade De Franquia: ");
+            idPessoa = Integer.parseInt(scanner.nextLine());
+            idPessoa = vd.validarINT(idPessoa);
+        } catch (Exception e) {
+            idPessoa = 1000;
+            System.out.println("\nId da Pessoa invalido!!");
+        }
+       
         Pessoa pessoaEncontrada = pessoaDAO.buscaPessoaPorId(idPessoa);
         
         if (pessoaEncontrada == null) {
@@ -444,7 +473,13 @@ public class FranquiaControladora {
         int opcao;
         
         do {
-            opcao = telaFranquia.menuRelatoriosFinanceirosFranquia();
+            
+            try {
+                opcao = telaFranquia.menuRelatoriosFinanceirosFranquia();
+            } catch (Exception e) {
+                opcao = 20;
+                System.out.println("\nOpcao invalida!!");
+            }
             
             switch (opcao) {
                 case 1: {
@@ -457,7 +492,6 @@ public class FranquiaControladora {
                     break;
                     
                 }
-                
             }
             
         } while (opcao != 0);
@@ -479,9 +513,15 @@ public class FranquiaControladora {
     private void relatorioMensalFranquia(FinanceiroAdmDAO financeiroAdmDAO, FinanceiroMedicoDAO financeiroMedicoDAO,
             Franquia franquia, ValidacaoEntradaDados vd) {
         
-        System.out.println("\nInforme O Numero Do Mes Que Deseja Ver Relatorio: ");
-        int numeroMes = Integer.parseInt(scanner.nextLine());
-        numeroMes = vd.validarINT(numeroMes);
+        int numeroMes;
+        try {
+            System.out.println("\nInforme O Numero Do Mes Que Deseja Ver Relatorio: ");
+            numeroMes = Integer.parseInt(scanner.nextLine());
+            numeroMes = vd.validarINT(numeroMes);
+        } catch (Exception e) {
+            numeroMes = 1000;
+            System.out.println("\nO Numero Do Mes invalido!!");
+        }
         
         System.out.println("\nMovimentacoes Financeiras  - (Entrada/saida): ");
         System.out.println("\n");
@@ -503,9 +543,15 @@ public class FranquiaControladora {
             System.out.println("\n");
             pessoaDAO.filtraPacientes();
             
-            System.out.println("\nInforme o ID - Pessoa Que Deseja Como Admnistrador Da Franquia: ");
-            int idPessoa = Integer.parseInt(scanner.nextLine());
-            idPessoa = vd.validarINT(idPessoa);
+            int idPessoa;
+            try {
+                System.out.println("\nInforme o ID - Pessoa Que Deseja Como Admnistrador Da Franquia: ");
+                idPessoa = Integer.parseInt(scanner.nextLine());
+                idPessoa = vd.validarINT(idPessoa);
+            } catch (Exception e) {
+                idPessoa = 1000;
+                System.out.println("\nID - Pessoa invalido!!");
+            }
             
             Pessoa pessoaEncontrada = pessoaDAO.buscaPessoaPorId(idPessoa);
             
@@ -561,7 +607,12 @@ public class FranquiaControladora {
             pessoaDAO.BuscaPessoaNoBancoDeDados();
             medicoDAO.BuscaMedicoNoBancoDeDados(pessoaDAO);
             
-            opcao = telaFranquia.menuExclusoesDonoFranquia();
+            try {
+                opcao = telaFranquia.menuExclusoesDonoFranquia();
+            } catch (Exception e) {
+                opcao = 20;
+                System.out.println("\nOpcao invalida!!");
+            }
             
             switch (opcao) {
                 case 1: {
@@ -594,9 +645,15 @@ public class FranquiaControladora {
         System.out.println("\n");
         pessoaDAO.filtraPacientes();
         
-        System.out.println("\nInforme o ID - Pessoa Que Deseja Excluir: ");
-        int idPessoa = Integer.parseInt(scanner.nextLine());
-        idPessoa = vd.validarINT(idPessoa);
+        int idPessoa;
+        try {
+            System.out.println("\nInforme o ID - Pessoa Que Deseja Excluir: ");
+            idPessoa = Integer.parseInt(scanner.nextLine());
+            idPessoa = vd.validarINT(idPessoa);
+        } catch (Exception e) {
+            idPessoa = 1000;
+            System.out.println("\nID - Pessoa invalido!!");
+        }
         
         Pessoa pessoaEncontrada = pessoaDAO.buscaPessoaPorId(idPessoa);
         
@@ -624,9 +681,16 @@ public class FranquiaControladora {
         System.out.println("\n");
         medicoDAO.mostraTodosMedicosHabilitados();
         
-        System.out.println("\nInforme o ID - Medico Que Deseja Excluir: ");
-        int idMedico = Integer.parseInt(scanner.nextLine());
-        idMedico = vd.validarINT(idMedico);
+        int idMedico;
+        try {
+            System.out.println("\nInforme o ID - Medico Que Deseja Excluir: ");
+            idMedico = Integer.parseInt(scanner.nextLine());
+            idMedico = vd.validarINT(idMedico);
+        } 
+        catch (Exception e) {
+            idMedico = 1000;
+            System.out.println("\nID - Medico invalido!!");
+        }
         
         Medico medicoEncontrado = medicoDAO.buscaMedicoPorId(idMedico);
         
@@ -653,9 +717,16 @@ public class FranquiaControladora {
         System.out.println("\n");
         pessoaDAO.filtraPacientesExcluidos();
         
-        System.out.println("\nInforme o ID - Pessoa Que Deseja Reverter Exclusao: ");
-        int idPessoaExcluida = Integer.parseInt(scanner.nextLine());
-        idPessoaExcluida = vd.validarINT(idPessoaExcluida);
+        int idPessoaExcluida;
+        try {
+            System.out.println("\nInforme o ID - Pessoa Que Deseja Reverter Exclusao: ");
+            idPessoaExcluida = Integer.parseInt(scanner.nextLine());
+            idPessoaExcluida = vd.validarINT(idPessoaExcluida);
+        }
+        catch (Exception e) {
+            idPessoaExcluida = 1000;
+            System.out.println("\nID - Pessoa invalido!!");
+        }
         
         Pessoa pessoaExcluida = pessoaDAO.buscaPessoaExcluidaPorId(idPessoaExcluida);
         
@@ -676,9 +747,16 @@ public class FranquiaControladora {
         System.out.println("\n");
         medicoDAO.filtraMedicosExcluidos();
         
-        System.out.println("\nInforme o ID - Medico Que Deseja Reverter Exclusao: ");
-        int idMedicoExcluido = Integer.parseInt(scanner.nextLine());
-        idMedicoExcluido = vd.validarINT(idMedicoExcluido);
+        int idMedicoExcluido;
+        try {
+            System.out.println("\nInforme o ID - Medico Que Deseja Reverter Exclusao: ");
+            idMedicoExcluido = Integer.parseInt(scanner.nextLine());
+            idMedicoExcluido = vd.validarINT(idMedicoExcluido);
+        } 
+        catch (Exception e) {
+            idMedicoExcluido = 1000;
+            System.out.println("\nID - Medico invalido!!");
+        }
         
         Medico medicoExcluido = medicoDAO.buscaMedicoExcluidoPorId(idMedicoExcluido);
         
